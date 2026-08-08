@@ -19,7 +19,7 @@ typedef struct timespec crono;
 typedef struct
 {
     bool terminou, terminouPartida, terminouOnda;
-    int pontos, tiros, armaCorrente, escudos, ondaAtual, ataquesAtivos, espacos, atacantesMortos;
+    int pontos, tiros, armaCorrente, escudos, ondaAtual, ataquesAtivos, atacantesMortos;
     int ataques[TOTAL_ATACANTES];
     double tempoMovimentação;
     crono c;
@@ -69,9 +69,7 @@ void verificaSeGanhou(Sistema *s)
 {
     if(s->atacantesMortos == 15){
         s->terminouOnda = true;
-        s->terminou = true;
-        s->terminouPartida = true;
-    }
+    } 
 }
 
 void verificaSeMatou(Sistema *s)
@@ -103,16 +101,18 @@ void processaTeclado(Sistema *s)
         if (s->tiros > 0) {
             s->tiros--;
             verificaSeMatou(s);
-            verificaSeGanhou(s);
         }
+        verificaSeGanhou(s);
     }
 }
 
 bool verificaBaseEosEscudos(Sistema *s){
     bool quebrou = false;
+    verificaSeGanhou(s);
     if(s->ataques[0] != -1 && s->escudos != 0){
         s->escudos--;
         s->ataques[0] = -1;
+        s->atacantesMortos++;
         quebrou = true;
     } else if (s->ataques[0] != -1 && s->escudos == 0) {
         quebrou = true;
@@ -130,15 +130,13 @@ void movimentaAtaques(Sistema *s)
         for (int i = 0; i < 9; i++) {
             s->ataques[i] = s->ataques[i + 1];
         }
+        if (s->ataquesAtivos < TOTAL_ATACANTES) {
+            s->ataques[9] = rand() % 11;
+            s->ataquesAtivos++;
+        } else if (!q) {
+            s->ataques[9] = -1;
+        }
     }
-    if (s->ataquesAtivos < TOTAL_ATACANTES) {
-        s->ataques[9] = rand() % 11;
-        s->ataquesAtivos++;
-    } else if (!q) {
-        s->ataques[9] = -1;
-    }
-
-    // verifica se a onda terminou
 }
 
 void processaTempo(Sistema *s)
@@ -150,12 +148,23 @@ void processaTempo(Sistema *s)
     }
 }
 
+void inicializarAtaques(Sistema *s)
+{
+    for (int a = 0; a < TOTAL_ATACANTES; a++){
+        s->ataques[a] = -1;
+    }
+}
+
 void inicializarOnda(Sistema *s)
 {
+    inicializarAtaques(s);
     s->tiros = 30;
     s->tempoMovimentação =  s->tempoMovimentação / 2;
     crono_inicia(&s->c);
     s->terminouOnda = false;
+    s->armaCorrente = 0;
+    s->ataquesAtivos = 0;
+    s->atacantesMortos = 0;
 }
 
 void finalizaOnda(Sistema *s)
@@ -209,13 +218,6 @@ void jogaPartida(Sistema *s)
     }
 }
 
-void inicializarAtaques(Sistema *s)
-{
-    for (int a = 0; a < TOTAL_ATACANTES; a++){
-        s->ataques[a] = -1;
-    }
-}
-
 void inicializarSistema(Sistema *s)
 {
     s->terminou = false;
@@ -228,7 +230,6 @@ void inicializarSistema(Sistema *s)
     s->ondaAtual = 1;
     s->ataquesAtivos = 0;
     s->tempoMovimentação = 4;
-    s->espacos = 10;
     s->atacantesMortos = 0;
     inicializarAtaques(s);
 }
