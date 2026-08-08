@@ -1,6 +1,10 @@
+#define _POSIX_C_SOURCE 199309L
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
+
+typedef struct timespec crono;
 
 typedef struct{
     bool terminou, terminouPartida, terminouOnda;
@@ -9,6 +13,37 @@ typedef struct{
   
 } Sistema;
 
+void crono_inicia(crono *c)
+{
+    clock_gettime(CLOCK_MONOTONIC, c);
+}
+
+double crono_parcial(crono *c)
+{
+    crono agora;
+    clock_gettime(CLOCK_MONOTONIC, &agora);
+    double segundos = agora.tv_sec - c->tv_sec;
+    double nanosegundos = agora.tv_nsec - c->tv_nsec;
+    return segundos + 1e-9 * nanosegundos;
+}
+
+void configuraTerminal()
+{
+    if (system("stty raw opost -echo min 0 time 1") != 0) {
+        perror("erro na execução de system(\"stty\")");
+        fprintf(stderr, "você tem o programa stty instalado?\n");
+        exit(1);
+    };
+    if (setvbuf(stdin, NULL, _IONBF, 0) != 0) {
+        perror("erro na execução de setvbuf()");
+        exit(1);
+    }
+}
+
+void normalizaTerminal()
+{
+    system("stty sane");
+}
 
 char lechar()
 {
@@ -32,24 +67,6 @@ void jogaPartida(Sistema *s)
     while (!s->terminouPartida) {
         jogaOnda(s);
     }
-}
-
-void configuraTerminal()
-{
-    if (system("stty raw opost -echo min 0 time 1") != 0) {
-        perror("erro na execução de system(\"stty\")");
-        fprintf(stderr, "você tem o programa stty instalado?\n");
-        exit(1);
-    };
-    if (setvbuf(stdin, NULL, _IONBF, 0) != 0) {
-        perror("erro na execução de setvbuf()");
-        exit(1);
-    }
-}
-
-void normalizaTerminal()
-{
-    system("stty sane");
 }
 
 int main()
