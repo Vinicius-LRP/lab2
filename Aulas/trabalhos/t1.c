@@ -1,37 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-typedef struct {
-  bool terminou;
-  int pontos;
-  int inimigos_inativos;
-  int tiros;
-  // ...
-} estado_t;
+typedef struct{
+  bool terminou, terminouPartida, terminouOnda;
+  int pontos, tiros, arma;
+  int inimigosInativos;
+  
+} Sistema;
 
-void joga_onda(estado_t *est)
+void jogaOnda(Sistema *s)
 {
-  repete enquanto nao terminar a onda {
-    processa_teclado(est);
-    processa_tempo(est);
-    apresenta(est);
+  while (!s->terminouOnda) {
+    processaTeclado(s);
+    processaTempo(s);
+    apresenta(s);
   }
 }
 
-void joga_partida(estado_t *est)
+void joga_partida(Sistema *s)
 {
-  while (!est->terminou_partida) {
-    joga_onda(est);
+  while (!s->terminouPartida) {
+    jogaOnda(s);
   }
 }
 
 int main()
 {
-  estado_t estado;
+  Sistema sistema;
   inicializa_tela();
-  inicializa_estado(&estado);
-  while (!estado.terminou) {
-    joga_partida(&estado);
+  inicializa_estado(&sistema);
+  while (!sistema.terminou) {
+    joga_partida(&sistema);
   }
   desinicializa_tela();
 }
