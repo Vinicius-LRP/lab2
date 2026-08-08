@@ -8,7 +8,7 @@ typedef struct timespec crono;
 
 typedef struct{
     bool terminou, terminouPartida, terminouOnda;
-    int pontos, tiros, armaCorrente, escudos, ondaAtual;
+    int pontos, tiros, armaCorrente, escudos, ondaAtual, ataquesInativos;
     int ataquesAtivos[15];
     double tempoMovimentação;
     crono c;
@@ -53,9 +53,14 @@ char lechar()
     if (fread(&c, 1, 1, stdin) == 1) return c;
     return 0;
 }
+void inicializarOnda(Sistema *s){
+    s->ataquesInativos = 0;
+    s->tiros = 30;
+}
 
 void jogaOnda(Sistema *s)
 {
+    inicializarOnda(s);
     while (!s->terminouOnda) {
         //processaTeclado(s);
         //processaTempo(s);
@@ -79,14 +84,13 @@ void iniciarAtaqueAtivos(Sistema *s)
     }
 }
 
-
-
 void inicializarSistema(Sistema *s)
 {
     s->terminou = false;
     s->terminouOnda = false;
     s->terminouPartida = false;
     s->pontos = 0;
+    s->tiros = 30;
     s->armaCorrente = 0;
     s->escudos = 3;
     s->ondaAtual = 1;
