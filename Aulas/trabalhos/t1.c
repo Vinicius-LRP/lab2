@@ -175,6 +175,7 @@ void inicializarOnda(Sistema *s)
 void finalizaOnda(Sistema *s)
 {
     s->ondaAtual++;
+    s->pontos += s->tiros * 2 + s->escudos * 10;
 }
 
 void apresenta(Sistema *s)
