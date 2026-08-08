@@ -10,13 +10,17 @@ typedef enum {
     TAB = 9
 } Controle;
 
+typedef enum {
+    TOTAL_ATACANTES = 15
+} Atacantes;
+
 typedef struct timespec crono;
 
 typedef struct
 {
     bool terminou, terminouPartida, terminouOnda;
-    int pontos, tiros, armaCorrente, escudos, ondaAtual, ataquesAtivos;
-    int ataques[13];
+    int pontos, tiros, armaCorrente, escudos, ondaAtual, ataquesAtivos, espacos;
+    int ataques[TOTAL_ATACANTES];
     double tempoMovimentação;
     crono c;
 } Sistema;
@@ -61,13 +65,20 @@ char lechar()
     return 0;
 }
 
+void verificaSeGanhou(Sistema *s)
+{
+    s->terminouOnda = true;
+    for (int a = 0; a < TOTAL_ATACANTES; a++){
+        if(s->ataques[a] != -1) s->terminouOnda = false;
+    }
+}
+
 void verificaSeMatou(Sistema *s)
 {
     for (int a = 0 ; a < s->ataquesAtivos ; a++) {
         if (s->armaCorrente == s->ataques[a]) {
             s->ataques[a] = -1;
             s->pontos++;
-            s->ataquesAtivos--;
             break;
         }
     }
@@ -90,6 +101,7 @@ void processaTeclado(Sistema *s)
         if (s->tiros > 0) {
             s->tiros--;
             verificaSeMatou(s);
+            verificaSeGanhou(s);
         }
     }
 }
@@ -109,7 +121,7 @@ void processaTempo(Sistema *s)
 {
     if (crono_parcial(&s->c) < s->tempoMovimentação) return;
     crono_inicia(&s->c);
-    if(s->ataquesAtivos < 15){
+    if(s->ataquesAtivos < 13){
         movimentaAtaques(s);
     }
 }
@@ -141,6 +153,10 @@ void apresenta(Sistema *s)
     } else if (s->escudos == 3) {
         printf("))) ");
     }
+    for(int a = 0; a < s->espacos; a++){
+        printf(" ");
+    }
+    printf("          ");
     for(int a = 0; a < s->ataquesAtivos; a++){
         if (s->ataques[a] == 10) {
             printf("N");
@@ -171,9 +187,9 @@ void jogaPartida(Sistema *s)
     }
 }
 
-inicializarAtaques(Sistema *s)
+void inicializarAtaques(Sistema *s)
 {
-    for (int a = 0; a < 13; a++){
+    for (int a = 0; a < TOTAL_ATACANTES; a++){
         s->ataques[a] = -1;
     }
 }
@@ -190,6 +206,7 @@ void inicializarSistema(Sistema *s)
     s->ondaAtual = 1;
     s->ataquesAtivos = 0;
     s->tempoMovimentação = 4;
+    s->espacos = 10;
     inicializarAtaques(s);
 }
 
