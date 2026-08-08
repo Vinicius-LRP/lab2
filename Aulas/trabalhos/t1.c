@@ -3,35 +3,38 @@
 #include <stdbool.h>
 
 typedef struct{
-  bool terminou, terminouPartida, terminouOnda;
-  int pontos, tiros, arma;
-  int inimigosInativos;
+    bool terminou, terminouPartida, terminouOnda;
+    int pontos, tiros, arma, escudos;
+    int inimigosInativos;
   
 } Sistema;
 
 void jogaOnda(Sistema *s)
 {
-  while (!s->terminouOnda) {
-    processaTeclado(s);
-    processaTempo(s);
-    apresenta(s);
-  }
+    while (!s->terminouOnda) {
+        processaTeclado(s);
+        processaTempo(s);
+        apresenta(s);
+    }
 }
 
-void joga_partida(Sistema *s)
+void jogaPartida(Sistema *s)
 {
-  while (!s->terminouPartida) {
-    jogaOnda(s);
-  }
+    while (!s->terminouPartida) {
+        jogaOnda(s);
+    }
 }
 
 int main()
 {
-  Sistema sistema;
-  inicializa_tela();
-  inicializa_estado(&sistema);
-  while (!sistema.terminou) {
-    joga_partida(&sistema);
-  }
-  desinicializa_tela();
+    setvbuf(stdin, NULL, _IONBF, 0);
+    system("stty raw -echo min 0 time 1 opost");
+    Sistema sistema;
+    inicializa_tela();
+    inicializaSistema(&sistema);
+    while (!sistema.terminou) {
+        jogaPartida(&sistema);
+    }
+    desinicializa_tela();
+    system("stty sane");
 }
