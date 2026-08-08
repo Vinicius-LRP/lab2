@@ -9,6 +9,7 @@ typedef struct{
   
 } Sistema;
 
+
 char lechar()
 {
     fflush(stdout);
@@ -20,9 +21,9 @@ char lechar()
 void jogaOnda(Sistema *s)
 {
     while (!s->terminouOnda) {
-        processaTeclado(s);
-        processaTempo(s);
-        apresenta(s);
+        //processaTeclado(s);
+        //processaTempo(s);
+        //apresenta(s);
     }
 }
 
@@ -33,16 +34,33 @@ void jogaPartida(Sistema *s)
     }
 }
 
+void configuraTerminal()
+{
+    if (system("stty raw opost -echo min 0 time 1") != 0) {
+        perror("erro na execução de system(\"stty\")");
+        fprintf(stderr, "você tem o programa stty instalado?\n");
+        exit(1);
+    };
+    if (setvbuf(stdin, NULL, _IONBF, 0) != 0) {
+        perror("erro na execução de setvbuf()");
+        exit(1);
+    }
+}
+
+void normalizaTerminal()
+{
+    system("stty sane");
+}
+
 int main()
 {
-    setvbuf(stdin, NULL, _IONBF, 0);
-    system("stty raw -echo min 0 time 1 opost");
+    configuraTerminal();
     Sistema sistema;
-    inicializa_tela();
-    inicializaSistema(&sistema);
+    //inicializa_tela();
+    //inicializaSistema(&sistema);
     while (!sistema.terminou) {
         jogaPartida(&sistema);
     }
-    desinicializa_tela();
-    system("stty sane");
+    //desinicializa_tela();
+    normalizaTerminal();
 }
