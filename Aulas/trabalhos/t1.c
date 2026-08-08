@@ -9,6 +9,14 @@ typedef struct{
   
 } Sistema;
 
+char lechar()
+{
+    fflush(stdout);
+    char c;
+    if (fread(&c, 1, 1, stdin) == 1) return c;
+    return 0;
+}
+
 void jogaOnda(Sistema *s)
 {
     while (!s->terminouOnda) {
