@@ -53,6 +53,15 @@ char lechar()
     if (fread(&c, 1, 1, stdin) == 1) return c;
     return 0;
 }
+
+void processaTeclado(Sistema *s){
+    char tecla = lechar();
+    if(tecla == 27){
+        s->terminouOnda = true;
+        s->terminouPartida = true;
+        s->terminou = true;
+    }
+}
 void inicializarOnda(Sistema *s){
     s->ataquesInativos = 0;
     s->tiros = 30;
@@ -62,7 +71,7 @@ void jogaOnda(Sistema *s)
 {
     inicializarOnda(s);
     while (!s->terminouOnda) {
-        //processaTeclado(s);
+        processaTeclado(s);
         //processaTempo(s);
         //apresenta(s);
     }
