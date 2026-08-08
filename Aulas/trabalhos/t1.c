@@ -175,7 +175,7 @@ void finalizaOnda(Sistema *s)
 
 void apresenta(Sistema *s)
 {
-    printf("%2d %2d M:%d A:%d", s->pontos, s->tiros, s->atacantesMortos, s->ataquesAtivos);
+    printf("%2d %2d ", s->pontos, s->tiros);
     if(s->armaCorrente == 10){
         printf(" n");
     } else {
