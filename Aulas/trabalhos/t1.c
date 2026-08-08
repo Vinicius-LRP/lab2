@@ -74,7 +74,7 @@ void verificaSeGanhou(Sistema *s)
 
 void verificaSeMatou(Sistema *s)
 {
-    for (int a = 0 ; a < 10 ; a++) {
+    for (int a = 0 ; a < 13 ; a++) {
         if (s->armaCorrente == s->ataques[a]) {
             s->ataques[a] = -1;
             s->pontos++;
@@ -106,36 +106,30 @@ void processaTeclado(Sistema *s)
     }
 }
 
-bool verificaBaseEosEscudos(Sistema *s){
-    bool quebrou = false;
+void verificaBaseEosEscudos(Sistema *s){
     verificaSeGanhou(s);
-    if(s->ataques[0] != -1 && s->escudos != 0){
-        s->escudos--;
-        s->ataques[0] = -1;
+    if(s->ataques[s->escudos] != -1 && s->escudos != 0){
+        s->ataques[s->escudos] = -1;
         s->atacantesMortos++;
-        quebrou = true;
+        s->escudos--;
     } else if (s->ataques[0] != -1 && s->escudos == 0) {
-        quebrou = true;
         s->terminou = true;
         s->terminouOnda = true;
         s->terminouPartida = true;
     }
-    return quebrou;
 }
 
 void movimentaAtaques(Sistema *s)
 {
-    bool q = verificaBaseEosEscudos(s);
-    if (!q) {
-        for (int i = 0; i < 9; i++) {
-            s->ataques[i] = s->ataques[i + 1];
-        }
-        if (s->ataquesAtivos < TOTAL_ATACANTES) {
-            s->ataques[9] = rand() % 11;
-            s->ataquesAtivos++;
-        } else if (!q) {
-            s->ataques[9] = -1;
-        }
+    verificaBaseEosEscudos(s);
+    for (int i = s->escudos; i < 13; i++) {
+        s->ataques[i] = s->ataques[i + 1];
+    }
+    if (s->ataquesAtivos < TOTAL_ATACANTES) {        
+        s->ataques[13] = rand() % 11;        
+        s->ataquesAtivos++;    
+    } else {
+        s->ataques[13] = -1;
     }
 }
 
@@ -155,16 +149,23 @@ void inicializarAtaques(Sistema *s)
     }
 }
 
+void inicializarEscudos(Sistema *s){
+    for(int a = 0; a < s->escudos; a++){
+        s->ataques[a] = -2;
+    }
+}
+
 void inicializarOnda(Sistema *s)
 {
     inicializarAtaques(s);
     s->tiros = 30;
-    s->tempoMovimentação =  s->tempoMovimentação / 2;
+    s->tempoMovimentação =  s->tempoMovimentação - (s->tempoMovimentação * (10 / 100)) ;
     crono_inicia(&s->c);
     s->terminouOnda = false;
     s->armaCorrente = 0;
     s->ataquesAtivos = 0;
     s->atacantesMortos = 0;
+    inicializarEscudos(s);
 }
 
 void finalizaOnda(Sistema *s)
@@ -174,24 +175,19 @@ void finalizaOnda(Sistema *s)
 
 void apresenta(Sistema *s)
 {
-    printf("%2d %2d m:%d a:%d", s->pontos, s->tiros,s->atacantesMortos, s->ataquesAtivos);
+    printf("%2d %2d M:%d A:%d", s->pontos, s->tiros, s->atacantesMortos, s->ataquesAtivos);
     if(s->armaCorrente == 10){
         printf(" n");
     } else {
         printf(" %d", s->armaCorrente);
     }
-    if (s->escudos == 1) {
-        printf(")");
-    } else if (s->escudos == 2) {
-        printf("))");
-    } else if (s->escudos == 3) {
-        printf(")))");
-    }
-    for(int a = 0; a < 10; a++){
+    for(int a = 0; a < 13; a++){
         if(s->ataques[a] == -1){
             printf(" ");
         } else if (s->ataques[a] == 10) {
             printf("N");
+        } else if (s->ataques[a] == -2) {
+            printf(")"); 
         } else {
             printf("%d", s->ataques[a]);
         }
@@ -229,7 +225,7 @@ void inicializarSistema(Sistema *s)
     s->escudos = 3;
     s->ondaAtual = 1;
     s->ataquesAtivos = 0;
-    s->tempoMovimentação = 4;
+    s->tempoMovimentação = 2;
     s->atacantesMortos = 0;
     inicializarAtaques(s);
 }
