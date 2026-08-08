@@ -4,6 +4,12 @@
 #include <stdbool.h>
 #include <time.h>
 
+typedef enum {
+    ENTER = 13,
+    ESC = 27,
+    TAB = 9
+} Controle;
+
 typedef struct timespec crono;
 
 typedef struct{
@@ -56,10 +62,21 @@ char lechar()
 
 void processaTeclado(Sistema *s){
     char tecla = lechar();
-    if(tecla == 27){
+    if (tecla == ESC) {
         s->terminouOnda = true;
         s->terminouPartida = true;
         s->terminou = true;
+    } else if (tecla == TAB) {
+        if (s->armaCorrente < 10) {
+            s->armaCorrente++;
+        } else {
+            s->armaCorrente = 0;
+        }
+    } else if (tecla == ENTER) {
+        if (s->tiros > 0) {
+            s->tiros--;
+            verificaSeMatou();
+        }
     }
 }
 void inicializarOnda(Sistema *s){
@@ -86,7 +103,7 @@ void jogaPartida(Sistema *s)
 
 void iniciarAtaqueAtivos(Sistema *s)
 {
-    for(int a = 0; a < 15; a++){
+    for (int a = 0; a < 15; a++) {
         int x = rand();
         x = x % 11;
         s->ataquesAtivos[a] = x;
