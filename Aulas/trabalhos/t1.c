@@ -19,7 +19,7 @@ typedef struct timespec crono;
 typedef struct
 {
     bool terminou, terminouPartida, terminouOnda;
-    int pontos, tiros, armaCorrente, escudos, ondaAtual, ataquesAtivos, espacos;
+    int pontos, tiros, armaCorrente, escudos, ondaAtual, ataquesAtivos, espacos, atacantesMortos;
     int ataques[TOTAL_ATACANTES];
     double tempoMovimentação;
     crono c;
@@ -67,18 +67,20 @@ char lechar()
 
 void verificaSeGanhou(Sistema *s)
 {
-    s->terminouOnda = true;
-    for (int a = 0; a < TOTAL_ATACANTES; a++){
-        if(s->ataques[a] != -1) s->terminouOnda = false;
+    if(s->atacantesMortos == 15){
+        s->terminouOnda = true;
+        s->terminou = true;
+        s->terminouPartida = true;
     }
 }
 
 void verificaSeMatou(Sistema *s)
 {
-    for (int a = 0 ; a < s->ataquesAtivos ; a++) {
+    for (int a = 10 ; a > 0 ; a--) {
         if (s->armaCorrente == s->ataques[a]) {
             s->ataques[a] = -1;
             s->pontos++;
+            s->atacantesMortos++;
             break;
         }
     }
@@ -111,9 +113,18 @@ void movimentaAtaques(Sistema *s)
     s->ataquesAtivos++;
     int x = rand();
     x = x % 11;
-    s->ataques[s->ataquesAtivos - 1] = x;
+    for (int i = 0; i < 9; i++) {
+        s->ataques[i] = s->ataques[i + 1];
+    }
+    if(s->ataquesAtivos > 15){
+        s->ataques[9] = -1;
+    } else{
+        s->ataques[9] = x;
+    }
     
-    // verificar colisão com escudo, verificar colisão com base,
+
+
+    //verificar colisão com base,
     // verificar se a onda terminou
 }
 
@@ -121,7 +132,7 @@ void processaTempo(Sistema *s)
 {
     if (crono_parcial(&s->c) < s->tempoMovimentação) return;
     crono_inicia(&s->c);
-    if(s->ataquesAtivos < 13){
+    if(s->ataquesAtivos < 25){
         movimentaAtaques(s);
     }
 }
@@ -131,6 +142,7 @@ void inicializarOnda(Sistema *s)
     s->tiros = 30;
     s->tempoMovimentação =  s->tempoMovimentação / 2;
     crono_inicia(&s->c);
+    s->terminouOnda = false;
 }
 
 void finalizaOnda(Sistema *s)
@@ -140,32 +152,29 @@ void finalizaOnda(Sistema *s)
 
 void apresenta(Sistema *s)
 {
-    printf("%2d %2d", s->pontos, s->tiros);
+    printf("%2d %2d m:%d a:%d", s->pontos, s->tiros, s->atacantesMortos, s->ataquesAtivos);
     if(s->armaCorrente == 10){
         printf(" n");
     } else {
         printf(" %d", s->armaCorrente);
     }
     if (s->escudos == 1) {
-        printf(") ");
+        printf(")");
     } else if (s->escudos == 2) {
-        printf(")) ");
+        printf("))");
     } else if (s->escudos == 3) {
-        printf("))) ");
+        printf(")))");
     }
-    for(int a = 0; a < s->espacos; a++){
-        printf(" ");
-    }
-    printf("          ");
-    for(int a = 0; a < s->ataquesAtivos; a++){
-        if (s->ataques[a] == 10) {
-            printf("N");
-        } else if (s->ataques[a] == -1) {
+    for(int a = 0; a < 10; a++){
+        if(s->ataques[a] == -1){
             printf(" ");
+        } else if (s->ataques[a] == 10) {
+            printf("N");
         } else {
             printf("%d", s->ataques[a]);
         }
     }
+    
     printf("\r");
 }
 
@@ -207,6 +216,7 @@ void inicializarSistema(Sistema *s)
     s->ataquesAtivos = 0;
     s->tempoMovimentação = 4;
     s->espacos = 10;
+    s->atacantesMortos = 0;
     inicializarAtaques(s);
 }
 
