@@ -76,7 +76,7 @@ void verificaSeGanhou(Sistema *s)
 
 void verificaSeMatou(Sistema *s)
 {
-    for (int a = 10 ; a > 0 ; a--) {
+    for (int a = 0 ; a < 10 ; a++) {
         if (s->armaCorrente == s->ataques[a]) {
             s->ataques[a] = -1;
             s->pontos++;
@@ -108,23 +108,38 @@ void processaTeclado(Sistema *s)
     }
 }
 
+bool verificaBaseEosEscudos(Sistema *s){
+    bool quebrou = false;
+    if(s->ataques[0] != -1 && s->escudos != 0){
+        s->escudos--;
+        s->ataques[0] = -1;
+        quebrou = true;
+    } else if (s->ataques[0] != -1 && s->escudos == 0) {
+        quebrou = true;
+        s->terminou = true;
+        s->terminouOnda = true;
+        s->terminouPartida = true;
+    }
+    return quebrou;
+}
+
 void movimentaAtaques(Sistema *s)
 {
     s->ataquesAtivos++;
     int x = rand();
     x = x % 11;
-    for (int i = 0; i < 9; i++) {
-        s->ataques[i] = s->ataques[i + 1];
+    bool q = verificaBaseEosEscudos(s);
+    if(q != true){
+        for (int i = 0; i < 9; i++) {
+            s->ataques[i] = s->ataques[i + 1];
+        }
     }
-    if(s->ataquesAtivos > 15){
+    if(s->ataquesAtivos > 15 && q != true){
         s->ataques[9] = -1;
     } else{
         s->ataques[9] = x;
     }
     
-
-
-    //verificar colisão com base,
     // verificar se a onda terminou
 }
 
@@ -152,7 +167,7 @@ void finalizaOnda(Sistema *s)
 
 void apresenta(Sistema *s)
 {
-    printf("%2d %2d m:%d a:%d", s->pontos, s->tiros, s->atacantesMortos, s->ataquesAtivos);
+    printf("%2d %2d m:%d a:%d", s->pontos, s->tiros,s->atacantesMortos, s->ataquesAtivos);
     if(s->armaCorrente == 10){
         printf(" n");
     } else {
