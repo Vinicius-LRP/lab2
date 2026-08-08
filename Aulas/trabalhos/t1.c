@@ -8,9 +8,10 @@ typedef struct timespec crono;
 
 typedef struct{
     bool terminou, terminouPartida, terminouOnda;
-    int pontos, tiros, arma, escudos;
-    int inimigosInativos;
-  
+    int pontos, tiros, armaCorrente, escudos, ondaAtual;
+    int ataquesAtivos[15];
+    double tempoMovimentação;
+    crono c;
 } Sistema;
 
 void crono_inicia(crono *c)
@@ -69,12 +70,35 @@ void jogaPartida(Sistema *s)
     }
 }
 
+void iniciarAtaqueAtivos(Sistema *s)
+{
+    for(int a = 0; a < 15; a++){
+        int x = rand();
+        x = x % 11;
+        s->ataquesAtivos[a] = x;
+    }
+}
+
+
+
+void inicializarSistema(Sistema *s)
+{
+    s->terminou = false;
+    s->terminouOnda = false;
+    s->terminouPartida = false;
+    s->pontos = 0;
+    s->armaCorrente = 0;
+    s->escudos = 3;
+    s->ondaAtual = 1;
+    iniciarAtaquesAtivos(s);
+}
+
 int main()
 {
     configuraTerminal();
     Sistema sistema;
     //inicializa_tela();
-    //inicializaSistema(&sistema);
+    inicializaSistema(&sistema);
     while (!sistema.terminou) {
         jogaPartida(&sistema);
     }
