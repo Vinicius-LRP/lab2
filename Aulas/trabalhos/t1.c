@@ -74,10 +74,14 @@ void verificaSeGanhou(Sistema *s)
 
 void verificaSeMatou(Sistema *s)
 {
-    for (int a = 0 ; a < 13 ; a++) {
+    for (int a = s->escudos ; a < 13 ; a++) {
         if (s->armaCorrente == s->ataques[a]) {
             s->ataques[a] = -1;
-            s->pontos++;
+            if(s->armaCorrente == 10){
+                s->pontos += (13 - a) * 2;
+            } else {
+                s->pontos += 13 - a;
+            }
             s->atacantesMortos++;
             break;
         }
