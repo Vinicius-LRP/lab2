@@ -66,6 +66,8 @@ void verificaSeMatou(Sistema *s)
     for (int a = 0 ; a < s->ataquesAtivos ; a++) {
         if (s->armaCorrente == s->ataques[a]) {
             s->ataques[a] = -1;
+            s->ataquesInativos++;
+            s->ataquesAtivos--;
         }
     }
 }
@@ -96,13 +98,30 @@ void inicializarOnda(Sistema *s)
     s->tiros = 30;
 }
 
+void apresenta(Sistema *s)
+{
+    printf("%d %d %d", s->pontos, s->tiros, s->armaCorrente);
+    if (s->escudos == 1) {
+        printf(")");
+    } else if (s->escudos == 2) {
+        printf("))");
+    } else if (s->escudos == 3) {
+        printf(")))");
+    }
+
+    for(int a = 0; a < 15; a++){
+        printf(" %d", s->ataques[a]);
+    }
+    printf("\r");
+}
+
 void jogaOnda(Sistema *s)
 {
     inicializarOnda(s);
     while (!s->terminouOnda) {
         processaTeclado(s);
         //processaTempo(s);
-        //apresenta(s);
+        apresenta(s);
     }
 }
 
@@ -113,7 +132,7 @@ void jogaPartida(Sistema *s)
     }
 }
 
-void iniciarAtaqueAtivos(Sistema *s)
+void iniciarAtaques(Sistema *s)
 {
     for (int a = 0; a < 15; a++) {
         int x = rand();
@@ -142,7 +161,7 @@ int main()
     configuraTerminal();
     Sistema sistema;
     //inicializa_tela();
-    inicializaSistema(&sistema);
+    inicializarSistema(&sistema);
     while (!sistema.terminou) {
         jogaPartida(&sistema);
     }
