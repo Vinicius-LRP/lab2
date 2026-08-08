@@ -66,8 +66,7 @@ void verificaSeMatou(Sistema *s)
     for (int a = 0 ; a < s->ataquesAtivos ; a++) {
         if (s->armaCorrente == s->ataques[a]) {
             s->ataques[a] = -1;
-            s->ataquesInativos++;
-            s->ataquesAtivos--;
+            break;
         }
     }
 }
@@ -100,17 +99,27 @@ void inicializarOnda(Sistema *s)
 
 void apresenta(Sistema *s)
 {
-    printf("%d %d %d", s->pontos, s->tiros, s->armaCorrente);
-    if (s->escudos == 1) {
-        printf(")");
-    } else if (s->escudos == 2) {
-        printf("))");
-    } else if (s->escudos == 3) {
-        printf(")))");
+    printf("%d %2d", s->pontos, s->tiros);
+    if(s->armaCorrente == 10){
+        printf(" n");
+    } else {
+        printf(" %d", s->armaCorrente);
     }
-
+    if (s->escudos == 1) {
+        printf(") ");
+    } else if (s->escudos == 2) {
+        printf(")) ");
+    } else if (s->escudos == 3) {
+        printf("))) ");
+    }
     for(int a = 0; a < 15; a++){
-        printf(" %d", s->ataques[a]);
+        if (s->ataques[a] == 10) {
+            printf("N");
+        } else if (s->ataques[a] == -1) {
+            printf(" ");
+        } else {
+            printf("%d", s->ataques[a]);
+        }
     }
     printf("\r");
 }
@@ -152,7 +161,7 @@ void inicializarSistema(Sistema *s)
     s->escudos = 3;
     s->ondaAtual = 1;
     iniciarAtaques(s);
-    s->ataquesAtivos = 0;
+    s->ataquesAtivos = 15;
     s->ataquesInativos = 15;
 }
 
