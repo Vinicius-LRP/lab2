@@ -66,6 +66,9 @@ void verificaSeMatou(Sistema *s)
     for (int a = 0 ; a < s->ataquesAtivos ; a++) {
         if (s->armaCorrente == s->ataques[a]) {
             s->ataques[a] = -1;
+            s->pontos++;
+            s->ataquesInativos++;
+            s->ataquesAtivos--;
             break;
         }
     }
@@ -97,9 +100,14 @@ void inicializarOnda(Sistema *s)
     s->tiros = 30;
 }
 
+void finalizaOnda(Sistema *s)
+{
+    s->ondaAtual++;
+}
+
 void apresenta(Sistema *s)
 {
-    printf("%d %2d", s->pontos, s->tiros);
+    printf("%2d %2d", s->pontos, s->tiros);
     if(s->armaCorrente == 10){
         printf(" n");
     } else {
@@ -132,6 +140,7 @@ void jogaOnda(Sistema *s)
         //processaTempo(s);
         apresenta(s);
     }
+    finalizaOnda(s);
 }
 
 void jogaPartida(Sistema *s)
