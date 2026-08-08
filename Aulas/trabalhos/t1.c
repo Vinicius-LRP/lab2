@@ -125,22 +125,20 @@ bool verificaBaseEosEscudos(Sistema *s){
 
 void movimentaAtaques(Sistema *s)
 {
-    s->ataquesAtivos++;
-    int x = rand();
-    x = x % 11;
     bool q = verificaBaseEosEscudos(s);
-    if(q != true){
+    if (!q) {
         for (int i = 0; i < 9; i++) {
             s->ataques[i] = s->ataques[i + 1];
         }
     }
-    if(s->ataquesAtivos > 15 && q != true){
+    if (s->ataquesAtivos < TOTAL_ATACANTES) {
+        s->ataques[9] = rand() % 11;
+        s->ataquesAtivos++;
+    } else if (!q) {
         s->ataques[9] = -1;
-    } else{
-        s->ataques[9] = x;
     }
-    
-    // verificar se a onda terminou
+
+    // verifica se a onda terminou
 }
 
 void processaTempo(Sistema *s)
