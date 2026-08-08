@@ -15,8 +15,8 @@ typedef struct timespec crono;
 typedef struct
 {
     bool terminou, terminouPartida, terminouOnda;
-    int pontos, tiros, armaCorrente, escudos, ondaAtual, ataquesInativos, ataquesAtivos;
-    int ataques[15];
+    int pontos, tiros, armaCorrente, escudos, ondaAtual, ataquesAtivos;
+    int ataques[13];
     double tempoMovimentação;
     crono c;
 } Sistema;
@@ -67,7 +67,6 @@ void verificaSeMatou(Sistema *s)
         if (s->armaCorrente == s->ataques[a]) {
             s->ataques[a] = -1;
             s->pontos++;
-            s->ataquesInativos++;
             s->ataquesAtivos--;
             break;
         }
@@ -94,10 +93,32 @@ void processaTeclado(Sistema *s)
         }
     }
 }
+
+void movimentaAtaques(Sistema *s)
+{
+    s->ataquesAtivos++;
+    int x = rand();
+    x = x % 11;
+    s->ataques[s->ataquesAtivos - 1] = x;
+    
+    // verificar colisão com escudo, verificar colisão com base,
+    // verificar se a onda terminou
+}
+
+void processaTempo(Sistema *s)
+{
+    if (crono_parcial(&s->c) < s->tempoMovimentação) return;
+    crono_inicia(&s->c);
+    if(s->ataquesAtivos < 15){
+        movimentaAtaques(s);
+    }
+}
+
 void inicializarOnda(Sistema *s)
 {
-    s->ataquesInativos = 0;
     s->tiros = 30;
+    s->tempoMovimentação =  s->tempoMovimentação / 2;
+    crono_inicia(&s->c);
 }
 
 void finalizaOnda(Sistema *s)
@@ -120,7 +141,7 @@ void apresenta(Sistema *s)
     } else if (s->escudos == 3) {
         printf("))) ");
     }
-    for(int a = 0; a < 15; a++){
+    for(int a = 0; a < s->ataquesAtivos; a++){
         if (s->ataques[a] == 10) {
             printf("N");
         } else if (s->ataques[a] == -1) {
@@ -137,7 +158,7 @@ void jogaOnda(Sistema *s)
     inicializarOnda(s);
     while (!s->terminouOnda) {
         processaTeclado(s);
-        //processaTempo(s);
+        processaTempo(s);
         apresenta(s);
     }
     finalizaOnda(s);
@@ -150,12 +171,10 @@ void jogaPartida(Sistema *s)
     }
 }
 
-void iniciarAtaques(Sistema *s)
+inicializarAtaques(Sistema *s)
 {
-    for (int a = 0; a < 15; a++) {
-        int x = rand();
-        x = x % 11;
-        s->ataques[a] = x;
+    for (int a = 0; a < 13; a++){
+        s->ataques[a] = -1;
     }
 }
 
@@ -169,9 +188,9 @@ void inicializarSistema(Sistema *s)
     s->armaCorrente = 0;
     s->escudos = 3;
     s->ondaAtual = 1;
-    iniciarAtaques(s);
-    s->ataquesAtivos = 15;
-    s->ataquesInativos = 15;
+    s->ataquesAtivos = 0;
+    s->tempoMovimentação = 4;
+    inicializarAtaques(s);
 }
 
 int main()
