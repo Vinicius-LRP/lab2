@@ -12,10 +12,11 @@ typedef enum {
 
 typedef struct timespec crono;
 
-typedef struct{
+typedef struct
+{
     bool terminou, terminouPartida, terminouOnda;
-    int pontos, tiros, armaCorrente, escudos, ondaAtual, ataquesInativos;
-    int ataquesAtivos[15];
+    int pontos, tiros, armaCorrente, escudos, ondaAtual, ataquesInativos, ataquesAtivos;
+    int ataques[15];
     double tempoMovimentação;
     crono c;
 } Sistema;
@@ -60,7 +61,17 @@ char lechar()
     return 0;
 }
 
-void processaTeclado(Sistema *s){
+void verificaSeMatou(Sistema *s)
+{
+    for (int a = 0 ; a < s->ataquesAtivos ; a++) {
+        if (s->armaCorrente == s->ataques[a]) {
+            s->ataques[a] = -1;
+        }
+    }
+}
+
+void processaTeclado(Sistema *s)
+{
     char tecla = lechar();
     if (tecla == ESC) {
         s->terminouOnda = true;
@@ -75,11 +86,12 @@ void processaTeclado(Sistema *s){
     } else if (tecla == ENTER) {
         if (s->tiros > 0) {
             s->tiros--;
-            verificaSeMatou();
+            verificaSeMatou(s);
         }
     }
 }
-void inicializarOnda(Sistema *s){
+void inicializarOnda(Sistema *s)
+{
     s->ataquesInativos = 0;
     s->tiros = 30;
 }
@@ -106,7 +118,7 @@ void iniciarAtaqueAtivos(Sistema *s)
     for (int a = 0; a < 15; a++) {
         int x = rand();
         x = x % 11;
-        s->ataquesAtivos[a] = x;
+        s->ataques[a] = x;
     }
 }
 
@@ -120,7 +132,9 @@ void inicializarSistema(Sistema *s)
     s->armaCorrente = 0;
     s->escudos = 3;
     s->ondaAtual = 1;
-    iniciarAtaquesAtivos(s);
+    iniciarAtaques(s);
+    s->ataquesAtivos = 0;
+    s->ataquesInativos = 15;
 }
 
 int main()
