@@ -4,13 +4,15 @@
 #include <stdbool.h>
 #include <time.h>
 
-typedef enum {
+typedef enum 
+{
     ENTER = 13,
     ESC = 27,
     TAB = 9
 } Controle;
 
-typedef enum {
+typedef enum 
+{
     TOTAL_ATACANTES = 15
 } Atacantes;
 
@@ -19,7 +21,8 @@ typedef struct timespec crono;
 typedef struct
 {
     bool terminou, terminouPartida, terminouOnda;
-    int pontos, tiros, armaCorrente, escudos, ondaAtual, ataquesAtivos, atacantesMortos;
+    int pontos, tiros, armaCorrente, escudos, ondaAtual;
+    int ataquesAtivos, atacantesMortos;
     int ataques[TOTAL_ATACANTES];
     double tempoMovimentação;
     crono c;
@@ -110,7 +113,8 @@ void processaTeclado(Sistema *s)
     }
 }
 
-void verificaBaseEosEscudos(Sistema *s){
+void verificaBaseEosEscudos(Sistema *s)
+{
     verificaSeGanhou(s);
     if(s->ataques[s->escudos] != -1 && s->escudos != 0){
         s->ataques[s->escudos] = -1;
@@ -153,7 +157,8 @@ void inicializarAtaques(Sistema *s)
     }
 }
 
-void inicializarEscudos(Sistema *s){
+void inicializarEscudos(Sistema *s)
+{
     for(int a = 0; a < s->escudos; a++){
         s->ataques[a] = -2;
     }
@@ -163,7 +168,7 @@ void inicializarOnda(Sistema *s)
 {
     inicializarAtaques(s);
     s->tiros = 30;
-    s->tempoMovimentação =  s->tempoMovimentação - (s->tempoMovimentação * (10 / 100)) ;
+    s->tempoMovimentação -= (s->tempoMovimentação * (10 / 100)) ;
     crono_inicia(&s->c);
     s->terminouOnda = false;
     s->armaCorrente = 0;
