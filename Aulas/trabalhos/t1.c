@@ -169,7 +169,9 @@ void inicializarOnda(Sistema *s)
 {
     inicializarAtaques(s);
     s->tiros = 30;
-    s->tempoMovimentação -= s->tempoMovimentação * 0.10;
+    if (s->ondaAtual > 1) {
+        s->tempoMovimentação *= 0.90;
+    }
     crono_inicia(&s->c);
     s->terminouOnda = false;
     s->armaCorrente = 0;
@@ -185,7 +187,7 @@ void finalizaOnda(Sistema *s)
 
 void apresenta(Sistema *s)
 {
-    printf("%2d %2d ", s->pontos, s->tiros);
+    printf("%3d %2d ", s->pontos, s->tiros);
     if(s->armaCorrente == 10){
         printf(" n");
     } else {
