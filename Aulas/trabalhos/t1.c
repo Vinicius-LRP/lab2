@@ -13,7 +13,7 @@ typedef enum
 
 typedef enum 
 {
-    TOTAL_ATACANTES = 15
+    TOTAL_ATACANTES = 20
 } Atacantes;
 
 typedef struct timespec crono;
@@ -70,7 +70,7 @@ char lechar()
 
 void verificaSeGanhou(Sistema *s)
 {
-    if(s->atacantesMortos == 15){
+    if(s->atacantesMortos == TOTAL_ATACANTES){
         s->terminouOnda = true;
         s->ondaAtual++;
     } 
