@@ -24,7 +24,7 @@ typedef struct
     int pontos, tiros, armaCorrente, escudos, ondaAtual;
     int ataquesAtivos, atacantesMortos;
     int ataques[TOTAL_ATACANTES];
-    double tempoMovimentação;
+    double tempoMovimentacao;
     crono c;
 } Sistema;
 
@@ -120,7 +120,6 @@ void processaTeclado(Sistema *s)
 
 void verificaBaseEosEscudos(Sistema *s)
 {
-    verificaSeGanhou(s);
     if(s->ataques[s->escudos] != -1 && s->escudos != 0){
         s->ataques[s->escudos] = -1;
         s->atacantesMortos++;
@@ -129,7 +128,9 @@ void verificaBaseEosEscudos(Sistema *s)
         s->terminou = true;
         s->terminouOnda = true;
         s->terminouPartida = true;
+        return;
     }
+    verificaSeGanhou(s);
 }
 
 void movimentaAtaques(Sistema *s)
@@ -148,11 +149,9 @@ void movimentaAtaques(Sistema *s)
 
 void processaTempo(Sistema *s)
 {
-    if (crono_parcial(&s->c) < s->tempoMovimentação) return;
+    if (crono_parcial(&s->c) < s->tempoMovimentacao) return;
     crono_inicia(&s->c);
-    if(s->ataquesAtivos < 25){
-        movimentaAtaques(s);
-    }
+    movimentaAtaques(s);
 }
 
 void inicializarAtaques(Sistema *s)
@@ -174,7 +173,7 @@ void inicializarOnda(Sistema *s)
     inicializarAtaques(s);
     s->tiros = 30;
     if (s->ondaAtual > 1) {
-        s->tempoMovimentação *= 0.90;
+        s->tempoMovimentacao *= 0.90;
     }
     crono_inicia(&s->c);
     s->terminouOnda = false;
@@ -215,7 +214,7 @@ void apresenta(Sistema *s)
 }
 
 void apresentaOnda(Sistema *s){
-    printf("Onda número %d\r", s->ondaAtual);
+    printf("Onda numero %d\r", s->ondaAtual);
     fflush(stdout);
 }
 
@@ -253,13 +252,14 @@ void inicializarSistema(Sistema *s)
     s->escudos = 3;
     s->ondaAtual = 1;
     s->ataquesAtivos = 0;
-    s->tempoMovimentação = 2;
+    s->tempoMovimentacao = 2;
     s->atacantesMortos = 0;
     inicializarAtaques(s);
 }
 
 int main()
 {
+    srand(time(NULL));
     configuraTerminal();
     Sistema sistema;
     //inicializa_tela();
