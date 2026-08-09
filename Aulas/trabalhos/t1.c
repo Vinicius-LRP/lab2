@@ -72,6 +72,7 @@ void verificaSeGanhou(Sistema *s)
 {
     if(s->atacantesMortos == 15){
         s->terminouOnda = true;
+        s->ondaAtual++;
     } 
 }
 
@@ -168,7 +169,7 @@ void inicializarOnda(Sistema *s)
 {
     inicializarAtaques(s);
     s->tiros = 30;
-    s->tempoMovimentação -= (s->tempoMovimentação * (10 / 100)) ;
+    s->tempoMovimentação -= s->tempoMovimentação * 0.10;
     crono_inicia(&s->c);
     s->terminouOnda = false;
     s->armaCorrente = 0;
@@ -179,7 +180,6 @@ void inicializarOnda(Sistema *s)
 
 void finalizaOnda(Sistema *s)
 {
-    s->ondaAtual++;
     s->pontos += s->tiros * 2 + s->escudos * 10;
 }
 
@@ -206,9 +206,19 @@ void apresenta(Sistema *s)
     printf("\r");
 }
 
+void apresentaOnda(Sistema *s){
+    printf("Onda número %d\r", s->ondaAtual);
+    fflush(stdout);
+}
+
 void jogaOnda(Sistema *s)
 {
     inicializarOnda(s);
+    apresentaOnda(s);
+    crono_inicia(&s->c);
+    while (crono_parcial(&s->c) < 2.0) {
+    }
+    crono_inicia(&s->c);
     while (!s->terminouOnda) {
         processaTeclado(s);
         processaTempo(s);
