@@ -79,14 +79,18 @@ void verificaSeGanhou(Sistema *s)
 void verificaSeMatou(Sistema *s)
 {
     for (int a = s->escudos ; a < 13 ; a++) {
-        if (s->armaCorrente == s->ataques[a]) {
-            s->ataques[a] = -1;
-            if(s->armaCorrente == 10){
-                s->pontos += (13 - a) * 2;
+        if (s->armaCorrente == s->ataques[a] || (s->armaCorrente + 1 == 11 && s->ataques[a] == 11)) {
+            if(s->armaCorrente == 10 && s->ataques[a] == 10){
+                s->ataques[a] = 11;
             } else {
-                s->pontos += 13 - a;
+                if(s->ataques[a] == 11) {
+                    s->pontos += (13 - a) * 2;
+                } else {
+                    s->pontos += 13 - a;
+                }
+                s->ataques[a] = -1;
+                s->atacantesMortos++;
             }
-            s->atacantesMortos++;
             break;
         }
     }
@@ -198,6 +202,8 @@ void apresenta(Sistema *s)
             printf(" ");
         } else if (s->ataques[a] == 10) {
             printf("N");
+        } else if (s->ataques[a] == 11){
+            printf("n");
         } else if (s->ataques[a] == -2) {
             printf(")"); 
         } else {
