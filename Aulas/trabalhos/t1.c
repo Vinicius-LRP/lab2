@@ -235,7 +235,8 @@ void apresenta(Sistema *s)
     printf("\r");
 }
 
-void apresentaOnda(Sistema *s){
+void apresentaOnda(Sistema *s)
+{
     printf("\r\033[KOnda numero %d", s->ondaAtual);
     fflush(stdout);
 }
