@@ -73,7 +73,7 @@ void verificaSeGanhou(Sistema *s)
     if(s->atacantesMortos == TOTAL_ATACANTES){
         s->terminouOnda = true;
         s->ondaAtual++;
-    } 
+    }
 }
 
 bool testeN(Sistema *s, int a){
@@ -146,7 +146,7 @@ void movimentaAtaques(Sistema *s)
     }
     if (s->ataquesAtivos < TOTAL_ATACANTES) {        
         s->ataques[13] = rand() % 11;        
-        s->ataquesAtivos++;    
+        s->ataquesAtivos++;
     } else {
         s->ataques[13] = -1;
     }
@@ -190,7 +190,7 @@ void inicializarOnda(Sistema *s)
 
 void apresentaResumo(Sistema *s)
 {
-    printf("\r\033[KPontos: %d Tiros: %d Para recarregar pressione R", s->pontos, s->tiros);
+    printf("\r\033[KPontos: %d Tiros: %d | Para recarregar pressione R", s->pontos, s->tiros);
     fflush(stdout);
 }
 
@@ -208,7 +208,6 @@ void finalizaOnda(Sistema *s)
             break;
         }
     }
-
 }
 
 void apresenta(Sistema *s)
