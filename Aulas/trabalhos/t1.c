@@ -183,14 +183,26 @@ void inicializarOnda(Sistema *s)
     inicializarEscudos(s);
 }
 
+void apresentaResumo(Sistema *s)
+{
+    printf("\r\033[KPontos: %d Tiros: %d Para recarregar pressione R", s->pontos, s->tiros);
+    fflush(stdout);
+}
+
 void finalizaOnda(Sistema *s)
 {
     s->pontos += s->tiros * 2 + s->escudos * 10;
+    char c = 'n';
+    while(c != 'r' && s->terminou != true){
+        apresentaResumo(s);
+        c = lechar();
+    }
+
 }
 
 void apresenta(Sistema *s)
 {
-    printf("%3d %2d ", s->pontos, s->tiros);
+    printf("\r\033[K%3d %2d ", s->pontos, s->tiros);
     if(s->armaCorrente == 10){
         printf(" n");
     } else {
@@ -214,7 +226,7 @@ void apresenta(Sistema *s)
 }
 
 void apresentaOnda(Sistema *s){
-    printf("Onda numero %d\r", s->ondaAtual);
+    printf("\r\033[KOnda numero %d", s->ondaAtual);
     fflush(stdout);
 }
 
