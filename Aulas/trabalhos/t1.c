@@ -76,10 +76,15 @@ void verificaSeGanhou(Sistema *s)
     } 
 }
 
+bool testeN(Sistema *s, int a){
+    if (s->armaCorrente + 1 == 11 && s->ataques[a] == 11) return true;
+    return false;
+}
+
 void verificaSeMatou(Sistema *s)
 {
     for (int a = s->escudos ; a < 13 ; a++) {
-        if (s->armaCorrente == s->ataques[a] || (s->armaCorrente + 1 == 11 && s->ataques[a] == 11)) {
+        if (s->armaCorrente == s->ataques[a] || testeN(s, a)) {
             if(s->armaCorrente == 10 && s->ataques[a] == 10){
                 s->ataques[a] = 11;
             } else {
@@ -198,7 +203,7 @@ void finalizaOnda(Sistema *s)
         c = lechar();
         if(c == ESC){
             s->terminou = true;
-            s->terminouPartida = true;
+            s->terminouPartida = true;  
             s->terminouOnda = true;
             break;
         }
