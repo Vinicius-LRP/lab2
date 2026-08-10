@@ -196,6 +196,12 @@ void finalizaOnda(Sistema *s)
     while(c != 'r' && s->terminou != true){
         apresentaResumo(s);
         c = lechar();
+        if(c == ESC){
+            s->terminou = true;
+            s->terminouPartida = true;
+            s->terminouOnda = true;
+            break;
+        }
     }
 
 }
