@@ -8,7 +8,8 @@ typedef enum
 {
     ENTER = 13,
     ESC = 27,
-    TAB = 9
+    TAB = 9,
+    ESPACO = 32
 } Controle;
 
 typedef enum 
@@ -136,6 +137,12 @@ void processaTeclado(Sistema *s)
             verificaSeMatou(s);
         }
         verificaSeGanhou(s);
+    } else if (tecla == ESPACO){
+        struct timespec intervalo = {0, 900000000};
+        for (int a = 0 ; a < 13 ; a++){
+            tocaSom(s->ataques[a]);
+            nanosleep(&intervalo, NULL);
+        }
     }
 }
 
