@@ -26,6 +26,7 @@ typedef struct
     int ataquesAtivos, atacantesMortos;
     int ataques[TOTAL_ATACANTES];
     double tempoMovimentacao;
+    int diurnoOuNoturno, chanceDiurno;
     crono c;
 } Sistema;
 
@@ -54,7 +55,7 @@ void configuraTerminal()
         perror("erro na execução de setvbuf()");
         exit(1);
     }
-}
+} 
 
 void normalizaTerminal()
 {
@@ -84,6 +85,7 @@ void tocaSom(int codigo)
         system(script);
     }
 }
+
 
 void verificaSeGanhou(Sistema *s)
 {
@@ -138,7 +140,7 @@ void processaTeclado(Sistema *s)
         }
         verificaSeGanhou(s);
     } else if (tecla == ESPACO){
-        struct timespec intervalo = {0, 900000000};
+        struct timespec intervalo = {0, 500000000};
         for (int a = 0 ; a < 13 ; a++){
             tocaSom(s->ataques[a]);
             nanosleep(&intervalo, NULL);
@@ -219,6 +221,15 @@ void apresentaResumo(Sistema *s)
 
 void finalizaOnda(Sistema *s)
 {
+    int sorteio = rand() % 100;
+    if(sorteio <= s->chanceDiurno){
+        s->diurnoOuNoturno = 1;
+    } else {
+        s->diurnoOuNoturno = 2;
+    }
+    if(s->chanceDiurno >= 39) {
+        s->chanceDiurno -= 20;
+    }
     s->pontos += s->tiros * 2 + s->escudos * 10;
     char c = 'n';
     while(c != 'r' && s->terminou != true){
@@ -300,6 +311,8 @@ void inicializarSistema(Sistema *s)
     s->ataquesAtivos = 0;
     s->tempoMovimentacao = 2;
     s->atacantesMortos = 0;
+    s->diurnoOuNoturno = 1;
+    s->chanceDiurno = 80;
     inicializarAtaques(s);
 }
 
