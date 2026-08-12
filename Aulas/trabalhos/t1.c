@@ -68,6 +68,20 @@ char lechar()
     return 0;
 }
 
+void tocaSom(int codigo)
+{
+    char script[100];
+
+    if (codigo == 10 || codigo == 11) {
+        system("aplay -q 11.3.wav &");
+    } else if (codigo == -1) {
+        system("aplay -q x.3.wav &");
+    } else {
+        sprintf(script, "aplay -q %d.3.wav &", codigo);
+        system(script);
+    }
+}
+
 void verificaSeGanhou(Sistema *s)
 {
     if(s->atacantesMortos == TOTAL_ATACANTES){
