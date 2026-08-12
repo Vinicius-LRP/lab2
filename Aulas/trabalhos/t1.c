@@ -76,6 +76,8 @@ void tocaSom(int codigo)
         system("aplay -q 11.3.wav &");
     } else if (codigo == -1) {
         system("aplay -q x.3.wav &");
+    } else if (codigo == -2) {
+        system("aplay -q 12.3.wav &");
     } else {
         sprintf(script, "aplay -q %d.3.wav &", codigo);
         system(script);
