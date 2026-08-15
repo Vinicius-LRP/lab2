@@ -103,6 +103,7 @@ bool testeN(Sistema *s, int a){
 
 void verificaSeMatou(Sistema *s)
 {
+    bool acertou = false;
     for (int a = s->escudos ; a < 13 ; a++) {
         if (s->armaCorrente == s->ataques[a] || testeN(s, a)) {
             if(s->armaCorrente == 10 && s->ataques[a] == 10){
@@ -115,9 +116,14 @@ void verificaSeMatou(Sistema *s)
                 }
                 s->ataques[a] = -1;
                 s->atacantesMortos++;
+                acertou = true;
+                if (s->diurnoOuNoturno == 2) system("aplay -q acertoTiro.wav &");
             }
             break;
         }
+    }
+    if(!acertou) {
+        if(s->diurnoOuNoturno == 2) system("aplay -q erroTiro.wav &");
     }
 }
 
@@ -131,6 +137,7 @@ void processaTeclado(Sistema *s)
     } else if (tecla == TAB) {
         if (s->armaCorrente < 10) {
             s->armaCorrente++;
+            if (s->diurnoOuNoturno == 2) tocaSom(s->armaCorrente);
         } else {
             s->armaCorrente = 0;
         }
