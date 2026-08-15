@@ -171,10 +171,11 @@ void movimentaAtaques(Sistema *s)
         s->ataques[i] = s->ataques[i + 1];
     }
     if (s->ataquesAtivos < TOTAL_ATACANTES_DIURNO) {        
-        s->ataques[13] = rand() % 11;        
+        s->ataques[12] = rand() % 11;
         s->ataquesAtivos++;
+        if(s->diurnoOuNoturno == 2) tocaSom(s->ataques[12]);
     } else {
-        s->ataques[13] = -1;
+        s->ataques[12] = -1;
     }
 }
 
@@ -222,7 +223,7 @@ void apresentaResumo(Sistema *s)
 
 void finalizaOnda(Sistema *s)
 {
-    int sorteio = rand() % 100;
+    /*int sorteio = rand() % 100;
     if(sorteio <= s->chanceDiurno){
         s->diurnoOuNoturno = 1;
     } else {
@@ -231,6 +232,7 @@ void finalizaOnda(Sistema *s)
     if(s->chanceDiurno >= 39) {
         s->chanceDiurno -= 20;
     }
+    */
     s->pontos += s->tiros * 2 + s->escudos * 10;
     char c = 'n';
     while(c != 'r' && s->terminou != true){
@@ -339,7 +341,7 @@ void inicializarSistema(Sistema *s)
     s->ataquesAtivos = 0;
     s->tempoMovimentacao = 2;
     s->atacantesMortos = 0;
-    s->diurnoOuNoturno = 1;
+    s->diurnoOuNoturno = 2;
     s->chanceDiurno = 80;
     inicializarAtaques(s);
 }
