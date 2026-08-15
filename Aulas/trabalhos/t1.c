@@ -171,9 +171,9 @@ void processaTeclado(Sistema *s)
         verificaSeGanhou(s);
     } else if (tecla == ESPACO){
         struct timespec intervalo = {0, 500000000};
-        for (int a = 0 ; a < 13 ; a++){
+        for (int a = 0 ; a < 8 ; a++){
             tocaSom(s->ataques[a]);
-            nanosleep(&intervalo, NULL);
+            nanosleep(&intervalo, NULL);                                                                                                                                            
         }
     }
 }
