@@ -14,7 +14,8 @@ typedef enum
 
 typedef enum 
 {
-    TOTAL_ATACANTES = 20
+    TOTAL_ATACANTES_DIURNO = 20,
+    TOTAL_ATACANTES_NOTURNO = 15
 } Atacantes;
 
 typedef struct timespec crono;
@@ -24,7 +25,7 @@ typedef struct
     bool terminou, terminouPartida, terminouOnda;
     int pontos, tiros, armaCorrente, escudos, ondaAtual;
     int ataquesAtivos, atacantesMortos;
-    int ataques[TOTAL_ATACANTES];
+    int ataques[TOTAL_ATACANTES_DIURNO];
     double tempoMovimentacao;
     int diurnoOuNoturno, chanceDiurno;
     crono c;
@@ -89,7 +90,7 @@ void tocaSom(int codigo)
 
 void verificaSeGanhou(Sistema *s)
 {
-    if(s->atacantesMortos == TOTAL_ATACANTES){
+    if(s->atacantesMortos == TOTAL_ATACANTES_DIURNO){
         s->terminouOnda = true;
         s->ondaAtual++;
     }
@@ -169,7 +170,7 @@ void movimentaAtaques(Sistema *s)
     for (int i = s->escudos; i < 13; i++) {
         s->ataques[i] = s->ataques[i + 1];
     }
-    if (s->ataquesAtivos < TOTAL_ATACANTES) {        
+    if (s->ataquesAtivos < TOTAL_ATACANTES_DIURNO) {        
         s->ataques[13] = rand() % 11;        
         s->ataquesAtivos++;
     } else {
@@ -186,7 +187,7 @@ void processaTempo(Sistema *s)
 
 void inicializarAtaques(Sistema *s)
 {
-    for (int a = 0; a < TOTAL_ATACANTES; a++){
+    for (int a = 0; a < TOTAL_ATACANTES_DIURNO; a++){
         s->ataques[a] = -1;
     }
 }
@@ -244,7 +245,7 @@ void finalizaOnda(Sistema *s)
     }
 }
 
-void apresenta(Sistema *s)
+void apresentaDiurno(Sistema *s)
 {
     printf("\r\033[K%3d %2d ", s->pontos, s->tiros);
     if(s->armaCorrente == 10){
@@ -265,13 +266,36 @@ void apresenta(Sistema *s)
             printf("%d", s->ataques[a]);
         }
     }
-    
+    printf("\r");
+}
+
+void apresentaNoturno(Sistema *s)
+{
+    printf("\r\033[K%3d %2d ", s->pontos, s->tiros);
+    if(s->armaCorrente == 10){
+        printf(" n");
+    } else {
+        printf(" %d", s->armaCorrente);
+    }
+    for(int a = 0; a < 13; a++){
+        if(s->ataques[a] == -1){
+            printf(" ");
+        } else if (s->ataques[a] == 10) {
+            printf("N");
+        } else if (s->ataques[a] == 11){
+            printf("n");
+        } else if (s->ataques[a] == -2) {
+            printf(")"); 
+        } else {
+            printf("%d", s->ataques[a]);
+        }
+    }
     printf("\r");
 }
 
 void apresentaOnda(Sistema *s)
 {
-    printf("\r\033[KOnda numero %d", s->ondaAtual);
+    printf("\r\033[KOnda numero %d Noturna ou diurna: %d", s->ondaAtual, s->diurnoOuNoturno);
     fflush(stdout);
 }
 
@@ -286,7 +310,11 @@ void jogaOnda(Sistema *s)
     while (!s->terminouOnda) {
         processaTeclado(s);
         processaTempo(s);
-        apresenta(s);
+        if(s->diurnoOuNoturno == 1){
+            apresentaDiurno(s); 
+        } else if (s->diurnoOuNoturno == 2){
+            apresentaNoturno(s);
+        }
     }
     finalizaOnda(s);
 }
