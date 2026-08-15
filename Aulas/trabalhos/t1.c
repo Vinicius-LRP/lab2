@@ -108,6 +108,8 @@ void verificaSeMatou(Sistema *s)
         if (s->armaCorrente == s->ataques[a] || testeN(s, a)) {
             if(s->armaCorrente == 10 && s->ataques[a] == 10){
                 s->ataques[a] = 11;
+                acertou = true;
+                if (s->diurnoOuNoturno == 2) system("aplay -q acertoTiro.wav &");
             } else {
                 if(s->ataques[a] == 11) {
                     s->pontos += (13 - a) * 2;
@@ -140,6 +142,7 @@ void processaTeclado(Sistema *s)
             if (s->diurnoOuNoturno == 2) tocaSom(s->armaCorrente);
         } else {
             s->armaCorrente = 0;
+            if (s->diurnoOuNoturno == 2) tocaSom(s->armaCorrente);
         }
     } else if (tecla == ENTER) {
         if (s->tiros > 0) {
@@ -177,10 +180,13 @@ void movimentaAtaques(Sistema *s)
     for (int i = s->escudos; i < 13; i++) {
         s->ataques[i] = s->ataques[i + 1];
     }
-    if (s->ataquesAtivos < TOTAL_ATACANTES_DIURNO) {        
+    if (s->diurnoOuNoturno == 1 && s->ataquesAtivos < TOTAL_ATACANTES_DIURNO) {        
         s->ataques[12] = rand() % 11;
         s->ataquesAtivos++;
-        if(s->diurnoOuNoturno == 2) tocaSom(s->ataques[12]);
+    } else if (s->diurnoOuNoturno == 2 && s->ataquesAtivos < TOTAL_ATACANTES_NOTURNO) {        
+        s->ataques[12] = rand() % 11;
+        s->ataquesAtivos++;
+        tocaSom(s->ataques[12]);
     } else {
         s->ataques[12] = -1;
     }
@@ -238,8 +244,7 @@ void finalizaOnda(Sistema *s)
     }
     if(s->chanceDiurno >= 39) {
         s->chanceDiurno -= 20;
-    }
-    */
+    }*/
     s->pontos += s->tiros * 2 + s->escudos * 10;
     char c = 'n';
     while(c != 'r' && s->terminou != true){
