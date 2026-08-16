@@ -357,11 +357,17 @@ void jogaOnda(Sistema *s)
     finalizaOnda(s);
 }
 
+void finalizaPartida(Sistema *s){
+
+    
+}
+
 void jogaPartida(Sistema *s)
 {
     while (!s->terminouPartida) {
         jogaOnda(s);
     }
+    finalizaPartida(s);
 }
 
 void inicializarSistema(Sistema *s)
