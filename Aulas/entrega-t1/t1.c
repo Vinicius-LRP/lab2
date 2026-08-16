@@ -182,20 +182,16 @@ void processaEsc(Sistema *s){
 }
 
 void processaTab(Sistema *s){
-    if (s->diurnoOuNoturno == 1) {
-        if (s->armaCorrente < 10) {
+    if (s->armaCorrente < 10) {
+        if(s->diurnoOuNoturno == 1){
             s->armaCorrente++;
-        } else {
-            s->armaCorrente = 0;
-        }
-    } else if (s->diurnoOuNoturno == 2) {
-        if (s->armaCorrente < 10) {
+        } else if(s->diurnoOuNoturno == 2){
             s->armaCorrente += 2;
-            tocaSom(s->armaCorrente);
-        } else {
-            s->armaCorrente = 0;
-            tocaSom(s->armaCorrente);
         }
+        tocaSom(s->armaCorrente);
+    } else {
+        s->armaCorrente = 0;
+        tocaSom(s->armaCorrente);
     }
 }
 
@@ -242,14 +238,12 @@ void verificaBaseEosEscudos(Sistema *s)
         s->ataques[s->escudos] = -1;
         s->atacantesMortos++;
         s->escudos--;
-        if(s->diurnoOuNoturno == 2){
-            tocaSom(-4);
-        }
+        tocaSom(-4);
     } else if (s->ataques[0] != -1 && s->escudos == 0) {
         s->terminou = true;
         s->terminouOnda = true;
         s->terminouPartida = true;
-        if(s->diurnoOuNoturno == 2) tocaSom(-6);
+        tocaSom(-6);
         return;
     }
     verificaSeGanhou(s);
@@ -263,6 +257,9 @@ void movimentaAtaques(Sistema *s)
     }
     if (s->diurnoOuNoturno == 1 && s->ataquesAtivos < A_DIU) {        
         s->ataques[12] = rand() % 11;
+        if(s->terminou != true){
+            tocaSom(s->ataques[12]);
+        }
         s->ataquesAtivos++;
     } else if (s->diurnoOuNoturno == 2 && s->ataquesAtivos < A_NOT) {        
         s->ataques[7] = (rand() % 6) * 2;
