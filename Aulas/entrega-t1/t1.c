@@ -120,19 +120,13 @@ bool testeN(Sistema *s, int a)
 }
 
 void calculaPontosAcerto(Sistema *s, int a){
-    if (s->diurnoOuNoturno == 1) {
-        s->pontos += 13 - a;
-    } else if (s->diurnoOuNoturno == 2) {
-        s->pontos += (8 - a) * 2;
-    }
+    if (s->diurnoOuNoturno == 1) s->pontos += 13 - a;
+    else if (s->diurnoOuNoturno == 2) s->pontos += (8 - a) * 2;
 }
 
 void calculaPontosAcertoN(Sistema *s, int a){
-    if(s->diurnoOuNoturno == 1){
-        s->pontos += (13 - a) * 2;
-    } else if (s->diurnoOuNoturno == 2){
-        s->pontos += ((8 - a) * 2) * 2;
-    }
+    if(s->diurnoOuNoturno == 1) s->pontos += (13 - a) * 2;
+    else if (s->diurnoOuNoturno == 2) s->pontos += ((8 - a) * 2) * 2;
 }
 
 void verificaAcertou(Sistema *s, bool a){
