@@ -1,8 +1,7 @@
 // professor para o meu trabalho voce vai precisar ultilizar todos os sons desse diretorio
 // adicionei mais sons em alguns momentos da partida
 // alguns sons foi eu mesmo que produzi gravando minha voz
-// fiz também a parte do ranking, entao os 3 numero em ordem crescente sao do 3 ao 1 lugar
-// 
+// fiz também a parte do ranking, uma linha com 3 valores do 3 ao 1 lugar decrescente
 
 #define _POSIX_C_SOURCE 199309L
 #include <stdio.h>
