@@ -75,10 +75,8 @@ char lechar()
     return 0;
 }
 
-void tocaSom(int codigo)
-{
+void tocaSom(int codigo) {
     char script[100];
-
     if (codigo == 10 || codigo == 11) {
         system("aplay -q 11.3.wav &");
     } else if (codigo == -1) {
@@ -177,48 +175,64 @@ void verificaSeMatou(Sistema *s)
     verificaAcertou(s, acertou); 
 }
 
+void processaEsc(Sistema *s){
+    s->terminouOnda = true;
+    s->terminouPartida = true;
+    s->terminou = true;
+}
+
+void processaTab(Sistema *s){
+    if (s->diurnoOuNoturno == 1) {
+        if (s->armaCorrente < 10) {
+            s->armaCorrente++;
+        } else {
+            s->armaCorrente = 0;
+        }
+    } else if (s->diurnoOuNoturno == 2) {
+        if (s->armaCorrente < 10) {
+            s->armaCorrente += 2;
+            tocaSom(s->armaCorrente);
+        } else {
+            s->armaCorrente = 0;
+            tocaSom(s->armaCorrente);
+        }
+    }
+}
+
+void processaEnter(Sistema *s){
+    if (s->tiros > 0) {
+        s->tiros--;
+        verificaSeMatou(s);
+    }
+    verificaSeGanhou(s);
+}
+
+void processaEspaco(Sistema *s){
+    struct timespec intervalo = {0, 500000000};
+    if(s->diurnoOuNoturno == 2){
+        for (int a = 0 ; a < 8 ; a++){
+            tocaSom(s->ataques[a]);
+            nanosleep(&intervalo, NULL);                                                                                                                                            
+        }
+    } else if (s->diurnoOuNoturno == 1){
+        for (int a = 0 ; a < 13 ; a++){
+            tocaSom(s->ataques[a]);
+            nanosleep(&intervalo, NULL);                                                                                                                                            
+        }
+    }
+}
+
 void processaTeclado(Sistema *s)
 {
     char tecla = lechar();
     if (tecla == ESC) {
-        s->terminouOnda = true;
-        s->terminouPartida = true;
-        s->terminou = true;
+        processaEsc(s);
     } else if (tecla == TAB) {
-        if (s->diurnoOuNoturno == 1) {
-            if (s->armaCorrente < 10) {
-                s->armaCorrente++;
-            } else {
-                s->armaCorrente = 0;
-            }
-        } else if (s->diurnoOuNoturno == 2) {
-            if (s->armaCorrente < 10) {
-                s->armaCorrente += 2;
-                tocaSom(s->armaCorrente);
-            } else {
-                s->armaCorrente = 0;
-                tocaSom(s->armaCorrente);
-            }
-        }
+        processaTab(s);
     } else if (tecla == ENTER) {
-        if (s->tiros > 0) {
-            s->tiros--;
-            verificaSeMatou(s);
-        }
-        verificaSeGanhou(s);
+        processaEnter(s);
     } else if (tecla == ESPACO){
-        struct timespec intervalo = {0, 500000000};
-        if(s->diurnoOuNoturno == 2){
-            for (int a = 0 ; a < 8 ; a++){
-                tocaSom(s->ataques[a]);
-                nanosleep(&intervalo, NULL);                                                                                                                                            
-            }
-        } else if (s->diurnoOuNoturno == 1){
-            for (int a = 0 ; a < 13 ; a++){
-                tocaSom(s->ataques[a]);
-                nanosleep(&intervalo, NULL);                                                                                                                                            
-            }
-        }
+        processaEspaco(s);
     }
 }
 
