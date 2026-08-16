@@ -250,7 +250,7 @@ void inicializarOnda(Sistema *s)
 
 void apresentaResumo(Sistema *s)
 {
-    printf("\r\033[KPontos: %d Tiros: %d | Para recarregar pressione R", s->pontos, s->tiros);
+    printf("\r\033[KPontos: %d Tiros: %d | Para recarregar pressione R ou ESC para sair", s->pontos, s->tiros);
     fflush(stdout);
 }
 
@@ -266,12 +266,16 @@ void finalizaOnda(Sistema *s)
         s->chanceDiurno -= 20;
     }*/
     if(s->diurnoOuNoturno == 1){
-        s->pontos += s->tiros * 2 + s->escudos * 10;
+        if(s->terminou != true){
+            s->pontos += s->tiros * 2 + s->escudos * 10;
+        }
     } else if (s->diurnoOuNoturno == 2){
-        s->pontos += (s->tiros * 2 + s->escudos * 10) *2;
+        if(s->terminou != true){
+            s->pontos += (s->tiros * 2 + s->escudos * 10) *2;
+        }
     }
     char c = 'n';
-    while(c != 'r' && s->terminou != true){
+    while(c != 'r' && c != 'R' && s->terminou != true){
         apresentaResumo(s);
         c = lechar();
         if(c == ESC){
@@ -357,12 +361,12 @@ void jogaOnda(Sistema *s)
     finalizaOnda(s);
 }
 void apresentaFinalizaPartida(Sistema *s){
-    printf("\r\033[K Pontuação: %d | Digite S para jogar novamente ou N para sair", s->pontos);
+    printf("\r\033[K Pontuação Final: %d | Digite S para jogar novamente ou ESC para sair", s->pontos);
 }
 
 void finalizaPartida(Sistema *s){
     char c = 'x';
-    while ((c != 's' && c != 'S') && (c != 'n' && c != 'N')) {
+    while ((c != 's' && c != 'S') && (c != ESC)) {
         apresentaFinalizaPartida(s);
         c = lechar();
         if(c == 's' || c == 'S') {
