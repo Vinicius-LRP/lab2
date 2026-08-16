@@ -137,12 +137,12 @@ void calculaPontosAcertoN(Sistema *s, int a)
     }
 }
 
-void verificaAcertou(Sistema *s, bool a)
+void verificaAcertou(bool a)
 {
     if (!a) system("aplay -q erroTiro.wav &");
 }
 
-void tocaAcertoTiro(Sistema *s, int a)
+void tocaAcertoTiro(int a)
 {
     if (a == 1) {
         system("aplay -q acertoTiroN.wav &");
