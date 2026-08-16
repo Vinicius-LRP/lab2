@@ -405,7 +405,8 @@ void jogaOnda(Sistema *s)
     }
     finalizaOnda(s);
 }
-void leRanking(Sistema *s){
+void leRanking(Sistema *s)
+{
     FILE *arquivo = fopen("ranking.txt", "r");
     if (arquivo != NULL) {
         for (int a = 0; a < 3 ; a++){
@@ -423,7 +424,8 @@ void leRanking(Sistema *s){
     }
 }
 
-void analisaRanking(Sistema *s){
+void analisaRanking(Sistema *s)
+{
     int a;
     for(a = 0 ; a < 3 ; a++){
         if(s->pontos < s->ranking[a]){
@@ -446,7 +448,8 @@ void analisaRanking(Sistema *s){
     }
 }
 
-void escreveRanking(Sistema *s){
+void escreveRanking(Sistema *s)
+{
     FILE *arquivo = fopen("ranking.txt", "w");
     if(arquivo != NULL){
         for(int a = 0; a < 3 ; a++){
@@ -457,7 +460,8 @@ void escreveRanking(Sistema *s){
     }
 }
 
-void apresentaFinalizaPartida(Sistema *s){
+void apresentaFinalizaPartida(Sistema *s)
+{
     if(s->estaNoRanking == true){
         printf("\r\033[K");
         printf("Seu resultado: %d | ", s->pontos);
@@ -488,7 +492,8 @@ void inicializarSistema(Sistema *s)
     inicializarAtaques(s);
 }
 
-void finalizaPartida(Sistema *s){
+void finalizaPartida(Sistema *s)
+{
     leRanking(s);
     analisaRanking(s);
     escreveRanking(s);
