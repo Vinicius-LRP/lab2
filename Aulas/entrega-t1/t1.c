@@ -422,26 +422,7 @@ void apresentaDiurno(Sistema *s)
 // mostra na tela o modo noturno
 void apresentaNoturno(Sistema *s)
 {
-    printf("\r\033[K%3d %2d ", s->pontos, s->tiros);
-    if (s->armaCorrente == 10) {
-        printf(" n");
-    } else {
-        printf(" %d", s->armaCorrente);
-    }
-    for (int a = 0; a < 13; a++) {
-        if (s->ataques[a] == -1) {
-            printf(" ");
-        } else if (s->ataques[a] == 10) {
-            printf("N");
-        } else if (s->ataques[a] == 11){
-            printf("n");
-        } else if (s->ataques[a] == -2) {
-            printf(")"); 
-        } else {
-            printf("%d", s->ataques[a]);
-        }
-    }
-    printf("\r");
+    printf("\r\033[KPontos : %3d", s->pontos);
 }
 
 // apresenta tela inicial da onda
