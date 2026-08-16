@@ -319,8 +319,7 @@ void apresentaResumo(Sistema *s)
     fflush(stdout);
 }
 
-void finalizaOnda(Sistema *s)
-{
+void sorteio(Sistema *s){
     s->sorteio = rand() % 100;
     if(s->sorteio <= s->chanceDiurno){
         s->diurnoOuNoturno = 1;
@@ -330,6 +329,11 @@ void finalizaOnda(Sistema *s)
     if(s->chanceDiurno >= 39) {
         s->chanceDiurno -= 20;
     }
+}
+
+void finalizaOnda(Sistema *s)
+{
+    sorteio(s);
     if(s->diurnoOuNoturno == 1){
         if(s->terminou != true){
             s->pontos += s->tiros * 2 + s->escudos * 10;
@@ -435,6 +439,7 @@ void jogaOnda(Sistema *s)
     }
     finalizaOnda(s);
 }
+
 void leRanking(Sistema *s)
 {
     FILE *arquivo = fopen("ranking.txt", "r");
