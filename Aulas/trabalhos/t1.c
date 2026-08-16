@@ -364,14 +364,19 @@ void jogaOnda(Sistema *s)
 void leRanking(Sistema *s){
     FILE *arquivo = fopen("ranking.txt", "r");
 
-    if (arquivo != NULL)
-    {
-        printf("O arquivo existe!\n");
+    if (arquivo != NULL) {
+        for (int a = 0; a < 3 ; a++){
+            fscanf(arquivo,"%d", &s->ranking[a]);
+        }
         fclose(arquivo);
-    }
-    else
-    {
-        printf("O arquivo não existe.\n");
+    } else {
+        arquivo = fopen("ranking.txt", "w");
+        if(arquivo != NULL){
+            for (int a = 0; a < 3; a++){
+                s->ranking[a] = 0;
+            }
+            fclose(arquivo);
+        }
     }
 }
 
