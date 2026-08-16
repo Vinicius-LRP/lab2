@@ -121,6 +121,36 @@ bool testeN(Sistema *s, int a)
     return false;
 }
 
+void calculaPontosAcerto(Sistema *s, int a){
+    if(s->diurnoOuNoturno == 1){
+        s->pontos += 13 - a;
+    } else if(s->diurnoOuNoturno == 2){
+        s->pontos += (8 - a) * 2;
+    }
+}
+
+void calculaPontosAcertoN(Sistema *s, int a){
+    if(s->diurnoOuNoturno == 1){
+        s->pontos += (13 - a) * 2;
+    } else if (s->diurnoOuNoturno == 2){
+        s->pontos += ((8 - a) * 2) * 2;
+    }
+}
+
+void verificaAcertou(Sistema *s, bool a){
+    if(!a) {
+        if(s->diurnoOuNoturno == 2) system("aplay -q erroTiro.wav &");
+    }
+}
+
+void tocaAcertoTiro(Sistema *s, int a){
+    if (a == 1 && s->diurnoOuNoturno == 2) {
+        system("aplay -q acertoTiroN.wav &");
+    } else if(a == 0 && s->diurnoOuNoturno == 2){
+        system("aplay -q acertoTiro.wav &");
+    }
+}
+
 void verificaSeMatou(Sistema *s)
 {
     bool acertou = false;
@@ -129,36 +159,22 @@ void verificaSeMatou(Sistema *s)
             if(s->armaCorrente == 10 && s->ataques[a] == 10){
                 s->ataques[a] = 11;
                 acertou = true;
-                if (s->diurnoOuNoturno == 2) {
-                    system("aplay -q acertoTiroN.wav &");
-                }
+                tocaAcertoTiro(s,1);
             } else {
                 if(s->ataques[a] == 11) {
-                    if(s->diurnoOuNoturno == 1){
-                        s->pontos += (13 - a) * 2;
-                    } else if (s->diurnoOuNoturno == 2){
-                        s->pontos += ((8 - a) * 2) * 2;
-                    }
+                    calculaPontosAcertoN(s, a);
                 } else {
-                    if(s->diurnoOuNoturno == 1){
-                        s->pontos += 13 - a;
-                    } else if(s->diurnoOuNoturno == 2){
-                        s->pontos += (8 - a) * 2;
-                    }
+                    calculaPontosAcerto(s, a);
                 }
                 s->ataques[a] = -1;
                 s->atacantesMortos++;
                 acertou = true;
-                if (s->diurnoOuNoturno == 2) {
-                    system("aplay -q acertoTiro.wav &");
-                }
+                tocaAcertoTiro(s, 0);
             }
             break;
         }
     }
-    if(!acertou) {
-        if(s->diurnoOuNoturno == 2) system("aplay -q erroTiro.wav &");
-    }
+    verificaAcertou(s, acertou); 
 }
 
 void processaTeclado(Sistema *s)
