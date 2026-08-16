@@ -84,13 +84,13 @@ void tocaSom(int codigo)
         system("aplay -q x.3.wav &");
     } else if (codigo == -2) {
         system("aplay -q 12.3.wav &");
-    } else if (codigo == -3){
+    } else if (codigo == -3) {
         system("aplay -q ondaConcluida.wav &");
-    } else if (codigo == -4){
+    } else if (codigo == -4) {
         system("aplay -q escudoQuebrado.wav &");
-    } else if (codigo == -5){
+    } else if (codigo == -5) {
         system("aplay -q finalizacao.wav &");
-    } else if (codigo == -6){
+    } else if (codigo == -6) {
         system("aplay -q explosao.wav &");
     } else{
         sprintf(script, "aplay -q %d.3.wav &", codigo);
@@ -110,7 +110,8 @@ void verificaSeGanhou(Sistema *s)
     }
 }
 
-bool testeN(Sistema *s, int a){
+bool testeN(Sistema *s, int a)
+{
     if (s->armaCorrente + 1 == 11 && s->ataques[a] == 11) return true;
     return false;
 }
@@ -123,7 +124,9 @@ void verificaSeMatou(Sistema *s)
             if(s->armaCorrente == 10 && s->ataques[a] == 10){
                 s->ataques[a] = 11;
                 acertou = true;
-                if (s->diurnoOuNoturno == 2) system("aplay -q acertoTiro.wav &");
+                if (s->diurnoOuNoturno == 2) {
+                    system("aplay -q acertoTiro.wav &");
+                }
             } else {
                 if(s->ataques[a] == 11) {
                     if(s->diurnoOuNoturno == 1){
@@ -141,7 +144,9 @@ void verificaSeMatou(Sistema *s)
                 s->ataques[a] = -1;
                 s->atacantesMortos++;
                 acertou = true;
-                if (s->diurnoOuNoturno == 2) system("aplay -q acertoTiro.wav &");
+                if (s->diurnoOuNoturno == 2) {
+                    system("aplay -q acertoTiro.wav &");
+                }
             }
             break;
         }
@@ -228,8 +233,9 @@ void movimentaAtaques(Sistema *s)
 
 void processaTempo(Sistema *s)
 {
-    if (s->diurnoOuNoturno == 1 && crono_parcial(&s->c) < s->tempoMovimentacao) return;
-    if (s->diurnoOuNoturno == 2 && crono_parcial(&s->c) < s->tempoMovimentacao * 3) return;
+    double cp = crono_parcial(&s->c);
+    if (s->diurnoOuNoturno == 1 && cp < s->tempoMovimentacao) return;
+    if (s->diurnoOuNoturno == 2 && cp < s->tempoMovimentacao * 3) return;
     crono_inicia(&s->c);
     movimentaAtaques(s);
 }
@@ -271,7 +277,7 @@ void apresentaResumo(Sistema *s)
 
 void finalizaOnda(Sistema *s)
 {
-    /*int sorteio = rand() % 100;
+    int sorteio = rand() % 100;
     if(sorteio <= s->chanceDiurno){
         s->diurnoOuNoturno = 1;
     } else {
@@ -279,7 +285,7 @@ void finalizaOnda(Sistema *s)
     }
     if(s->chanceDiurno >= 39) {
         s->chanceDiurno -= 20;
-    }*/
+    
     if(s->diurnoOuNoturno == 1){
         if(s->terminou != true){
             s->pontos += s->tiros * 2 + s->escudos * 10;
@@ -434,9 +440,13 @@ void escreveRanking(Sistema *s){
 
 void apresentaFinalizaPartida(Sistema *s){
     if(s->estaNoRanking == true){
-        printf("\r\033[KPontuação Final: %d | TOP 3! | Digite S para jogar novamente ou ESC para sair", s->pontos);
+        printf("\r\033[K");
+        printf("Seu resultado: %d | ", s->pontos);
+        printf("TOP 3! | Pressione S para jogar novamente | ESC fechar");
     } else {
-        printf("\r\033[KPontuação Final: %d | Digite S para jogar novamente ou ESC para sair", s->pontos);
+        printf("\r\033[K");
+        printf("Seu resultado: %d | ", s->pontos);
+        printf("Pressione S para jogar novamente  | ESC fechar");
     }
 }
 
@@ -453,7 +463,7 @@ void inicializarSistema(Sistema *s)
     s->ataquesAtivos = 0;
     s->tempoMovimentacao = 2;
     s->atacantesMortos = 0;
-    s->diurnoOuNoturno = 2;
+    s->diurnoOuNoturno = 1;
     s->chanceDiurno = 80;
     s->estaNoRanking = false;
     inicializarAtaques(s);
