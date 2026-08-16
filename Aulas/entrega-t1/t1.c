@@ -121,14 +121,20 @@ bool testeN(Sistema *s, int a)
 
 void calculaPontosAcerto(Sistema *s, int a)
 {
-    if (s->diurnoOuNoturno == 1) s->pontos += 13 - a;
-    else if (s->diurnoOuNoturno == 2) s->pontos += (8 - a) * 2;
+    if (s->diurnoOuNoturno == 1) {
+        s->pontos += 13 - a;
+    } else if (s->diurnoOuNoturno == 2) {
+        s->pontos += (8 - a) * 2;
+    }
 }
 
 void calculaPontosAcertoN(Sistema *s, int a)
 {
-    if(s->diurnoOuNoturno == 1) s->pontos += (13 - a) * 2;
-    else if (s->diurnoOuNoturno == 2) s->pontos += ((8 - a) * 2) * 2;
+    if(s->diurnoOuNoturno == 1) {
+        s->pontos += (13 - a) * 2;
+    } else if (s->diurnoOuNoturno == 2) {
+        s->pontos += ((8 - a) * 2) * 2;
+    }
 }
 
 void verificaAcertou(Sistema *s, bool a)
@@ -136,9 +142,13 @@ void verificaAcertou(Sistema *s, bool a)
     if (!a) system("aplay -q erroTiro.wav &");
 }
 
-void tocaAcertoTiro(Sistema *s, int a){
-    if (a == 1) system("aplay -q acertoTiroN.wav &");
-    else if (a == 0) system("aplay -q acertoTiro.wav &");
+void tocaAcertoTiro(Sistema *s, int a)
+{
+    if (a == 1) {
+        system("aplay -q acertoTiroN.wav &");
+    } else if (a == 0) {
+        system("aplay -q acertoTiro.wav &");
+    }
 }
 
 void verificaSeMatou(Sistema *s)
@@ -278,7 +288,7 @@ void inicializarAtaques(Sistema *s)
 
 void inicializarEscudos(Sistema *s)
 {
-    for(int a = 0; a < s->escudos; a++) {
+    for (int a = 0; a < s->escudos; a++) {
         s->ataques[a] = -2;
     }
 }
@@ -330,7 +340,7 @@ void finalizaOnda(Sistema *s)
     }
     char c = 'n';
     if (s->terminou != true) tocaSom(-3);
-    while(c != 'r' && c != 'R' && s->terminou != true){
+    while (c != 'r' && c != 'R' && s->terminou != true) {
         apresentaResumo(s);
         c = lechar();
         if (c == ESC) {
@@ -350,7 +360,7 @@ void apresentaDiurno(Sistema *s)
     } else {
         printf(" %d", s->armaCorrente);
     }
-    for(int a = 0; a < 13; a++){
+    for (int a = 0; a < 13; a++) {
         if (s->ataques[a] == -1) {
             printf(" ");
         } else if (s->ataques[a] == 10) {
@@ -374,7 +384,7 @@ void apresentaNoturno(Sistema *s)
     } else {
         printf(" %d", s->armaCorrente);
     }
-    for(int a = 0; a < 13; a++){
+    for (int a = 0; a < 13; a++) {
         if (s->ataques[a] == -1) {
             printf(" ");
         } else if (s->ataques[a] == 10) {
@@ -447,7 +457,7 @@ void leRanking(Sistema *s)
 void analisaRanking(Sistema *s)
 {
     int a;
-    for(a = 0 ; a < 3 ; a++){
+    for (a = 0 ; a < 3 ; a++) {
         if (s->pontos < s->ranking[a]) {
             a--;
             break;
