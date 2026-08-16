@@ -119,28 +119,26 @@ bool testeN(Sistema *s, int a)
     return false;
 }
 
-void calculaPontosAcerto(Sistema *s, int a){
+void calculaPontosAcerto(Sistema *s, int a)
+{
     if (s->diurnoOuNoturno == 1) s->pontos += 13 - a;
     else if (s->diurnoOuNoturno == 2) s->pontos += (8 - a) * 2;
 }
 
-void calculaPontosAcertoN(Sistema *s, int a){
+void calculaPontosAcertoN(Sistema *s, int a)
+{
     if(s->diurnoOuNoturno == 1) s->pontos += (13 - a) * 2;
     else if (s->diurnoOuNoturno == 2) s->pontos += ((8 - a) * 2) * 2;
 }
 
-void verificaAcertou(Sistema *s, bool a){
-    if (!a) {
-        system("aplay -q erroTiro.wav &");
-    }
+void verificaAcertou(Sistema *s, bool a)
+{
+    if (!a) system("aplay -q erroTiro.wav &");
 }
 
 void tocaAcertoTiro(Sistema *s, int a){
-    if (a == 1) {
-        system("aplay -q acertoTiroN.wav &");
-    } else if (a == 0) {
-        system("aplay -q acertoTiro.wav &");
-    }
+    if (a == 1) system("aplay -q acertoTiroN.wav &");
+    else if (a == 0) system("aplay -q acertoTiro.wav &");
 }
 
 void verificaSeMatou(Sistema *s)
