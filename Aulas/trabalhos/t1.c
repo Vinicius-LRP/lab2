@@ -58,7 +58,8 @@ void configuraTerminal()
         perror("erro na execução de setvbuf()");
         exit(1);
     }
-} 
+}
+
 
 void normalizaTerminal()
 {
@@ -120,13 +121,13 @@ void verificaSeMatou(Sistema *s)
                     if(s->diurnoOuNoturno == 1){
                         s->pontos += (13 - a) * 2;
                     } else if (s->diurnoOuNoturno == 2){
-                        s->pontos += ((13 - a) * 2) * 2;
+                        s->pontos += ((8 - a) * 2) * 2;
                     }
                 } else {
                     if(s->diurnoOuNoturno == 1){
                         s->pontos += 13 - a;
                     } else if(s->diurnoOuNoturno == 2){
-                        s->pontos += (13 - a) * 2;
+                        s->pontos += (8 - a) * 2;
                     }
                 }
                 s->ataques[a] = -1;
@@ -252,7 +253,7 @@ void inicializarOnda(Sistema *s)
 
 void apresentaResumo(Sistema *s)
 {
-    printf("\r\033[KPontos: %d Tiros: %d | Para recarregar pressione R ou ESC para sair", s->pontos, s->tiros);
+    printf("\r\033[KPontos: %d | Para recarregar pressione R ou ESC para sair", s->pontos);
     fflush(stdout);
 }
 
@@ -422,30 +423,6 @@ void apresentaFinalizaPartida(Sistema *s){
     }
 }
 
-void finalizaPartida(Sistema *s){
-    leRanking(s);
-    analisaRanking(s);
-    escreveRanking(s);
-    char c = 'x';
-    while ((c != 's' && c != 'S') && (c != ESC)) {
-        apresentaFinalizaPartida(s);
-        c = lechar();
-        if(c == 's' || c == 'S') {
-            s->terminou = false;
-            s->terminouPartida = false;
-            s->terminouOnda = false;
-        }
-    }
-}
-
-void jogaPartida(Sistema *s)
-{
-    while (!s->terminouPartida) {
-        jogaOnda(s);
-    }
-    finalizaPartida(s);
-}
-
 void inicializarSistema(Sistema *s)
 {
     s->terminou = false;
@@ -464,9 +441,33 @@ void inicializarSistema(Sistema *s)
     inicializarAtaques(s);
 }
 
+void finalizaPartida(Sistema *s){
+    leRanking(s);
+    analisaRanking(s);
+    escreveRanking(s);
+    char c = 'x';
+    while ((c != 's' && c != 'S') && (c != ESC)) {
+        apresentaFinalizaPartida(s);
+        c = lechar();
+        if(c == 's' || c == 'S') {
+            inicializarSistema(s);
+            s->terminou = false;
+            s->terminouPartida = false;
+            s->terminouOnda = false;
+        }
+    }
+}
+
+void jogaPartida(Sistema *s)
+{
+    while (!s->terminouPartida) {
+        jogaOnda(s);
+    }
+    finalizaPartida(s);
+}
+
 int main()
 {
-
     srand(time(NULL));
     configuraTerminal();
     Sistema sistema;
