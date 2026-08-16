@@ -363,7 +363,6 @@ void jogaOnda(Sistema *s)
 }
 void leRanking(Sistema *s){
     FILE *arquivo = fopen("ranking.txt", "r");
-
     if (arquivo != NULL) {
         for (int a = 0; a < 3 ; a++){
             fscanf(arquivo,"%d", &s->ranking[a]);
@@ -380,11 +379,33 @@ void leRanking(Sistema *s){
     }
 }
 
+void analisaRanking(Sistema *s){
+    int a;
+    for(a = 0 ; a < 3 ; a++){
+        if(s->pontos < s->ranking[a]){
+            a--;
+            break;
+        }
+    }
+    if (a == 0){
+        s->ranking[0] = s->pontos;
+    } else if (a == 1){
+        s->ranking[0] = s->ranking[1]; 
+        s->ranking[1] = s->pontos;
+    } else if (a == 2){
+        s->ranking[0] = s->ranking[1];
+        s->ranking[1] = s->ranking[2];
+        s->ranking[2] = s->pontos;
+    }
+}
+
 void apresentaFinalizaPartida(Sistema *s){
     printf("\r\033[K Pontuação Final: %d | Digite S para jogar novamente ou ESC para sair", s->pontos);
 }
 
 void finalizaPartida(Sistema *s){
+    leRanking(s);
+    analisaRanking(s);
     char c = 'x';
     while ((c != 's' && c != 'S') && (c != ESC)) {
         apresentaFinalizaPartida(s);
