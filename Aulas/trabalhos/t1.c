@@ -128,7 +128,7 @@ void verificaSeMatou(Sistema *s)
                 s->ataques[a] = 11;
                 acertou = true;
                 if (s->diurnoOuNoturno == 2) {
-                    system("aplay -q acertoTiro.wav &");
+                    system("aplay -q acertoTiroN.wav &");
                 }
             } else {
                 if(s->ataques[a] == 11) {
@@ -289,7 +289,7 @@ void apresentaResumo(Sistema *s)
 
 void finalizaOnda(Sistema *s)
 {
-    s->sorteio = rand() % 100;
+    /*s->sorteio = rand() % 100;
     if(s->sorteio <= s->chanceDiurno){
         s->diurnoOuNoturno = 1;
     } else {
@@ -297,7 +297,7 @@ void finalizaOnda(Sistema *s)
     }
     if(s->chanceDiurno >= 39) {
         s->chanceDiurno -= 20;
-    }
+    }*/
     if(s->diurnoOuNoturno == 1){
         if(s->terminou != true){
             s->pontos += s->tiros * 2 + s->escudos * 10;
@@ -476,7 +476,7 @@ void inicializarSistema(Sistema *s)
     s->ataquesAtivos = 0;
     s->tempoMovimentacao = 2;
     s->atacantesMortos = 0;
-    s->diurnoOuNoturno = 1;
+    s->diurnoOuNoturno = 2;
     s->chanceDiurno = 80;
     s->estaNoRanking = false;
     inicializarAtaques(s);
