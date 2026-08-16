@@ -93,7 +93,9 @@ void tocaSom(int codigo)
         system("aplay -q finalizacao.wav &");
     } else if (codigo == -6) {
         system("aplay -q explosao.wav &");
-    } else{
+    } else if (codigo == -7) {
+        system("aplay -q inicioJogo.wav &");
+    }else{
         sprintf(script, "aplay -q %d.3.wav &", codigo);
         system(script);
     }
@@ -233,7 +235,9 @@ void movimentaAtaques(Sistema *s)
     } else if (s->diurnoOuNoturno == 2 && s->ataquesAtivos < A_NOT) {        
         s->ataques[7] = (rand() % 6) * 2;
         s->ataquesAtivos++;
-        tocaSom(s->ataques[7]);
+        if(s->terminou != true){
+            tocaSom(s->ataques[7]);
+        }
     } else {
         s->ataques[12] = -1;
     }
@@ -379,8 +383,9 @@ void jogaOnda(Sistema *s)
 {
     inicializarOnda(s);
     apresentaOnda(s);
+    tocaSom(-7);
     crono_inicia(&s->c);
-    while (crono_parcial(&s->c) < 2.0) {
+    while (crono_parcial(&s->c) < 3) {
     }
     crono_inicia(&s->c);
     while (!s->terminouOnda) {
