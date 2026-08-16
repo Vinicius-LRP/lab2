@@ -29,6 +29,7 @@ typedef struct
     double tempoMovimentacao;
     int diurnoOuNoturno, chanceDiurno;
     int ranking[3];
+    bool estaNoRanking;
     crono c;
 } Sistema;
 
@@ -389,19 +390,21 @@ void analisaRanking(Sistema *s){
     }
     if (a == 0){
         s->ranking[0] = s->pontos;
+        s->estaNoRanking = true;
     } else if (a == 1){
         s->ranking[0] = s->ranking[1]; 
         s->ranking[1] = s->pontos;
+        s->estaNoRanking = true;
     } else if (a >= 2){
         s->ranking[0] = s->ranking[1];
         s->ranking[1] = s->ranking[2];
         s->ranking[2] = s->pontos;
+        s->estaNoRanking = true;
     }
 }
 
 void escreveRanking(Sistema *s){
     FILE *arquivo = fopen("ranking.txt", "w");
-
     if(arquivo != NULL){
         for(int a = 0; a < 3 ; a++){
             fprintf(arquivo, "%d ", s->ranking[a]);
@@ -412,7 +415,11 @@ void escreveRanking(Sistema *s){
 }
 
 void apresentaFinalizaPartida(Sistema *s){
-    printf("\r\033[K Pontuação Final: %d | Digite S para jogar novamente ou ESC para sair", s->pontos);
+    if(s->estaNoRanking == true){
+        printf("\r\033[K Pontuação Final: %d | TOP 3! | Digite S para jogar novamente ou ESC para sair", s->pontos);
+    } else {
+        printf("\r\033[K Pontuação Final: %d | Digite S para jogar novamente ou ESC para sair", s->pontos);
+    }
 }
 
 void finalizaPartida(Sistema *s){
