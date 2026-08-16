@@ -159,7 +159,7 @@ void verificaSeMatou(Sistema *s)
             if (s->armaCorrente == 10 && s->ataques[a] == 10) {
                 s->ataques[a] = 11;
                 acertou = true;
-                tocaAcertoTiro(s,1);
+                tocaAcertoTiro(1);
             } else {
                 if (s->ataques[a] == 11) {
                     calculaPontosAcertoN(s, a);
@@ -169,12 +169,12 @@ void verificaSeMatou(Sistema *s)
                 s->ataques[a] = -1;
                 s->atacantesMortos++;
                 acertou = true;
-                tocaAcertoTiro(s, 0);
+                tocaAcertoTiro(0);
             }
             break;
         }
     }
-    verificaAcertou(s, acertou); 
+    verificaAcertou(acertou); 
 }
 
 void processaEsc(Sistema *s){
@@ -210,12 +210,12 @@ void processaEspaco(Sistema *s){
     if (s->diurnoOuNoturno == 2) {
         for (int a = 0 ; a < 8 ; a++) {
             tocaSom(s->ataques[a]);
-            nanosleep(&intervalo, NULL);                                                                                                                                            
+            nanosleep(&intervalo, NULL);
         }
     } else if (s->diurnoOuNoturno == 1) {
         for (int a = 0 ; a < 13 ; a++) {
             tocaSom(s->ataques[a]);
-            nanosleep(&intervalo, NULL);                                                                                                                                            
+            nanosleep(&intervalo, NULL);
         }
     }
 }
@@ -261,7 +261,7 @@ void movimentaAtaques(Sistema *s)
         s->ataques[12] = rand() % 11;
         if (s->terminou != true) tocaSom(s->ataques[12]);
         s->ataquesAtivos++;
-    } else if (s->diurnoOuNoturno == 2 && s->ataquesAtivos < A_NOT) {        
+    } else if (s->diurnoOuNoturno == 2 && s->ataquesAtivos < A_NOT) {
         s->ataques[7] = (rand() % 6) * 2;
         s->ataquesAtivos++;
         if (s->terminou != true) tocaSom(s->ataques[7]);
@@ -487,6 +487,8 @@ void escreveRanking(Sistema *s)
         }
         fprintf(arquivo, "\n");
         fclose(arquivo);
+    } else {
+        printf("Erro ao abrir arquivo para escrever Ranking!");
     }
 }
 
