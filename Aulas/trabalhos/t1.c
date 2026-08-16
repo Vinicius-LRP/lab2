@@ -85,9 +85,13 @@ void tocaSom(int codigo)
     } else if (codigo == -2) {
         system("aplay -q 12.3.wav &");
     } else if (codigo == -3){
-        system("aplay -q 13.3.wav &");
+        system("aplay -q ondaConcluida.wav &");
     } else if (codigo == -4){
-        system("aplay -q 15.3.wav &");
+        system("aplay -q escudoQuebrado.wav &");
+    } else if (codigo == -5){
+        system("aplay -q finalizacao.wav &");
+    } else if (codigo == -6){
+        system("aplay -q explosao.wav &");
     } else{
         sprintf(script, "aplay -q %d.3.wav &", codigo);
         system(script);
@@ -198,6 +202,7 @@ void verificaBaseEosEscudos(Sistema *s)
         s->terminou = true;
         s->terminouOnda = true;
         s->terminouPartida = true;
+        if(s->diurnoOuNoturno == 2) tocaSom(-6);
         return;
     }
     verificaSeGanhou(s);
@@ -274,7 +279,7 @@ void finalizaOnda(Sistema *s)
     }
     if(s->chanceDiurno >= 39) {
         s->chanceDiurno -= 20;
-    } */
+    }*/
     if(s->diurnoOuNoturno == 1){
         if(s->terminou != true){
             s->pontos += s->tiros * 2 + s->escudos * 10;
@@ -285,6 +290,7 @@ void finalizaOnda(Sistema *s)
         }
     }
     char c = 'n';
+    if(s->terminou != true) tocaSom(-3);
     while(c != 'r' && c != 'R' && s->terminou != true){
         apresentaResumo(s);
         c = lechar();
@@ -454,6 +460,7 @@ void finalizaPartida(Sistema *s){
     analisaRanking(s);
     escreveRanking(s);
     char c = 'x';
+    tocaSom(-5);
     while ((c != 's' && c != 'S') && (c != ESC)) {
         apresentaFinalizaPartida(s);
         c = lechar();
