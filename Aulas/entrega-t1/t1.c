@@ -1,3 +1,9 @@
+// professor para o meu trabalho voce vai precisar ultilizar todos os sons desse diretorio
+// adicionei mais sons em alguns momentos da partida
+// alguns sons foi eu mesmo que produzi gravando minha voz
+// fiz também a parte do ranking, entao os 3 numero em ordem crescente sao do 3 ao 1 lugar
+// 
+
 #define _POSIX_C_SOURCE 199309L
 #include <stdio.h>
 #include <stdlib.h>
@@ -478,18 +484,20 @@ void jogaOnda(Sistema *s)
 // le arquivo de rank se tiver, se nao tiver ele cria, e salva as pontuaçoes no vetor ranking
 void leRanking(Sistema *s)
 {
+    for (int a = 0; a < 3; a++) {
+        s->ranking[a] = 0;
+    }
     FILE *arquivo = fopen("ranking.txt", "r");
     if (arquivo != NULL) {
         for (int a = 0; a < 3 ; a++) {
-            fscanf(arquivo,"%d", &s->ranking[a]);
+            if (fscanf(arquivo, "%d", &s->ranking[a]) != 1) {
+                s->ranking[a] = 0;
+            }
         }
         fclose(arquivo);
     } else {
         arquivo = fopen("ranking.txt", "w");
         if (arquivo != NULL) {
-            for (int a = 0; a < 3; a++) {
-                s->ranking[a] = 0;
-            }
             fclose(arquivo);
         }
     }
