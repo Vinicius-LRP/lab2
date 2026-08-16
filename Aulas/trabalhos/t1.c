@@ -84,7 +84,11 @@ void tocaSom(int codigo)
         system("aplay -q x.3.wav &");
     } else if (codigo == -2) {
         system("aplay -q 12.3.wav &");
-    } else {
+    } else if (codigo == -3){
+        system("aplay -q 13.3.wav &");
+    } else if (codigo == -4){
+        system("aplay -q 15.3.wav &");
+    } else{
         sprintf(script, "aplay -q %d.3.wav &", codigo);
         system(script);
     }
@@ -187,6 +191,9 @@ void verificaBaseEosEscudos(Sistema *s)
         s->ataques[s->escudos] = -1;
         s->atacantesMortos++;
         s->escudos--;
+        if(s->diurnoOuNoturno == 2){
+            tocaSom(-4);
+        }
     } else if (s->ataques[0] != -1 && s->escudos == 0) {
         s->terminou = true;
         s->terminouOnda = true;
@@ -267,7 +274,7 @@ void finalizaOnda(Sistema *s)
     }
     if(s->chanceDiurno >= 39) {
         s->chanceDiurno -= 20;
-    }*/
+    } */
     if(s->diurnoOuNoturno == 1){
         if(s->terminou != true){
             s->pontos += s->tiros * 2 + s->escudos * 10;
@@ -438,6 +445,7 @@ void inicializarSistema(Sistema *s)
     s->atacantesMortos = 0;
     s->diurnoOuNoturno = 2;
     s->chanceDiurno = 80;
+    s->estaNoRanking = false;
     inicializarAtaques(s);
 }
 
