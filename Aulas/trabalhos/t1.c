@@ -29,6 +29,7 @@ typedef struct
     double tempoMovimentacao;
     int diurnoOuNoturno, chanceDiurno;
     int ranking[3];
+    int sorteio;
     bool estaNoRanking;
     crono c;
 } Sistema;
@@ -187,9 +188,16 @@ void processaTeclado(Sistema *s)
         verificaSeGanhou(s);
     } else if (tecla == ESPACO){
         struct timespec intervalo = {0, 500000000};
-        for (int a = 0 ; a < 8 ; a++){
-            tocaSom(s->ataques[a]);
-            nanosleep(&intervalo, NULL);                                                                                                                                            
+        if(s->diurnoOuNoturno == 2){
+            for (int a = 0 ; a < 8 ; a++){
+                tocaSom(s->ataques[a]);
+                nanosleep(&intervalo, NULL);                                                                                                                                            
+            }
+        } else if (s->diurnoOuNoturno == 1){
+            for (int a = 0 ; a < 13 ; a++){
+                tocaSom(s->ataques[a]);
+                nanosleep(&intervalo, NULL);                                                                                                                                            
+            }
         }
     }
 }
@@ -271,21 +279,21 @@ void inicializarOnda(Sistema *s)
 
 void apresentaResumo(Sistema *s)
 {
-    printf("\r\033[KPontos: %d | ESC sair | R recarregar", s->pontos);
+    printf("\r\033[KPontos: %d | R recarregar | ESC sair", s->pontos);
     fflush(stdout);
 }
 
 void finalizaOnda(Sistema *s)
 {
-    int sorteio = rand() % 100;
-    if(sorteio <= s->chanceDiurno){
+    s->sorteio = rand() % 100;
+    if(s->sorteio <= s->chanceDiurno){
         s->diurnoOuNoturno = 1;
     } else {
         s->diurnoOuNoturno = 2;
     }
     if(s->chanceDiurno >= 39) {
         s->chanceDiurno -= 20;
-    
+    }
     if(s->diurnoOuNoturno == 1){
         if(s->terminou != true){
             s->pontos += s->tiros * 2 + s->escudos * 10;
@@ -442,11 +450,11 @@ void apresentaFinalizaPartida(Sistema *s){
     if(s->estaNoRanking == true){
         printf("\r\033[K");
         printf("Seu resultado: %d | ", s->pontos);
-        printf("TOP 3! | Pressione S para jogar novamente | ESC fechar");
+        printf("TOP 3! | S jogar novamente | ESC fechar");
     } else {
         printf("\r\033[K");
         printf("Seu resultado: %d | ", s->pontos);
-        printf("Pressione S para jogar novamente  | ESC fechar");
+        printf("S jogar novamente  | ESC fechar");
     }
 }
 
@@ -506,5 +514,6 @@ int main()
         jogaPartida(&sistema);
     }
     //desinicializa_tela();
+    printf("\r\033[K");
     normalizaTerminal();
 }
