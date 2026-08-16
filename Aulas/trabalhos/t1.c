@@ -14,8 +14,8 @@ typedef enum
 
 typedef enum 
 {
-    TOTAL_ATACANTES_DIURNO = 20,
-    TOTAL_ATACANTES_NOTURNO = 15
+    A_DIU = 20,
+    A_NOT = 15
 } Atacantes;
 
 typedef struct timespec crono;
@@ -25,7 +25,7 @@ typedef struct
     bool terminou, terminouPartida, terminouOnda;
     int pontos, tiros, armaCorrente, escudos, ondaAtual;
     int ataquesAtivos, atacantesMortos;
-    int ataques[TOTAL_ATACANTES_DIURNO];
+    int ataques[A_DIU];
     double tempoMovimentacao;
     int diurnoOuNoturno, chanceDiurno;
     int ranking[3];
@@ -101,10 +101,10 @@ void tocaSom(int codigo)
 
 void verificaSeGanhou(Sistema *s)
 {
-    if(s->diurnoOuNoturno == 1 && s->atacantesMortos == TOTAL_ATACANTES_DIURNO){
+    if(s->diurnoOuNoturno == 1 && s->atacantesMortos == A_DIU){
         s->terminouOnda = true;
         s->ondaAtual++;
-    } else if (s->diurnoOuNoturno == 2 && s->atacantesMortos == TOTAL_ATACANTES_NOTURNO){
+    } else if (s->diurnoOuNoturno == 2 && s->atacantesMortos == A_NOT){
         s->terminouOnda = true;
         s->ondaAtual++;
     }
@@ -214,10 +214,10 @@ void movimentaAtaques(Sistema *s)
     for (int i = s->escudos; i < 13; i++) {
         s->ataques[i] = s->ataques[i + 1];
     }
-    if (s->diurnoOuNoturno == 1 && s->ataquesAtivos < TOTAL_ATACANTES_DIURNO) {        
+    if (s->diurnoOuNoturno == 1 && s->ataquesAtivos < A_DIU) {        
         s->ataques[12] = rand() % 11;
         s->ataquesAtivos++;
-    } else if (s->diurnoOuNoturno == 2 && s->ataquesAtivos < TOTAL_ATACANTES_NOTURNO) {        
+    } else if (s->diurnoOuNoturno == 2 && s->ataquesAtivos < A_NOT) {        
         s->ataques[7] = (rand() % 6) * 2;
         s->ataquesAtivos++;
         tocaSom(s->ataques[7]);
@@ -236,7 +236,7 @@ void processaTempo(Sistema *s)
 
 void inicializarAtaques(Sistema *s)
 {
-    for (int a = 0; a < TOTAL_ATACANTES_DIURNO; a++){
+    for (int a = 0; a < A_DIU; a++){
         s->ataques[a] = -1;
     }
 }
@@ -265,7 +265,7 @@ void inicializarOnda(Sistema *s)
 
 void apresentaResumo(Sistema *s)
 {
-    printf("\r\033[KPontos: %d | Para recarregar pressione R ou ESC para sair", s->pontos);
+    printf("\r\033[KPontos: %d | ESC sair | R recarregar", s->pontos);
     fflush(stdout);
 }
 
@@ -353,7 +353,11 @@ void apresentaNoturno(Sistema *s)
 
 void apresentaOnda(Sistema *s)
 {
-    printf("\r\033[KOnda numero %d Noturna ou diurna: %d", s->ondaAtual, s->diurnoOuNoturno);
+    if(s->diurnoOuNoturno == 1){
+        printf("\r\033[KOnda numero %d | Diurna", s->ondaAtual);
+    } else if(s->diurnoOuNoturno == 2){
+        printf("\r\033[KOnda numero %d | Noturna", s->ondaAtual);
+    }
     fflush(stdout);
 }
 
@@ -430,9 +434,9 @@ void escreveRanking(Sistema *s){
 
 void apresentaFinalizaPartida(Sistema *s){
     if(s->estaNoRanking == true){
-        printf("\r\033[K Pontuação Final: %d | TOP 3! | Digite S para jogar novamente ou ESC para sair", s->pontos);
+        printf("\r\033[KPontuação Final: %d | TOP 3! | Digite S para jogar novamente ou ESC para sair", s->pontos);
     } else {
-        printf("\r\033[K Pontuação Final: %d | Digite S para jogar novamente ou ESC para sair", s->pontos);
+        printf("\r\033[KPontuação Final: %d | Digite S para jogar novamente ou ESC para sair", s->pontos);
     }
 }
 
