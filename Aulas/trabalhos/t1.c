@@ -392,10 +392,22 @@ void analisaRanking(Sistema *s){
     } else if (a == 1){
         s->ranking[0] = s->ranking[1]; 
         s->ranking[1] = s->pontos;
-    } else if (a == 2){
+    } else if (a >= 2){
         s->ranking[0] = s->ranking[1];
         s->ranking[1] = s->ranking[2];
         s->ranking[2] = s->pontos;
+    }
+}
+
+void escreveRanking(Sistema *s){
+    FILE *arquivo = fopen("ranking.txt", "w");
+
+    if(arquivo != NULL){
+        for(int a = 0; a < 3 ; a++){
+            fprintf(arquivo, "%d ", s->ranking[a]);
+        }
+        fprintf(arquivo, "\n");
+        fclose(arquivo);
     }
 }
 
@@ -406,6 +418,7 @@ void apresentaFinalizaPartida(Sistema *s){
 void finalizaPartida(Sistema *s){
     leRanking(s);
     analisaRanking(s);
+    escreveRanking(s);
     char c = 'x';
     while ((c != 's' && c != 'S') && (c != ESC)) {
         apresentaFinalizaPartida(s);
