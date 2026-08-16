@@ -28,6 +28,7 @@ typedef struct
     int ataques[TOTAL_ATACANTES_DIURNO];
     double tempoMovimentacao;
     int diurnoOuNoturno, chanceDiurno;
+    int ranking[3];
     crono c;
 } Sistema;
 
@@ -360,6 +361,20 @@ void jogaOnda(Sistema *s)
     }
     finalizaOnda(s);
 }
+void leRanking(Sistema *s){
+    FILE *arquivo = fopen("ranking.txt", "r");
+
+    if (arquivo != NULL)
+    {
+        printf("O arquivo existe!\n");
+        fclose(arquivo);
+    }
+    else
+    {
+        printf("O arquivo não existe.\n");
+    }
+}
+
 void apresentaFinalizaPartida(Sistema *s){
     printf("\r\033[K Pontuação Final: %d | Digite S para jogar novamente ou ESC para sair", s->pontos);
 }
@@ -405,6 +420,7 @@ void inicializarSistema(Sistema *s)
 
 int main()
 {
+
     srand(time(NULL));
     configuraTerminal();
     Sistema sistema;
