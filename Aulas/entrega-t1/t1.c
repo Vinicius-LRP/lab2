@@ -95,7 +95,7 @@ void tocaSom(int codigo) {
         system("aplay -q inicioOndaNoturna.wav &");
     } else if (codigo == -8) { 
         system("aplay -q inicioOndaDiurna.wav &");
-    }else{
+    } else {
         sprintf(script, "aplay -q %d.3.wav &", codigo);
         system(script);
     }
@@ -333,7 +333,7 @@ void finalizaOnda(Sistema *s)
         if (s->terminou != true) {
             s->pontos += s->tiros * 2 + s->escudos * 10;
         }
-    } else if (s->diurnoOuNoturno == 2){
+    } else if (s->diurnoOuNoturno == 2) {
         if (s->terminou != true) {
             s->pontos += (s->tiros * 2 + s->escudos * 10) *2;
         }
