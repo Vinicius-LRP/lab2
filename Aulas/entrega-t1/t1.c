@@ -34,11 +34,13 @@ typedef struct
     crono c;
 } Sistema;
 
+// inicializa um cronômetro com a hora atual
 void crono_inicia(crono *c)
 {
     clock_gettime(CLOCK_MONOTONIC, c);
 }
 
+// retorna o tempo passado desde que o cronômetro *c foi iniciado, em segundos
 double crono_parcial(crono *c)
 {
     crono agora;
@@ -48,6 +50,9 @@ double crono_parcial(crono *c)
     return segundos + 1e-9 * nanosegundos;
 }
 
+
+// configura o terminal para o modo "cru", para permitir a leitura
+//   de cada caractere digitado sem esperar pelo "enter".
 void configuraTerminal()
 {
     if (system("stty raw opost -echo min 0 time 1") != 0) {
@@ -61,12 +66,15 @@ void configuraTerminal()
     }
 }
 
-
+// normaliza terminal
 void normalizaTerminal()
 {
     system("stty sane");
 }
 
+// lê um caractere do teclado.
+// retorna o código do caractere lido ou 0 casa nada tenha sido digitado.
+// só funciona corretamente se o terminal estiver em modo "cru".
 char lechar()
 {
     fflush(stdout);
