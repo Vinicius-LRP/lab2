@@ -513,12 +513,10 @@ int main()
     srand(time(NULL));
     configuraTerminal();
     Sistema sistema;
-    //inicializa_tela();
     inicializarSistema(&sistema);
     while (!sistema.terminou) {
         jogaPartida(&sistema);
     }
-    //desinicializa_tela();
     printf("\r\033[K");
     normalizaTerminal();
 }
