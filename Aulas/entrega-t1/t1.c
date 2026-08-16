@@ -54,7 +54,7 @@ void configuraTerminal()
         perror("erro na execução de system(\"stty\")");
         fprintf(stderr, "você tem o programa stty instalado?\n");
         exit(1);
-    };
+    }
     if (setvbuf(stdin, NULL, _IONBF, 0) != 0) {
         perror("erro na execução de setvbuf()");
         exit(1);
@@ -104,10 +104,10 @@ void tocaSom(int codigo) {
 
 void verificaSeGanhou(Sistema *s)
 {
-    if(s->diurnoOuNoturno == 1 && s->atacantesMortos == A_DIU){
+    if (s->diurnoOuNoturno == 1 && s->atacantesMortos == A_DIU) {
         s->terminouOnda = true;
         s->ondaAtual++;
-    } else if (s->diurnoOuNoturno == 2 && s->atacantesMortos == A_NOT){
+    } else if (s->diurnoOuNoturno == 2 && s->atacantesMortos == A_NOT) {
         s->terminouOnda = true;
         s->ondaAtual++;
     }
@@ -120,9 +120,9 @@ bool testeN(Sistema *s, int a)
 }
 
 void calculaPontosAcerto(Sistema *s, int a){
-    if(s->diurnoOuNoturno == 1){
+    if (s->diurnoOuNoturno == 1) {
         s->pontos += 13 - a;
-    } else if(s->diurnoOuNoturno == 2){
+    } else if (s->diurnoOuNoturno == 2) {
         s->pontos += (8 - a) * 2;
     }
 }
@@ -136,15 +136,15 @@ void calculaPontosAcertoN(Sistema *s, int a){
 }
 
 void verificaAcertou(Sistema *s, bool a){
-    if(!a) {
-        if(s->diurnoOuNoturno == 2) system("aplay -q erroTiro.wav &");
+    if (!a) {
+        system("aplay -q erroTiro.wav &");
     }
 }
 
 void tocaAcertoTiro(Sistema *s, int a){
-    if (a == 1 && s->diurnoOuNoturno == 2) {
+    if (a == 1) {
         system("aplay -q acertoTiroN.wav &");
-    } else if(a == 0 && s->diurnoOuNoturno == 2){
+    } else if (a == 0) {
         system("aplay -q acertoTiro.wav &");
     }
 }
@@ -154,12 +154,12 @@ void verificaSeMatou(Sistema *s)
     bool acertou = false;
     for (int a = s->escudos ; a < 13 ; a++) {
         if (s->armaCorrente == s->ataques[a] || testeN(s, a)) {
-            if(s->armaCorrente == 10 && s->ataques[a] == 10){
+            if (s->armaCorrente == 10 && s->ataques[a] == 10) {
                 s->ataques[a] = 11;
                 acertou = true;
                 tocaAcertoTiro(s,1);
             } else {
-                if(s->ataques[a] == 11) {
+                if (s->ataques[a] == 11) {
                     calculaPontosAcertoN(s, a);
                 } else {
                     calculaPontosAcerto(s, a);
@@ -183,9 +183,9 @@ void processaEsc(Sistema *s){
 
 void processaTab(Sistema *s){
     if (s->armaCorrente < 10) {
-        if(s->diurnoOuNoturno == 1){
+        if (s->diurnoOuNoturno == 1) {
             s->armaCorrente++;
-        } else if(s->diurnoOuNoturno == 2){
+        } else if (s->diurnoOuNoturno == 2) {
             s->armaCorrente += 2;
         }
         tocaSom(s->armaCorrente);
@@ -205,13 +205,13 @@ void processaEnter(Sistema *s){
 
 void processaEspaco(Sistema *s){
     struct timespec intervalo = {0, 500000000};
-    if(s->diurnoOuNoturno == 2){
-        for (int a = 0 ; a < 8 ; a++){
+    if (s->diurnoOuNoturno == 2) {
+        for (int a = 0 ; a < 8 ; a++) {
             tocaSom(s->ataques[a]);
             nanosleep(&intervalo, NULL);                                                                                                                                            
         }
-    } else if (s->diurnoOuNoturno == 1){
-        for (int a = 0 ; a < 13 ; a++){
+    } else if (s->diurnoOuNoturno == 1) {
+        for (int a = 0 ; a < 13 ; a++) {
             tocaSom(s->ataques[a]);
             nanosleep(&intervalo, NULL);                                                                                                                                            
         }
@@ -227,14 +227,14 @@ void processaTeclado(Sistema *s)
         processaTab(s);
     } else if (tecla == ENTER) {
         processaEnter(s);
-    } else if (tecla == ESPACO){
+    } else if (tecla == ESPACO) {
         processaEspaco(s);
     }
 }
 
 void verificaBaseEosEscudos(Sistema *s)
 {
-    if(s->ataques[s->escudos] != -1 && s->escudos != 0){
+    if (s->ataques[s->escudos] != -1 && s->escudos != 0) {
         s->ataques[s->escudos] = -1;
         s->atacantesMortos++;
         s->escudos--;
@@ -257,16 +257,12 @@ void movimentaAtaques(Sistema *s)
     }
     if (s->diurnoOuNoturno == 1 && s->ataquesAtivos < A_DIU) {        
         s->ataques[12] = rand() % 11;
-        if(s->terminou != true){
-            tocaSom(s->ataques[12]);
-        }
+        if (s->terminou != true) tocaSom(s->ataques[12]);
         s->ataquesAtivos++;
     } else if (s->diurnoOuNoturno == 2 && s->ataquesAtivos < A_NOT) {        
         s->ataques[7] = (rand() % 6) * 2;
         s->ataquesAtivos++;
-        if(s->terminou != true){
-            tocaSom(s->ataques[7]);
-        }
+        if (s->terminou != true) tocaSom(s->ataques[7]);
     } else {
         s->ataques[12] = -1;
     }
@@ -283,14 +279,14 @@ void processaTempo(Sistema *s)
 
 void inicializarAtaques(Sistema *s)
 {
-    for (int a = 0; a < A_DIU; a++){
+    for (int a = 0; a < A_DIU; a++) {
         s->ataques[a] = -1;
     }
 }
 
 void inicializarEscudos(Sistema *s)
 {
-    for(int a = 0; a < s->escudos; a++){
+    for(int a = 0; a < s->escudos; a++) {
         s->ataques[a] = -2;
     }
 }
@@ -318,12 +314,12 @@ void apresentaResumo(Sistema *s)
 
 void sorteio(Sistema *s){
     s->sorteio = rand() % 100;
-    if(s->sorteio <= s->chanceDiurno){
+    if (s->sorteio <= s->chanceDiurno) {
         s->diurnoOuNoturno = 1;
     } else {
         s->diurnoOuNoturno = 2;
     }
-    if(s->chanceDiurno >= 39) {
+    if (s->chanceDiurno >= 39) {
         s->chanceDiurno -= 20;
     }
 }
@@ -331,21 +327,21 @@ void sorteio(Sistema *s){
 void finalizaOnda(Sistema *s)
 {
     sorteio(s);
-    if(s->diurnoOuNoturno == 1){
-        if(s->terminou != true){
+    if (s->diurnoOuNoturno == 1) {
+        if (s->terminou != true) {
             s->pontos += s->tiros * 2 + s->escudos * 10;
         }
     } else if (s->diurnoOuNoturno == 2){
-        if(s->terminou != true){
+        if (s->terminou != true) {
             s->pontos += (s->tiros * 2 + s->escudos * 10) *2;
         }
     }
     char c = 'n';
-    if(s->terminou != true) tocaSom(-3);
+    if (s->terminou != true) tocaSom(-3);
     while(c != 'r' && c != 'R' && s->terminou != true){
         apresentaResumo(s);
         c = lechar();
-        if(c == ESC){
+        if (c == ESC) {
             s->terminou = true;
             s->terminouPartida = true;  
             s->terminouOnda = true;
@@ -357,17 +353,17 @@ void finalizaOnda(Sistema *s)
 void apresentaDiurno(Sistema *s)
 {
     printf("\r\033[K%3d %2d ", s->pontos, s->tiros);
-    if(s->armaCorrente == 10){
+    if (s->armaCorrente == 10) {
         printf(" n");
     } else {
         printf(" %d", s->armaCorrente);
     }
     for(int a = 0; a < 13; a++){
-        if(s->ataques[a] == -1){
+        if (s->ataques[a] == -1) {
             printf(" ");
         } else if (s->ataques[a] == 10) {
             printf("N");
-        } else if (s->ataques[a] == 11){
+        } else if (s->ataques[a] == 11) {
             printf("n");
         } else if (s->ataques[a] == -2) {
             printf(")"); 
@@ -381,13 +377,13 @@ void apresentaDiurno(Sistema *s)
 void apresentaNoturno(Sistema *s)
 {
     printf("\r\033[K%3d %2d ", s->pontos, s->tiros);
-    if(s->armaCorrente == 10){
+    if (s->armaCorrente == 10) {
         printf(" n");
     } else {
         printf(" %d", s->armaCorrente);
     }
     for(int a = 0; a < 13; a++){
-        if(s->ataques[a] == -1){
+        if (s->ataques[a] == -1) {
             printf(" ");
         } else if (s->ataques[a] == 10) {
             printf("N");
@@ -404,9 +400,9 @@ void apresentaNoturno(Sistema *s)
 
 void apresentaOnda(Sistema *s)
 {
-    if(s->diurnoOuNoturno == 1){
+    if (s->diurnoOuNoturno == 1) {
         printf("\r\033[KOnda numero %d | Diurna", s->ondaAtual);
-    } else if(s->diurnoOuNoturno == 2){
+    } else if (s->diurnoOuNoturno == 2) {
         printf("\r\033[KOnda numero %d | Noturna", s->ondaAtual);
     }
     fflush(stdout);
@@ -428,9 +424,9 @@ void jogaOnda(Sistema *s)
     while (!s->terminouOnda) {
         processaTeclado(s);
         processaTempo(s);
-        if(s->diurnoOuNoturno == 1){
+        if (s->diurnoOuNoturno == 1) {
             apresentaDiurno(s); 
-        } else if (s->diurnoOuNoturno == 2){
+        } else if (s->diurnoOuNoturno == 2) {
             apresentaNoturno(s);
         }
     }
@@ -441,14 +437,14 @@ void leRanking(Sistema *s)
 {
     FILE *arquivo = fopen("ranking.txt", "r");
     if (arquivo != NULL) {
-        for (int a = 0; a < 3 ; a++){
+        for (int a = 0; a < 3 ; a++) {
             fscanf(arquivo,"%d", &s->ranking[a]);
         }
         fclose(arquivo);
     } else {
         arquivo = fopen("ranking.txt", "w");
-        if(arquivo != NULL){
-            for (int a = 0; a < 3; a++){
+        if (arquivo != NULL) {
+            for (int a = 0; a < 3; a++) {
                 s->ranking[a] = 0;
             }
             fclose(arquivo);
@@ -460,7 +456,7 @@ void analisaRanking(Sistema *s)
 {
     int a;
     for(a = 0 ; a < 3 ; a++){
-        if(s->pontos < s->ranking[a]){
+        if (s->pontos < s->ranking[a]) {
             a--;
             break;
         }
@@ -483,8 +479,8 @@ void analisaRanking(Sistema *s)
 void escreveRanking(Sistema *s)
 {
     FILE *arquivo = fopen("ranking.txt", "w");
-    if(arquivo != NULL){
-        for(int a = 0; a < 3 ; a++){
+    if (arquivo != NULL) {
+        for (int a = 0; a < 3 ; a++) {
             fprintf(arquivo, "%d ", s->ranking[a]);
         }
         fprintf(arquivo, "\n");
@@ -494,14 +490,14 @@ void escreveRanking(Sistema *s)
 
 void apresentaFinalizaPartida(Sistema *s)
 {
-    if(s->estaNoRanking == true){
+    if (s->estaNoRanking == true) {
         printf("\r\033[K");
         printf("Seu resultado: %d | ", s->pontos);
         printf("TOP 3! | S jogar novamente | ESC fechar");
     } else {
         printf("\r\033[K");
         printf("Seu resultado: %d | ", s->pontos);
-        printf("S jogar novamente  | ESC fechar");
+        printf("S jogar novamente | ESC fechar");
     }
 }
 
@@ -534,7 +530,7 @@ void finalizaPartida(Sistema *s)
     while ((c != 's' && c != 'S') && (c != ESC)) {
         apresentaFinalizaPartida(s);
         c = lechar();
-        if(c == 's' || c == 'S') {
+        if (c == 's' || c == 'S') {
             inicializarSistema(s);
             s->terminou = false;
             s->terminouPartida = false;
