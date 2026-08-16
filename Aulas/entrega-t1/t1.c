@@ -83,6 +83,7 @@ char lechar()
     return 0;
 }
 
+// tocar alguns sons do jogo, codifico os sons com valores
 void tocaSom(int codigo) {
     char script[100];
     if (codigo == 10 || codigo == 11) {
@@ -109,7 +110,7 @@ void tocaSom(int codigo) {
     }
 }
 
-
+// verifica se ganhou a onda, se matar 20 na diurna ou 15 noturna
 void verificaSeGanhou(Sistema *s)
 {
     if (s->diurnoOuNoturno == 1 && s->atacantesMortos == A_DIU) {
@@ -121,12 +122,14 @@ void verificaSeGanhou(Sistema *s)
     }
 }
 
+// testar se a arma corrente é n e se o atacante é N minusculo
 bool testeN(Sistema *s, int a)
 {
     if (s->armaCorrente + 1 == 11 && s->ataques[a] == 11) return true;
     return false;
 }
 
+// calcula os pontos cada vez que morre um atacante em uma posicao
 void calculaPontosAcerto(Sistema *s, int a)
 {
     if (s->diurnoOuNoturno == 1) {
@@ -136,6 +139,7 @@ void calculaPontosAcerto(Sistema *s, int a)
     }
 }
 
+//  calcula os pontos quando mata o N minusculo
 void calculaPontosAcertoN(Sistema *s, int a)
 {
     if(s->diurnoOuNoturno == 1) {
@@ -145,11 +149,13 @@ void calculaPontosAcertoN(Sistema *s, int a)
     }
 }
 
+// toca som de tiro errado quando erra
 void verificaAcertou(bool a)
 {
     if (!a) system("aplay -q erroTiro.wav &");
 }
 
+// toca som de quando acerta tiro, som diferente quando é N maiusculo
 void tocaAcertoTiro(int a)
 {
     if (a == 1) {
@@ -159,6 +165,8 @@ void tocaAcertoTiro(int a)
     }
 }
 
+// verifica se tem algum atacante ativo igual a arma que tem na mao e mata ele, calcula pontos
+// toca som de acertou ou erro
 void verificaSeMatou(Sistema *s)
 {
     bool acertou = false;
@@ -185,12 +193,14 @@ void verificaSeMatou(Sistema *s)
     verificaAcertou(acertou); 
 }
 
+// processa esc do teclado
 void processaEsc(Sistema *s){
     s->terminouOnda = true;
     s->terminouPartida = true;
     s->terminou = true;
 }
 
+// processa tab, muda a arma corrente e toca o som das armas quando troca
 void processaTab(Sistema *s){
     if (s->armaCorrente < 10) {
         if (s->diurnoOuNoturno == 1) {
@@ -205,6 +215,7 @@ void processaTab(Sistema *s){
     }
 }
 
+// processa enter, verifica se tem tiro, depois verifica se matou, depois verifica se ganhou
 void processaEnter(Sistema *s){
     if (s->tiros > 0) {
         s->tiros--;
@@ -213,6 +224,7 @@ void processaEnter(Sistema *s){
     verificaSeGanhou(s);
 }
 
+// processa o espaco e emite o som do radar, o jogo da um pause até tocar tudo
 void processaEspaco(Sistema *s){
     struct timespec intervalo = {0, 500000000};
     if (s->diurnoOuNoturno == 2) {
@@ -228,6 +240,7 @@ void processaEspaco(Sistema *s){
     }
 }
 
+// processa as teclas
 void processaTeclado(Sistema *s)
 {
     char tecla = lechar();
@@ -242,6 +255,7 @@ void processaTeclado(Sistema *s)
     }
 }
 
+// verifica se quebrou escudo e verifica se quebrou base
 void verificaBaseEosEscudos(Sistema *s)
 {
     if (s->ataques[s->escudos] != -1 && s->escudos != 0) {
@@ -259,6 +273,7 @@ void verificaBaseEosEscudos(Sistema *s)
     verificaSeGanhou(s);
 }
 
+// faz os atacantes surgir na ultima posicao, e movimenta tudo, mas antes verifica se quebrou escudo ou base
 void movimentaAtaques(Sistema *s)
 {
     verificaBaseEosEscudos(s);
@@ -278,6 +293,7 @@ void movimentaAtaques(Sistema *s)
     }
 }
 
+// so movimenta quando passar o tempo necessario esperando
 void processaTempo(Sistema *s)
 {
     double cp = crono_parcial(&s->c);
@@ -287,6 +303,7 @@ void processaTempo(Sistema *s)
     movimentaAtaques(s);
 }
 
+// inicializa o vetor de atacantes vazio
 void inicializarAtaques(Sistema *s)
 {
     for (int a = 0; a < A_DIU; a++) {
@@ -294,6 +311,7 @@ void inicializarAtaques(Sistema *s)
     }
 }
 
+// inicializa os escudos que restam
 void inicializarEscudos(Sistema *s)
 {
     for (int a = 0; a < s->escudos; a++) {
@@ -301,6 +319,7 @@ void inicializarEscudos(Sistema *s)
     }
 }
 
+// inicializa cada onda, resetando os tiros, atacantes, escudos, diminuindo o tempo etc;
 void inicializarOnda(Sistema *s)
 {
     inicializarAtaques(s);
@@ -316,12 +335,14 @@ void inicializarOnda(Sistema *s)
     inicializarEscudos(s);
 }
 
+// apresenta o resumo entre cada onda
 void apresentaResumo(Sistema *s)
 {
     printf("\r\033[KPontos: %d | R recarregar | ESC sair", s->pontos);
     fflush(stdout);
 }
 
+// sorteia um numero entre 0 e 99 para saber qual vai ser a onda diurna ou noturna
 void sorteio(Sistema *s){
     s->sorteio = rand() % 100;
     if (s->sorteio <= s->chanceDiurno) {
@@ -334,9 +355,8 @@ void sorteio(Sistema *s){
     }
 }
 
-void finalizaOnda(Sistema *s)
-{
-    sorteio(s);
+// calcula os pontos dos escudos e tiros que sobraram, e somam no total
+void calculaPontosDosEscudosTiros(Sistema *s){
     if (s->diurnoOuNoturno == 1) {
         if (s->terminou != true) {
             s->pontos += s->tiros * 2 + s->escudos * 10;
@@ -346,6 +366,13 @@ void finalizaOnda(Sistema *s)
             s->pontos += (s->tiros * 2 + s->escudos * 10) *2;
         }
     }
+}
+
+// calculando se proxima vai ser diu ou not, soma os pontos restante, apresenta resumo e le teclado
+void finalizaOnda(Sistema *s)
+{
+    sorteio(s);
+    calculaPontosDosEscudosTiros(s);
     char c = 'n';
     if (s->terminou != true) tocaSom(-3);
     while (c != 'r' && c != 'R' && s->terminou != true) {
@@ -360,6 +387,8 @@ void finalizaOnda(Sistema *s)
     }
 }
 
+
+// mostra na tela o modo diurno
 void apresentaDiurno(Sistema *s)
 {
     printf("\r\033[K%3d %2d ", s->pontos, s->tiros);
@@ -384,6 +413,7 @@ void apresentaDiurno(Sistema *s)
     printf("\r");
 }
 
+// mostra na tela o modo noturno
 void apresentaNoturno(Sistema *s)
 {
     printf("\r\033[K%3d %2d ", s->pontos, s->tiros);
@@ -408,6 +438,7 @@ void apresentaNoturno(Sistema *s)
     printf("\r");
 }
 
+// apresenta tela inicial da onda
 void apresentaOnda(Sistema *s)
 {
     if (s->diurnoOuNoturno == 1) {
@@ -418,6 +449,7 @@ void apresentaOnda(Sistema *s)
     fflush(stdout);
 }
 
+// inicializa, toca som de inicio, processa teclado, processa tempo, apresenta, finaliza, cada onda
 void jogaOnda(Sistema *s)
 {
     inicializarOnda(s);
@@ -443,6 +475,7 @@ void jogaOnda(Sistema *s)
     finalizaOnda(s);
 }
 
+// le arquivo de rank se tiver, se nao tiver ele cria, e salva as pontuaçoes no vetor ranking
 void leRanking(Sistema *s)
 {
     FILE *arquivo = fopen("ranking.txt", "r");
@@ -462,6 +495,7 @@ void leRanking(Sistema *s)
     }
 }
 
+// analisa se a pontuacao do jogador é maior que as que estao no vetor ranking
 void analisaRanking(Sistema *s)
 {
     int a;
@@ -486,6 +520,7 @@ void analisaRanking(Sistema *s)
     }
 }
 
+// coloca o vetor ranking com pontuacao dentro do arquivo 
 void escreveRanking(Sistema *s)
 {
     FILE *arquivo = fopen("ranking.txt", "w");
@@ -500,6 +535,8 @@ void escreveRanking(Sistema *s)
     }
 }
 
+
+// apresenta a tela final de desistencia ou partida perdida para um jogador
 void apresentaFinalizaPartida(Sistema *s)
 {
     if (s->estaNoRanking == true) {
@@ -513,6 +550,7 @@ void apresentaFinalizaPartida(Sistema *s)
     }
 }
 
+// inicializa o jogo com valores zerados
 void inicializarSistema(Sistema *s)
 {
     s->terminou = false;
@@ -532,6 +570,8 @@ void inicializarSistema(Sistema *s)
     inicializarAtaques(s);
 }
 
+
+// ve se a pontuacao vai pro rank, toca som final, apresenta resumo final, e pergunta se quer sair ou continuar
 void finalizaPartida(Sistema *s)
 {
     leRanking(s);
@@ -551,6 +591,7 @@ void finalizaPartida(Sistema *s)
     }
 }
 
+// funcao de jogar a partida, apos o usuario terminar a partida finaliza ela
 void jogaPartida(Sistema *s)
 {
     while (!s->terminouPartida) {
@@ -559,6 +600,8 @@ void jogaPartida(Sistema *s)
     finalizaPartida(s);
 }
 
+
+// configura teminal, inicializa o sistema, joga a partida e termina.
 int main()
 {
     srand(time(NULL));
