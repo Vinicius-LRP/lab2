@@ -356,10 +356,21 @@ void jogaOnda(Sistema *s)
     }
     finalizaOnda(s);
 }
+void apresentaFinalizaPartida(Sistema *s){
+    printf("\r\033[K Pontuação: %d | Digite S para jogar novamente ou N para sair", s->pontos);
+}
 
 void finalizaPartida(Sistema *s){
-
-    
+    char c = 'x';
+    while ((c != 's' && c != 'S') && (c != 'n' && c != 'N')) {
+        apresentaFinalizaPartida(s);
+        c = lechar();
+        if(c == 's' || c == 'S') {
+            s->terminou = false;
+            s->terminouPartida = false;
+            s->terminouOnda = false;
+        }
+    }
 }
 
 void jogaPartida(Sistema *s)
