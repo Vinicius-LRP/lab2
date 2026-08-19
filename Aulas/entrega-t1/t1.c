@@ -180,7 +180,7 @@ void verificaSeMatou(Sistema *s)
             if (s->armaCorrente == 10 && s->ataques[a] == 10) {
                 s->ataques[a] = 11;
                 acertou = true;
-                tocaAcertoTiro(1);
+                if(s->diurnoOuNoturno == 2) tocaAcertoTiro(1);
             } else {
                 if (s->ataques[a] == 11) {
                     calculaPontosAcertoN(s, a);
@@ -190,12 +190,12 @@ void verificaSeMatou(Sistema *s)
                 s->ataques[a] = -1;
                 s->atacantesMortos++;
                 acertou = true;
-                tocaAcertoTiro(0);
+                if(s->diurnoOuNoturno == 2) tocaAcertoTiro(0);
             }
             break;
         }
     }
-    verificaAcertou(acertou); 
+    if(s->diurnoOuNoturno == 2) verificaAcertou(acertou); 
 }
 
 // processa esc do teclado
@@ -213,10 +213,14 @@ void processaTab(Sistema *s){
         } else if (s->diurnoOuNoturno == 2) {
             s->armaCorrente += 2;
         }
-        tocaSom(s->armaCorrente);
+        if(s->diurnoOuNoturno == 2){
+            tocaSom(s->armaCorrente);
+        }
     } else {
         s->armaCorrente = 0;
-        tocaSom(s->armaCorrente);
+        if(s->diurnoOuNoturno == 2){
+            tocaSom(s->armaCorrente);
+        }
     }
 }
 
@@ -267,12 +271,16 @@ void verificaBaseEosEscudos(Sistema *s)
         s->ataques[s->escudos] = -1;
         s->atacantesMortos++;
         s->escudos--;
-        tocaSom(-4);
+        if(s->diurnoOuNoturno == 2) {
+            tocaSom(-4);
+        }
     } else if (s->ataques[0] != -1 && s->escudos == 0) {
         s->terminou = true;
         s->terminouOnda = true;
         s->terminouPartida = true;
-        tocaSom(-6);
+        if(s->diurnoOuNoturno == 2) {
+            tocaSom(-6);
+        }
         return;
     }
     verificaSeGanhou(s);
@@ -287,7 +295,6 @@ void movimentaAtaques(Sistema *s)
     }
     if (s->diurnoOuNoturno == 1 && s->ataquesAtivos < A_DIU) {        
         s->ataques[12] = rand() % 11;
-        if (s->terminou != true) tocaSom(s->ataques[12]);
         s->ataquesAtivos++;
     } else if (s->diurnoOuNoturno == 2 && s->ataquesAtivos < A_NOT) {
         s->ataques[7] = (rand() % 6) * 2;
