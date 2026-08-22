@@ -61,6 +61,7 @@ static void s_ok(Str_c s)
     if (s->alocado == 0){
         assert(s->numBytes == 0);
         assert(s->dados == NULL);
+        return;
     } else {
         assert(s->dados != NULL);
         assert(s->alocado >= MIN_ALLOC);
@@ -70,6 +71,11 @@ static void s_ok(Str_c s)
             a /= 2;
         }    
     }
+    if (s->numBytes * 3 < MIN_ALLOC) {
+        assert(s->alocado == MIN_ALLOC);
+    } else {
+        assert(s->alocado <= s->numBytes * 3);
+    }
 }
 
 //...
@@ -78,10 +84,10 @@ static void s_ok(Str_c s)
 
 Str s_cria(char const *strC)
 {
-  Str s = malloc(sizeof(*s));
-  assert(s != NULL);
-  //...
-  return s;
+    Str s = malloc(sizeof(*s));
+    assert(s != NULL);
+    
+    return s;
 }
 
 void s_destroi(Str s)
