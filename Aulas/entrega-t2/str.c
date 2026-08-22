@@ -24,6 +24,18 @@ struct str {
 //     (exceto quando for o mínimo);
 //   - uma potência de 2.
 
+void s_realoca(Str s, int nBytNecess)
+{
+    if (s->alocado == 0 && s->alocado < nBytNecess) s->alocado = MIN_ALLOC;
+    while (s->alocado < nBytNecess) {
+        s->alocado *= 2;
+    }
+
+    if (nBytNecess < s->alocado / 2) {
+
+    }
+}
+
 // funções auxiliares {{{1
 
 // verifica se a string cad está de acordo com a especificação
