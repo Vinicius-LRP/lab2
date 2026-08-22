@@ -43,7 +43,7 @@ void s_realoca(Str s, int nBytNecess)
     byte *novo = realloc(s->dados, s->alocado);
     if (novo == NULL) {
         printf("Erro em allocar memoria!");
-        return 1;
+        exit(1);
     }
     s->dados = novo;
 }
@@ -86,7 +86,10 @@ Str s_cria(char const *strC)
 {
     Str s = malloc(sizeof(*s));
     assert(s != NULL);
-    
+    s->alocado = 0;
+    s->dados = NULL;
+    s->numBytes = 0;
+    u8_conta_unichar_nos_bytes();
     return s;
 }
 
