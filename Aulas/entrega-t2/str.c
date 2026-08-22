@@ -9,7 +9,9 @@
 #define MIN_ALLOC 8    // alocação mínima
 
 struct str {
-  // ...
+    int numBytes;
+    int alocado;
+    byte *dados;
 };
 
 // A memória para conter os bytes de uma string deve ser alocada e/ou
