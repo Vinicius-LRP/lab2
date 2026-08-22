@@ -30,7 +30,7 @@ void s_realoca(Str s, int nBytNecess)
     while (s->alocado < nBytNecess) {
         s->alocado *= 2;
     }
-    if(nBytNecess == 0) { 
+    if (nBytNecess == 0) { 
         free(s->dados);
         s->dados = NULL;
         s->alocado = 0;
@@ -41,9 +41,9 @@ void s_realoca(Str s, int nBytNecess)
         } 
     }
     byte *novo = realloc(s->dados, s->alocado);
-    if(novo == NULL) {
+    if (novo == NULL) {
         printf("Erro em allocar memoria!");
-        return;
+        return 1;
     }
     s->dados = novo;
 }
@@ -54,6 +54,23 @@ void s_realoca(Str s, int nBytNecess)
 // aborta o programa se não tiver
 static void s_ok(Str_c s)
 {
+    assert(s != NULL);
+    assert(s->numBytes >= 0);
+    assert(s->alocado >= 0);
+    assert(s->numBytes <= s->alocado);
+
+    if (s->alocado == 0){
+        assert(s->numBytes == 0);
+        assert(s->dados == NULL);
+    } else {
+        assert(s->dados != NULL);
+        assert(s->alocado >= MIN_ALLOC);
+        int a = s->alocado;
+        while (a > 0) {
+            assert(a % 2 == 0);
+            a /= 2;
+        }    
+    }
 }
 
 //...
