@@ -89,7 +89,20 @@ Str s_cria(char const *strC)
     s->alocado = 0;
     s->dados = NULL;
     s->numBytes = 0;
-    u8_conta_unichar_nos_bytes();
+
+    if (strC == NULL) return s;
+
+    int nBytes = strlen(strC);
+    if(nBytes == 0) return s;
+    
+    if(u8_conta_unichar_nos_bytes(nBytes, (byte *) strC) == -1){
+        return s;
+    }
+    s->numBytes = nBytes;
+    s_realoca(s, s->numBytes);
+    memcpy(s->dados, strC, s->numBytes);
+
+    s_ok(s);
     return s;
 }
 
