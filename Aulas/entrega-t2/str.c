@@ -58,7 +58,6 @@ static void s_ok(Str_c s)
     assert(s->numBytes >= 0);
     assert(s->alocado >= 0);
     assert(s->numBytes <= s->alocado);
-
     if (s->alocado == 0){
         assert(s->numBytes == 0);
         assert(s->dados == NULL);
@@ -66,7 +65,7 @@ static void s_ok(Str_c s)
         assert(s->dados != NULL);
         assert(s->alocado >= MIN_ALLOC);
         int a = s->alocado;
-        while (a > 0) {
+        while (a > 1) {
             assert(a % 2 == 0);
             a /= 2;
         }    
