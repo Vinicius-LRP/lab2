@@ -30,10 +30,22 @@ void s_realoca(Str s, int nBytNecess)
     while (s->alocado < nBytNecess) {
         s->alocado *= 2;
     }
-
-    if (nBytNecess < s->alocado / 2) {
-
+    if(nBytNecess == 0) { 
+        free(s->dados);
+        s->dados = NULL;
+        s->alocado = 0;
+        return;
+    } else {
+        while (nBytNecess <= s->alocado / 2 && s->alocado / 2 >= MIN_ALLOC) {
+            s->alocado /= 2;
+        } 
     }
+    byte *novo = realloc(s->dados, s->alocado);
+    if(novo == NULL) {
+        printf("Erro em allocar memoria!");
+        return;
+    }
+    s->dados = novo;
 }
 
 // funções auxiliares {{{1
