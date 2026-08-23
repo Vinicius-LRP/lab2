@@ -129,9 +129,9 @@ Str s_cria_cópia(Str_c s)
 // Retorna uma string vazia em caso de erro.
 Str s_cria_de_arquivo(char *nome)
 {
-  Str s = s_cria("");
-  //...
-  return s;
+    Str s = s_cria("");
+    //...
+    return s;
 }
 
 // operações de acesso {{{1
