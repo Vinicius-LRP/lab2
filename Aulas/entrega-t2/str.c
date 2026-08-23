@@ -108,9 +108,9 @@ Str s_cria(char const *strC)
 
 void s_destroi(Str s)
 {
-  s_ok(s);
-  //...
-  free(s);
+    s_ok(s);
+    free(s->dados);
+    free(s);
 }
 
 Str s_cria_substring(Str_c s, int pos, int tam)
