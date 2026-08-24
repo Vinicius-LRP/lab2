@@ -136,12 +136,16 @@ Str s_cria_de_arquivo(char *nome)
     if(arq == NULL){
       return s;
     }
+    fseek(arq, 0, SEEK_END);
+    long tamanho = ftell(arq);
+    fseek(arq, 0, SEEK_SET);
+
+    if(tamanho <= 0){
+        fclose(arq);
+        return s;
+    }
+
     
-    byte buffer[1024];
-
-    size_t lidos;
-
-    while ((lidos = fread(buffer,1 , sizeof(buffer), arq)) > 0)
 
     return s;
 }
