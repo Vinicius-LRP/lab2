@@ -139,7 +139,7 @@ Str s_cria_de_arquivo(char *nome)
 
     fseek(arq, 0, SEEK_END);
     long tamanho = ftell(arq);
-    fseek(arq, 0, SEEK_SET);
+    fseek(arq, 0, SEEK_SET);//...
 
     if(tamanho <= 0){
         fclose(arq);
@@ -306,7 +306,12 @@ void s_imprime(Str_c s)
 void s_grava_arquivo(Str_c s, char *nome)
 {
     s_ok(s);
-    //...
+    FILE *arq = fopen(nome, "wb");
+    if(arq == NULL) {
+        return;
+    }
+    fwrite(s->dados, s->numBytes, 1, arq);
+
 }
 
 
