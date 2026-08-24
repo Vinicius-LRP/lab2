@@ -171,8 +171,8 @@ Str s_cria_de_arquivo(char *nome)
 int s_tam(Str_c s)
 {
     s_ok(s);
-    //...
-    return 0;
+    int numCaracteres = u8_conta_unichar_nos_bytes(s->numBytes, s->dados);
+    return numCaracteres;
 }
 
 char *s_strc(Str_c s)
