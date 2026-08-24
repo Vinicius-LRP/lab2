@@ -310,8 +310,14 @@ void s_grava_arquivo(Str_c s, char *nome)
     if(arq == NULL) {
         return;
     }
-    fwrite(s->dados, s->numBytes, 1, arq);
+    size_t gravado = fwrite(s->dados, s->numBytes, 1, arq);
 
+    if(gravado != (size_t) s->numBytes){
+        printf("\nErro na gravação da string no arquivo!\n");
+        fclose(arq);
+        return;
+    }
+    fclose(arq);
 }
 
 
