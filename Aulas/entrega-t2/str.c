@@ -145,7 +145,7 @@ Str s_cria_de_arquivo(char *nome)
         fclose(arq);
         return s;
     }
-    
+
     s_realoca(s, tamanho);
     size_t lido = fread(s->dados, 1, (size_t)tamanho, arq);
     fclose(arq);
@@ -299,8 +299,8 @@ void s_apara(Str s, Str_c sobras)
 
 void s_imprime(Str_c s)
 {
-  s_ok(s);
-  //...
+    s_ok(s);
+    fwrite(s->dados, 1, s->numBytes, stdout);
 }
 
 void s_grava_arquivo(Str_c s, char *nome)

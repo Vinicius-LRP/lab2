@@ -9,8 +9,11 @@ int main()
 {
   char *a = "Rábica";
   Str s = s_cria(a);
-  printf("Deve escrever [%s] ", a);
+  printf("Deve escrever [%s] \n", a);
   s_imprime(s);
+  printf("\nCria de arquivo \n");
+  Str s1 = s_cria_de_arquivo("teste.txt");
+  s_imprime(s1);
   Str ss = s_cria_substring(s, 3, 2);
   printf("\nDeve escrever [ic] ");
   s_imprime(ss);
@@ -18,10 +21,11 @@ int main()
   printf("\nDeve escrever [áb] ");
   s_imprime(ss);
   if (s_tam(ss) != 2) printf("\ntamanho de 'áb' (%d) deveria ser 2\n", s_tam(ss));
-  s_substitui(ss, -2, 1, NULL);
+  s_substitui(ss, -2, 1, s);
   s_substitui(s, -7, 3, ss);
-  printf("Deve escrever [áica] ");
+  printf("Deve escrever [áica] \n");
   s_imprime(s);
   s_destroi(ss);
+  s_destroi(s1);
   s_destroi(s);
 }
