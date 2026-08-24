@@ -24,6 +24,8 @@ struct str {
 //     (exceto quando for o mínimo);
 //   - uma potência de 2.
 
+// funções auxiliares {{{1
+
 void s_realoca(Str s, int nBytNecess)
 {
     if (s->alocado == 0 && s->alocado < nBytNecess) s->alocado = MIN_ALLOC;
@@ -48,7 +50,6 @@ void s_realoca(Str s, int nBytNecess)
     s->dados = novo;
 }
 
-// funções auxiliares {{{1
 
 // verifica se a string cad está de acordo com a especificação
 // aborta o programa se não tiver
@@ -130,7 +131,18 @@ Str s_cria_cópia(Str_c s)
 Str s_cria_de_arquivo(char *nome)
 {
     Str s = s_cria("");
-    //...
+    FILE *arq = fopen(nome, "rb");
+    
+    if(arq == NULL){
+      return s;
+    }
+    
+    byte buffer[1024];
+
+    size_t lidos;
+
+    while ((lidos = fread(buffer,1 , sizeof(buffer), arq)) > 0)
+
     return s;
 }
 
