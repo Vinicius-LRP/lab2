@@ -116,14 +116,14 @@ void s_destroi(Str s)
 
 Str s_cria_substring(Str_c s, int pos, int tam)
 {
-   Str nova = s_cria("");
-   s_substring(nova, s, pos, tam);
-   return nova;
+    Str nova = s_cria("");
+    s_substring(nova, s, pos, tam);
+    return nova;
 }
 
 Str s_cria_cópia(Str_c s)
 {
-   return s_cria_substring(s, 0, -1);
+    return s_cria_substring(s, 0, -1);
 }
 
 // Retorna uma nova string com o conteúdo do arquivo chamado nome.
@@ -134,7 +134,7 @@ Str s_cria_de_arquivo(char *nome)
     FILE *arq = fopen(nome, "rb");
     
     if(arq == NULL){
-      return s;
+        return s;
     }
 
     fseek(arq, 0, SEEK_END);
@@ -170,23 +170,23 @@ Str s_cria_de_arquivo(char *nome)
 
 int s_tam(Str_c s)
 {
-  s_ok(s);
-  //...
-  return 0;
+    s_ok(s);
+    //...
+    return 0;
 }
 
 char *s_strc(Str_c s)
 {
-  s_ok(s);
-  //...
-  return NULL;
+    s_ok(s);
+    //...
+    return NULL;
 }
 
 unichar s_ch(Str_c s, int pos)
 {
-  s_ok(s);
-  //...
-  return UNI_INV;
+    s_ok(s);
+    //...
+    return UNI_INV;
 }
 
 
@@ -194,50 +194,50 @@ unichar s_ch(Str_c s, int pos)
 
 bool s_igual(Str_c s, Str_c sb)
 {
-  s_ok(s);
-  s_ok(sb);
-  //...
-  return false;
+    s_ok(s);
+    s_ok(sb);
+    //...
+    return false;
 }
 
 int s_busca_c(Str_c s, int pos, Str_c sb)
 {
-  s_ok(s);
-  s_ok(sb);
-  //...
-  return -1;
+    s_ok(s);
+    s_ok(sb);
+    //...
+    return -1;
 }
 
 int s_busca_nc(Str_c s, int pos, Str_c sb)
 {
-  s_ok(s);
-  s_ok(sb);
-  //...
-  return -1;
+    s_ok(s);
+    s_ok(sb);
+    //...
+    return -1;
 }
 
 int s_busca_rc(Str_c s, int pos, Str_c sb)
 {
-  s_ok(s);
-  s_ok(sb);
-  //...
-  return -1;
+    s_ok(s);
+    s_ok(sb);
+    //...
+    return -1;
 }
 
 int s_busca_rnc(Str_c s, int pos, Str_c sb)
 {
-  s_ok(s);
-  s_ok(sb);
-  //...
-  return -1;
+    s_ok(s);
+    s_ok(sb);
+    //...
+    return -1;
 }
 
 int s_busca_s(Str_c s, int pos, Str_c buscada)
 {
-  s_ok(s);
-  s_ok(buscada);
-  //...
-  return -1;
+    s_ok(s);
+    s_ok(buscada);
+    //...
+    return -1;
 }
 
 
@@ -245,54 +245,54 @@ int s_busca_s(Str_c s, int pos, Str_c buscada)
 
 void s_substitui(Str s, int pos, int tam, Str_c sb)
 {
-  s_ok(s);
-  s_ok(sb);
-  //...
+    s_ok(s);
+    s_ok(sb);
+    //...
 }
 
 void s_substring(Str s, Str_c sb, int pos, int tam)
 {
-  s_ok(s);
-  s_ok(sb);
-  //...
+    s_ok(s);
+    s_ok(sb);
+    //...
 }
 
 void s_copia(Str s, Str_c sb)
 {
-  s_substring(s, sb, 0, -1);
+    s_substring(s, sb, 0, -1);
 }
 
 void s_insere(Str s, int pos, Str_c sb)
 {
-  s_substitui(s, pos, 0, sb);
+    s_substitui(s, pos, 0, sb);
 }
 
 void s_insere_c(Str s, int pos, unichar c)
 {
-  s_ok(s);
-  //...
+    s_ok(s);
+    //...
 }
 
 void s_anexa(Str s, Str_c sb)
 {
-  s_substitui(s, -1, 0, sb);
+    s_substitui(s, -1, 0, sb);
 }
 
 void s_anexa_c(Str s, unichar c)
 {
-  s_insere_c(s, -1, c);
+    s_insere_c(s, -1, c);
 }
 
 void s_remove(Str s, int pos, int tam)
 {
-  s_substitui(s, pos, tam, NULL);
-}
+    s_substitui(s, pos, tam, NULL);
+}   
 
 void s_apara(Str s, Str_c sobras)
 {
-  s_ok(s);
-  s_ok(sobras);
-  //...
+    s_ok(s);
+    s_ok(sobras);
+    //...
 }
 
 // operações de E/S {{{1
@@ -305,8 +305,8 @@ void s_imprime(Str_c s)
 
 void s_grava_arquivo(Str_c s, char *nome)
 {
-  s_ok(s);
-  //...
+    s_ok(s);
+    //...
 }
 
 
