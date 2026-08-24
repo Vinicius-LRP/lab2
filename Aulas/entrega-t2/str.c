@@ -136,6 +136,7 @@ Str s_cria_de_arquivo(char *nome)
     if(arq == NULL){
       return s;
     }
+
     fseek(arq, 0, SEEK_END);
     long tamanho = ftell(arq);
     fseek(arq, 0, SEEK_SET);
@@ -144,15 +145,17 @@ Str s_cria_de_arquivo(char *nome)
         fclose(arq);
         return s;
     }
-
+    
     s_realoca(s, tamanho);
-    size_t lido = fread(s->dados, 1, tamanho, arq);
+    size_t lido = fread(s->dados, 1, (size_t)tamanho, arq);
     fclose(arq);
 
-    if(lido != (size_t) tamanho) return s;
+    if(lido != (size_t) tamanho) {
+        s_realoca(s, 0);
+        return s;
+    }
 
     int ncar = u8_conta_unichar_nos_bytes(tamanho, s->dados);
-
     if(ncar == -1){
         s_realoca(s , 0);
         return s;
@@ -160,7 +163,6 @@ Str s_cria_de_arquivo(char *nome)
 
     s->numBytes = tamanho;
     s_ok(s);
-
     return s;
 }
 
