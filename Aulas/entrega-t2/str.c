@@ -145,7 +145,21 @@ Str s_cria_de_arquivo(char *nome)
         return s;
     }
 
-    
+    s_realoca(s, tamanho);
+    size_t lido = fread(s->dados, 1, tamanho, arq);
+    fclose(arq);
+
+    if(lido != (size_t) tamanho) return s;
+
+    int ncar = u8_conta_unichar_nos_bytes(tamanho, s->dados);
+
+    if(ncar == -1){
+        s_realoca(s , 0);
+        return s;
+    }
+
+    s->numBytes = tamanho;
+    s_ok(s);
 
     return s;
 }
