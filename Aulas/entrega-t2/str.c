@@ -139,7 +139,7 @@ Str s_cria_de_arquivo(char *nome)
 
     fseek(arq, 0, SEEK_END);
     long tamanho = ftell(arq);
-    fseek(arq, 0, SEEK_SET);//...
+    fseek(arq, 0, SEEK_SET);
 
     if(tamanho <= 0){
         fclose(arq);
