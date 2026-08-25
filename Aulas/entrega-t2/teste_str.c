@@ -17,6 +17,8 @@ int main()
     s_imprime(s1);
     printf("\nTamanho: %d", s_tam(s1));
     s_grava_arquivo(s1, "teste2.txt");
+    char *string = s_strc(s1);
+    printf("\nString C: %s", string);
     Str ss = s_cria_substring(s, 3, 2);
     printf("\nDeve escrever [ic] ");
     s_imprime(ss);
