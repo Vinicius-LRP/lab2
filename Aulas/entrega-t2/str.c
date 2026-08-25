@@ -208,8 +208,14 @@ bool s_igual(Str_c s, Str_c sb)
 {
     s_ok(s);
     s_ok(sb);
-    //...
-    return false;
+    
+    if(s_tam(s) != s_tam(sb)) return false;
+
+    for (int i = 0; i < s->numBytes; i++){
+        if(sb->dados[i] != s->dados[i]) return false;
+    }
+
+    return true;
 }
 
 int s_busca_c(Str_c s, int pos, Str_c sb)
