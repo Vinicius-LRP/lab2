@@ -178,9 +178,20 @@ int s_tam(Str_c s)
 char *s_strc(Str_c s)
 {
     s_ok(s);
-    char *string = malloc(sizeof(s->numBytes + 1));
-    string = s->dados;
-    return NULL;
+    char *string = malloc(s->numBytes + 1);
+
+    if (string == NULL) {
+        printf("Erro em alocar memoria para string!");
+        return NULL;
+    }
+
+    for (int i = 0; i < s->numBytes; i++) {
+        string[i] = s->dados[i];
+    }
+
+    string[s->numBytes] = '\0';
+    
+    return string;
 }
 
 unichar s_ch(Str_c s, int pos)
