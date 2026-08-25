@@ -178,7 +178,8 @@ int s_tam(Str_c s)
 char *s_strc(Str_c s)
 {
     s_ok(s);
-    //...
+    char *string = malloc(sizeof(s->numBytes + 1));
+    string = s->dados;
     return NULL;
 }
 
