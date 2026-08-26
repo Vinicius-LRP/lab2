@@ -19,6 +19,7 @@ int main()
     s_grava_arquivo(s1, "teste2.txt");
     char *string = s_strc(s1);
     printf("\nString C: %s", string);
+    printf("\nIguais? %d", s_igual(s1, s));
     Str ss = s_cria_substring(s, 3, 2);
     printf("\nDeve escrever [ic] ");
     s_imprime(ss);
