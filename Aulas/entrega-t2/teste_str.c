@@ -12,7 +12,7 @@ int main()
     printf("Deve escrever [%s] \n", a);
     s_imprime(s);
     printf("\nTamanho: %d", s_tam(s));
-    printf("\nCria de arquivo \n");
+    printf("\nCria de arquivo: \n");
 
     Str s1 = s_cria_de_arquivo("teste.txt");
     s_imprime(s1);
@@ -20,15 +20,19 @@ int main()
     s_grava_arquivo(s1, "teste2.txt");
     char *string = s_strc(s1);
     printf("\nString C: %s", string);
-    printf("\nIguais? %d", s_igual(s1, s));
+    printf("\nIguais? %d ", s_igual(s1, s));
 
     Str s2 = s_cria("café");
-    for (int i = 0; i < s_tam(s2); i++) {
-        unichar c = s_ch(s, i);
-        printf("posição %d: código = %u (0x%X)\n", i, c, c);
+    for (int i = 0; i < s_tam(s2) + 3; i++) {
+        unichar c = s_ch(s2, i);
+        if(c == UNI_INV){
+            printf("\nPosição %d fora dos limites! (UNI_INV)", i);
+        } else {
+            printf("\nposição %d: código = %u (0x%X)", i, c, c);
+        }
     }
     s_destroi(s2);
-    
+
     Str ss = s_cria_substring(s, 3, 2);
     printf("\nDeve escrever [ic] ");
     s_imprime(ss);
