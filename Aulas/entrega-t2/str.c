@@ -196,8 +196,30 @@ char *s_strc(Str_c s)
 unichar s_ch(Str_c s, int pos)
 {
     s_ok(s);
-    //...
-    return UNI_INV;
+    
+    int tam = s_tam(s);
+
+    int indice;
+
+    if (pos >= 0) {
+        indice = pos;
+    } else {
+        indice = tam + pos + 1;
+    }
+
+    if (indice < 0 || indice >= tam) return UNI_INV;
+
+    byte *p = u8_avanca_unichar(s->dados, indice);
+    if (p == NULL) return UNI_INV;
+
+    int bytesRestantes = s->numBytes - (p - s->dados);
+
+    unichar uni;
+    
+    int nBytes = u8_unichar_nos_bytes(bytesRestantes, p, &uni);
+    if (nBytes == -1) return UNI_INV;
+
+    return uni;
 }
 
 
