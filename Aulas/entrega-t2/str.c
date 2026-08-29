@@ -285,13 +285,6 @@ int s_busca_s(Str_c s, int pos, Str_c buscada)
 void s_substitui(Str s, int pos, int tam, Str_c sb)
 {
     s_ok(s);
-    s_ok(sb);
-    //...
-}
-
-void s_substring(Str s, Str_c sb, int pos, int tam)
-{
-    s_ok(s);
     if(sb != NULL) s_ok(sb);
     
     int tamS = s_tam(s);
@@ -303,13 +296,21 @@ void s_substring(Str s, Str_c sb, int pos, int tam)
     } else {
         indiceInicio = tamS + pos + 1;
     }
+
+    if (indiceInicio < 0) {
+        indiceInicio = 0;
+    }
+
+    if (indiceInicio > tamS){
+        indiceInicio = tamS;
+    }
     
     int indiceFim;
 
     if(tam < 0) {
         indiceFim = tamS;
     } else {
-        indiceFim = indiceInicio + tamS;
+        indiceFim = indiceInicio + tam;
     }
     if (indiceFim < 0) {
         indiceFim = 0;
@@ -364,6 +365,11 @@ void s_substring(Str s, Str_c sb, int pos, int tam)
     free(copiaInserida);
 
     s_ok(s);
+}
+
+void s_substring(Str s, Str_c sb, int pos, int tam)
+{
+   
 }
 
 void s_copia(Str s, Str_c sb)

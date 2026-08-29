@@ -34,6 +34,10 @@ int main()
     }
     s_destroi(s2);
 
+    Str s3 = s_cria ("abácaxi");
+    s_substitui(s, 5, 2, s_cria("te"));
+    s_imprime(s);
+
     Str ss = s_cria_substring(s, 3, 2);
     printf("\nDeve escrever [ic] ");
     s_imprime(ss);
