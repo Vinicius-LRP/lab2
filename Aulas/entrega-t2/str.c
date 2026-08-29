@@ -50,7 +50,6 @@ void s_realoca(Str s, int nBytNecess)
     s->dados = novo;
 }
 
-
 // verifica se a string cad está de acordo com a especificação
 // aborta o programa se não tiver
 static void s_ok(Str_c s)
