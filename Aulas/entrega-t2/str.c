@@ -292,8 +292,41 @@ void s_substitui(Str s, int pos, int tam, Str_c sb)
 void s_substring(Str s, Str_c sb, int pos, int tam)
 {
     s_ok(s);
-    s_ok(sb);
-    //...
+    if(sb != NULL) s_ok(sb);
+    
+    int tamS = s_tam(s);
+
+    int indiceInicio;
+
+    if (pos >= 0) {
+        indiceInicio = pos;
+    } else {
+        indiceInicio = tamS + pos + 1;
+    }
+    
+    int indiceFim;
+
+    if(tam < 0) {
+        indiceFim = tamS;
+    } else {
+        indiceFim = indiceInicio + tamS;
+    }
+    if (indiceFim < 0) {
+        indiceFim = 0;
+    }
+
+    if (indiceFim > tamS) {
+        indiceFim = tamS;
+    }
+
+    if (indiceFim < indiceInicio) {
+        indiceFim = indiceInicio;
+    }
+
+    byte *inicio = u8_avanca_unichar(s->dados, indiceInicio);
+    byte *fim = u8_avanca_unichar(s->dados, indiceFim);
+
+
 }
 
 void s_copia(Str s, Str_c sb)

@@ -12,12 +12,13 @@ int main()
     printf("Deve escrever [%s] \n", a);
     s_imprime(s);
     printf("\nTamanho: %d", s_tam(s));
-    printf("\nCria de arquivo: \n");
 
     Str s1 = s_cria_de_arquivo("teste.txt");
+    printf("\nCria String de arquivo: \n");
     s_imprime(s1);
     printf("\nTamanho: %d", s_tam(s1));
     s_grava_arquivo(s1, "teste2.txt");
+    printf("\nString gravada no arquivo!");
     char *string = s_strc(s1);
     printf("\nString C: %s", string);
     printf("\nIguais? %d ", s_igual(s1, s));
