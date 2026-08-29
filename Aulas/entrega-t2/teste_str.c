@@ -13,6 +13,7 @@ int main()
     s_imprime(s);
     printf("\nTamanho: %d", s_tam(s));
     printf("\nCria de arquivo \n");
+
     Str s1 = s_cria_de_arquivo("teste.txt");
     s_imprime(s1);
     printf("\nTamanho: %d", s_tam(s1));
@@ -20,6 +21,14 @@ int main()
     char *string = s_strc(s1);
     printf("\nString C: %s", string);
     printf("\nIguais? %d", s_igual(s1, s));
+
+    Str s2 = s_cria("café");
+    for (int i = 0; i < s_tam(s2); i++) {
+        unichar c = s_ch(s, i);
+        printf("posição %d: código = %u (0x%X)\n", i, c, c);
+    }
+    s_destroi(s2);
+    
     Str ss = s_cria_substring(s, 3, 2);
     printf("\nDeve escrever [ic] ");
     s_imprime(ss);
