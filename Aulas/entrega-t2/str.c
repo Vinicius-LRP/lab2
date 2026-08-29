@@ -288,15 +288,24 @@ void s_substitui(Str s, int pos, int tam, Str_c sb)
     if(sb != NULL) s_ok(sb);
     
     int tamS = s_tam(s);
-
-    int indiceInicio;
-
+    
+    int indiceInicio2;
     if (pos >= 0) {
-        indiceInicio = pos;
+        indiceInicio2 = pos;
     } else {
-        indiceInicio = tamS + pos + 1;
+        indiceInicio2 = tamS + pos + 1;
     }
 
+    int indiceFim;
+
+    if(tam < 0) {
+        indiceFim = tamS;
+    } else {
+        indiceFim = indiceInicio2 + tam;
+    }
+
+    int indiceInicio = indiceInicio2;
+    
     if (indiceInicio < 0) {
         indiceInicio = 0;
     }
@@ -304,14 +313,7 @@ void s_substitui(Str s, int pos, int tam, Str_c sb)
     if (indiceInicio > tamS){
         indiceInicio = tamS;
     }
-    
-    int indiceFim;
 
-    if(tam < 0) {
-        indiceFim = tamS;
-    } else {
-        indiceFim = indiceInicio + tam;
-    }
     if (indiceFim < 0) {
         indiceFim = 0;
     }

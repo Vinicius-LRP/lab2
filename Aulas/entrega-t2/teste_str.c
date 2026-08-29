@@ -35,7 +35,7 @@ int main()
     s_destroi(s2);
 
     Str s3 = s_cria ("abácaxi");
-    s_substitui(s, -9, 1, s_cria("123"));
+    s_substitui(s3, -9, 1, s_cria("123"));
     printf("\nDeve escrever [123abácaxi]\n");
     s_imprime(s3);
 
