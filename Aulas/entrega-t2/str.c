@@ -326,7 +326,44 @@ void s_substring(Str s, Str_c sb, int pos, int tam)
     byte *inicio = u8_avanca_unichar(s->dados, indiceInicio);
     byte *fim = u8_avanca_unichar(s->dados, indiceFim);
 
+    int byteInicio = inicio - s->dados;
+    int byteFim = fim - s->dados;
 
+    int bytesRemovidos = byteFim - byteInicio;
+
+    int bytesInseridos = 0;
+    byte *copiaInserida = NULL;
+
+    if (sb != NULL){
+        bytesInseridos = sb->numBytes;
+        if(bytesInseridos > 0){
+            copiaInserida = malloc(bytesInseridos);
+            if(copiaInserida == NULL){
+                printf("Erro ao criar copia!");
+                exit(1);
+            }
+
+            memcpy(copiaInserida, sb->dados, bytesInseridos);
+        }
+    }
+
+    int novoTotal = s->numBytes - bytesRemovidos + bytesInseridos;
+    s_realoca(s, novoTotal);
+
+    int bytesDepois = s->numBytes - byteFim;
+
+    if (bytesDepois > 0) {
+        memmove(s->dados + byteInicio + bytesInseridos, s->dados + byteFim, bytesDepois);
+    }
+
+    if(bytesInseridos > 0) {
+        memcpy(s->dados + byteInicio, copiaInserida, bytesInseridos);
+    }
+
+    s->numBytes = novoTotal;
+    free(copiaInserida);
+
+    s_ok(s);
 }
 
 void s_copia(Str s, Str_c sb)
