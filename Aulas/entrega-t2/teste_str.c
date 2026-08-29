@@ -35,8 +35,9 @@ int main()
     s_destroi(s2);
 
     Str s3 = s_cria ("abácaxi");
-    s_substitui(s, 5, 2, s_cria("te"));
-    s_imprime(s);
+    s_substitui(s, -9, 1, s_cria("123"));
+    printf("\nDeve escrever [123abácaxi]\n");
+    s_imprime(s3);
 
     Str ss = s_cria_substring(s, 3, 2);
     printf("\nDeve escrever [ic] ");
