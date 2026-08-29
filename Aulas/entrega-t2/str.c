@@ -305,7 +305,7 @@ void s_substitui(Str s, int pos, int tam, Str_c sb)
     }
 
     int indiceInicio = indiceInicio2;
-    
+
     if (indiceInicio < 0) {
         indiceInicio = 0;
     }
@@ -371,7 +371,9 @@ void s_substitui(Str s, int pos, int tam, Str_c sb)
 
 void s_substring(Str s, Str_c sb, int pos, int tam)
 {
-   
+   s_ok(s);
+   s_ok(sb);
+   //..
 }
 
 void s_copia(Str s, Str_c sb)
