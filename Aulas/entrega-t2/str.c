@@ -389,7 +389,19 @@ void s_insere(Str s, int pos, Str_c sb)
 void s_insere_c(Str s, int pos, unichar c)
 {
     s_ok(s);
-    //...
+    byte bytesUtf8[8];
+
+    int quantidadeBytes = u8_converte_pra_utf8(c, bytesUtf8);
+
+    if (quantidadeBytes == -1) return;
+
+    struct str caractere = { 
+        .dados = bytesUtf8,
+        .numBytes = quantidadeBytes,
+        .alocado = 8
+    };
+
+    s_substitui(s, pos, 0, &caractere);
 }
 
 void s_anexa(Str s, Str_c sb)

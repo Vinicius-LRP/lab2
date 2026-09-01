@@ -39,6 +39,11 @@ int main()
     printf("\nDeve escrever [123abácaxi]\n");
     s_imprime(s3);
 
+    Str s4 = s_cria("abc");
+    s_insere_c(s4, 1, 'á');
+    s_imprime(s4)
+    printf("\n");
+
     Str ss = s_cria_substring(s, 3, 2);
     printf("\nDeve escrever [ic] ");
     s_imprime(ss);
