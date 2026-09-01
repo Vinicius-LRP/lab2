@@ -38,11 +38,11 @@ int main()
     s_substitui(s3, -9, 1, s_cria("123"));
     printf("\nDeve escrever [123abácaxi]\n");
     s_imprime(s3);
-
+    
     Str s4 = s_cria("abc");
-    s_insere_c(s4, 1, 'á');
-    s_imprime(s4)
-    printf("\n");
+    s_insere_c(s4, 1, 'X');
+    printf("\nDeve imprimir [aXbc]\n");
+    s_imprime(s4);
 
     Str ss = s_cria_substring(s, 3, 2);
     printf("\nDeve escrever [ic] ");
