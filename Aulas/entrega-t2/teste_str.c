@@ -45,6 +45,18 @@ int main()
     printf("\nDeve imprimir [aXbc]\n");
     s_imprime(s4);
 
+    Str s5 = s_cria("abácaxi");
+    Str vogais = s_cria("aeiouáéíóú");
+
+    printf("\n%d", s_busca_c(s5, 0, vogais));
+    printf("\n%d", s_busca_c(s5, 1, vogais));
+    printf("\n%d", s_busca_c(s5, 3, vogais));
+    printf("\n%d", s_busca_c(s5, 7, vogais));
+    printf("\n%d", s_busca_c(s5, -100, vogais));
+    s_destroi(s5);
+    s_destroi(vogais);
+
+
     Str ss = s_cria_substring(s, 3, 2);
     printf("\nDeve escrever [ic] ");
     s_imprime(ss);
