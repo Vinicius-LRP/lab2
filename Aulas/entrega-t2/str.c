@@ -26,7 +26,7 @@ struct str {
 
 // funções auxiliares {{{1
 
-void s_realoca(Str s, int nBytNecess)
+static void s_realoca(Str s, int nBytNecess)
 {
     if (s->alocado == 0 && s->alocado < nBytNecess) s->alocado = MIN_ALLOC;
     while (s->alocado < nBytNecess) {
@@ -48,6 +48,14 @@ void s_realoca(Str s, int nBytNecess)
         exit(1);
     }
     s->dados = novo;
+}
+
+static bool s_pertence(unichar c, Str_c s){
+    int tam = s_tam(s);
+    for (int i = 0; i < tam; i++) {
+        if (s_ch(s,i) == c) return true;
+    }
+    return false;
 }
 
 // verifica se a string cad está de acordo com a especificação
