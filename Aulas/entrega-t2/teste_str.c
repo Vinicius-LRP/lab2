@@ -37,30 +37,31 @@ int main()
 
     Str s3 = s_cria ("abácaxi");
     s_substitui(s3, -9, 1, s_cria("123"));
-    printf("\nDeve escrever [123abácaxi]\n");
+    printf("\nDeve escrever [123abácaxi] ");
     s_imprime(s3);
     
     Str s4 = s_cria("abc");
     s_insere_c(s4, 1, 'X');
-    printf("\nDeve imprimir [aXbc]\n");
+    printf("\nDeve imprimir [aXbc] ");
     s_imprime(s4);
 
     Str s5 = s_cria("abácaxi");
     Str vogais = s_cria("aeiouáéíóú");
 
+    printf("\nTestando s_busca_c");
     printf("\n%d", s_busca_c(s5, 0, vogais));
     printf("\n%d", s_busca_c(s5, 1, vogais));
     printf("\n%d", s_busca_c(s5, 3, vogais));
     printf("\n%d", s_busca_c(s5, 7, vogais));
-    printf("\n%d\n", s_busca_c(s5, -100, vogais));
+    printf("\n%d", s_busca_c(s5, -100, vogais));
     s_destroi(s5);
     s_destroi(vogais);
 
     Str s6 = s_cria("teste 1");
     Str espacos = s_cria(" .");
+    printf("\nTestando s_apara\n");
     s_apara(s6, espacos);
     s_imprime(s6);
-
     printf("\n");
     Str s7 = s_cria("... teste 2. .");
     s_apara(s7, espacos);
@@ -72,7 +73,7 @@ int main()
 
     Str s8 = s_cria("...abc...");
     Str pontos = s_cria(".");
-
+    printf("\nTestando s_busca_nc");
     printf("\n%d", s_busca_nc(s8, 0, pontos));
     printf("\n%d", s_busca_nc(s8, 3, pontos));
     printf("\n%d", s_busca_nc(s8, 4, pontos));
@@ -87,7 +88,7 @@ int main()
 
     Str s10 = s_cria("abácaxi");
     Str v = s_cria("aeiouáéíóú");
-
+    printf("\nTestando s_busca_rc");
     printf("\n%d", s_busca_rc(s10, 7, v));
     printf("\n%d", s_busca_rc(s10, 4, v));
     printf("\n%d", s_busca_rc(s10, 1, v));
@@ -95,6 +96,17 @@ int main()
     printf("\n%d", s_busca_rc(s10, -1, v));
     s_destroi(s10);
     s_destroi(v);
+
+    Str s11 = s_cria("abácaxi");
+    Str c = s_cria("bcx");
+    printf("\nTestando s_busca_rnc");
+    printf("\n%d", s_busca_rnc(s11, 7, c));
+    printf("\n%d", s_busca_rnc(s11, 3, c));
+    printf("\n%d", s_busca_rnc(s11, 1, c));
+    printf("\n%d", s_busca_rnc(s11, 0, c));
+
+    s_destroi(s11);
+    s_destroi(c); 
 
 
 
