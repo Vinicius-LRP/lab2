@@ -8,6 +8,7 @@
 int main()
 {
     char *a = "Rábica";
+    
     Str s = s_cria(a);
     printf("Deve escrever [%s] \n", a);
     s_imprime(s);
@@ -53,8 +54,9 @@ int main()
     if (s_tam(ss) != 2) printf("\ntamanho de 'áb' (%d) deveria ser 2\n", s_tam(ss));
     s_substitui(ss, -2, 1, s);
     s_substitui(s, -7, 3, ss);
-    printf("Deve escrever [áica] \n");
+    printf("\nDeve escrever [áica] \n");
     s_imprime(s);
+    
     s_destroi(ss);
     s_destroi(s1);
     s_destroi(s);

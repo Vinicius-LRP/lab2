@@ -371,9 +371,70 @@ void s_substitui(Str s, int pos, int tam, Str_c sb)
 
 void s_substring(Str s, Str_c sb, int pos, int tam)
 {
-   s_ok(s);
-   s_ok(sb);
-   //..
+    s_ok(s);
+    s_ok(sb);
+    int tamSb = s_tam(sb);
+    int indiceInicio2;
+
+    if (pos >= 0) {
+        indiceInicio2 = pos;
+    } else {
+        indiceInicio2 = tamSb + pos + 1;
+    }
+
+    int indiceFim;
+
+    if (tam < 0) {
+        indiceFim = tamSb;
+    } else {
+        indiceFim = indiceInicio2 + tam;
+    }
+
+    int indiceInicio = indiceInicio2;
+
+    if (indiceInicio < 0) {
+        indiceInicio = 0;
+    }
+    if (indiceInicio > tamSb) {
+        indiceInicio = tamSb;
+    }
+
+    if (indiceFim < 0) {
+        indiceFim = 0;
+    }
+    if (indiceFim > tamSb) {
+        indiceFim = tamSb;
+    }
+    
+    if (indiceFim < indiceInicio) {
+        indiceFim = indiceInicio;
+    }
+
+    byte *pInicio = u8_avanca_unichar(sb->dados, indiceInicio);
+    byte *pFim = u8_avanca_unichar(sb->dados, indiceFim);
+
+    int deslocamentoInicio  = pInicio - sb->dados;
+    int deslocamentoFim = pFim - sb->dados;
+    int tamanho = deslocamentoFim - deslocamentoInicio;
+
+    byte *t = NULL;
+
+    if (tamanho > 0) {
+        t = malloc(tamanho);
+        assert(t != NULL);
+        memcpy(t, sb->dados + deslocamentoInicio, tamanho);
+    }
+
+    s_realoca(s, tamanho);
+
+    if (tamanho > 0) {
+        memcpy(s->dados, t,tamanho);
+    }
+    s->numBytes = tamanho;
+    free(t);
+    
+    s_ok(s);
+
 }
 
 void s_copia(Str s, Str_c sb)
