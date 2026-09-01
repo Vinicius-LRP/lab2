@@ -273,7 +273,22 @@ int s_busca_nc(Str_c s, int pos, Str_c sb)
 {
     s_ok(s);
     s_ok(sb);
-    //...
+    int tam = s_tam(s);
+    int ind;
+    if (pos >= 0) {
+        ind = pos;
+    } else {
+        ind = tam + pos + 1;
+    }
+    if (ind < 0) {
+        ind = 0;
+    }
+    if (ind >= tam) return -1;
+
+    for (int i = ind; i < tam; i++) {
+        if (!s_pertence(s_ch(s, i), sb)) return i;
+    }
+
     return -1;
 }
 
@@ -281,7 +296,22 @@ int s_busca_rc(Str_c s, int pos, Str_c sb)
 {
     s_ok(s);
     s_ok(sb);
-    //...
+
+    int tam = s_tam(s);
+
+    int ind;
+    if (pos >= 0) {
+        ind = pos;
+    } else {
+        ind = tam + pos + 1;
+    }
+    if (ind > tam) {
+        ind = tam;
+    }
+
+    for (int i = ind - 1; i >= 0; i--) {
+        if (s_pertence(s_ch(s, i), sb)) return i;
+    }    
     return -1;
 }
 
@@ -289,7 +319,23 @@ int s_busca_rnc(Str_c s, int pos, Str_c sb)
 {
     s_ok(s);
     s_ok(sb);
-    //...
+    int tam = s_tam(s);
+
+    int ind;
+    if (pos >= 0) {
+        ind = pos;
+    } else {
+        ind = tam + pos + 1;
+    }
+
+    if (ind > tam) {
+        ind = tam;
+    }
+
+    for (int i = ind - 1; i >= 0; i--) {
+        if (!s_pertence(s_ch(s, i), sb)) return i;
+    }
+    
     return -1;
 }
 

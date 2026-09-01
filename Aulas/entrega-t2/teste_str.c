@@ -70,6 +70,33 @@ int main()
     s_destroi(s7);
     s_destroi(espacos);
 
+    Str s8 = s_cria("...abc...");
+    Str pontos = s_cria(".");
+
+    printf("\n%d", s_busca_nc(s8, 0, pontos));
+    printf("\n%d", s_busca_nc(s8, 3, pontos));
+    printf("\n%d", s_busca_nc(s8, 4, pontos));
+    printf("\n%d", s_busca_nc(s8, -100, pontos));
+
+    Str s9 = s_cria("......");
+    printf("\n%d", s_busca_nc(s9, 0, pontos));
+
+    s_destroi(s8);
+    s_destroi(s9);
+    s_destroi(pontos);
+
+    Str s10 = s_cria("abácaxi");
+    Str v = s_cria("aeiouáéíóú");
+
+    printf("\n%d", s_busca_rc(s10, 7, v));
+    printf("\n%d", s_busca_rc(s10, 4, v));
+    printf("\n%d", s_busca_rc(s10, 1, v));
+    printf("\n%d", s_busca_rc(s10, 0, v));
+    printf("\n%d", s_busca_rc(s10, -1, v));
+    s_destroi(s10);
+    s_destroi(v);
+
+
 
     Str ss = s_cria_substring(s, 3, 2);
     printf("\nDeve escrever [ic] ");
