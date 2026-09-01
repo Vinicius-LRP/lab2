@@ -52,9 +52,23 @@ int main()
     printf("\n%d", s_busca_c(s5, 1, vogais));
     printf("\n%d", s_busca_c(s5, 3, vogais));
     printf("\n%d", s_busca_c(s5, 7, vogais));
-    printf("\n%d", s_busca_c(s5, -100, vogais));
+    printf("\n%d\n", s_busca_c(s5, -100, vogais));
     s_destroi(s5);
     s_destroi(vogais);
+
+    Str s6 = s_cria("teste 1");
+    Str espacos = s_cria(" .");
+    s_apara(s6, espacos);
+    s_imprime(s6);
+
+    printf("\n");
+    Str s7 = s_cria("... teste 2. .");
+    s_apara(s7, espacos);
+    s_imprime(s7);
+
+    s_destroi(s6);
+    s_destroi(s7);
+    s_destroi(espacos);
 
 
     Str ss = s_cria_substring(s, 3, 2);

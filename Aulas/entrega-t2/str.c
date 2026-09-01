@@ -506,7 +506,19 @@ void s_apara(Str s, Str_c sobras)
 {
     s_ok(s);
     s_ok(sobras);
-    //...
+    int tam = s_tam(s);
+
+    int inicio = 0;
+    while (inicio < tam && s_pertence(s_ch(s, inicio), sobras)) {
+        inicio++;
+    }
+
+    int fim = tam;
+    while (fim > inicio && s_pertence(s_ch(s, fim-1), sobras)) {
+        fim--;
+    }
+
+    s_substring(s, s, inicio, fim - inicio);
 }
 
 // operações de E/S {{{1
