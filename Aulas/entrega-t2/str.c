@@ -335,7 +335,7 @@ int s_busca_rnc(Str_c s, int pos, Str_c sb)
     for (int i = ind - 1; i >= 0; i--) {
         if (!s_pertence(s_ch(s, i), sb)) return i;
     }
-    
+
     return -1;
 }
 
@@ -343,7 +343,33 @@ int s_busca_s(Str_c s, int pos, Str_c buscada)
 {
     s_ok(s);
     s_ok(buscada);
-    //...
+    int tamS = s_tam(s);
+    int tamB = s_tam(buscada);
+
+    int ind;
+
+    if(pos >= 0) {
+        ind = pos;
+    } else {
+        ind = tamS + pos + 1;
+    }
+    if (ind < 0) {
+        ind = 0;
+    }
+    if(ind > tamS) {
+        ind = tamS;
+    }
+    if (tamB == 0) return ind;
+    for (int i = ind; i + tamB <= tamS; i++) {
+        bool igual = true;
+        for (int j = 0; j < tamB; j++) {
+            if (s_ch(s, i + j) != s_ch(buscada, j)) {
+                igual = false;
+                break;
+            }
+        }
+        if (igual) return i;
+    }
     return -1;
 }
 

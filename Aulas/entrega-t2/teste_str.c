@@ -108,6 +108,19 @@ int main()
     s_destroi(s11);
     s_destroi(c); 
 
+    Str s12 = s_cria("abacaxi legal");
+    Str buscada = s_cria("aca");
+    printf("\nTestando s_busca_s");
+    printf("\n%d", s_busca_s(s12, 0, buscada));
+    printf("\n%d", s_busca_s(s12, 3, buscada));
+
+    Str vazia = s_cria("");
+    printf("\n%d", s_busca_s(s12, 5, vazia));
+    printf("\n%d", s_busca_s(s12, -1, vazia));
+
+    s_destroi(s12);
+    s_destroi(buscada);
+    s_destroi(vazia);
 
 
     Str ss = s_cria_substring(s, 3, 2);
