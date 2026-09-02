@@ -122,7 +122,6 @@ int main()
     s_destroi(buscada);
     s_destroi(vazia);
 
-
     Str ss = s_cria_substring(s, 3, 2);
     printf("\nDeve escrever [ic] ");
     s_imprime(ss);

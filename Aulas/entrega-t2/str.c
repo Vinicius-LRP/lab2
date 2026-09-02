@@ -238,7 +238,7 @@ bool s_igual(Str_c s, Str_c sb)
     s_ok(s);
     s_ok(sb);
     
-    if(s_tam(s) != s_tam(sb)) return false;
+    if (s->numBytes != sb->numBytes) return false;
 
     for (int i = 0; i < s->numBytes; i++){
         if(sb->dados[i] != s->dados[i]) return false;
