@@ -177,18 +177,14 @@ char *s_strc(Str_c s)
 {
     s_ok(s);
     char *string = malloc(s->numBytes + 1);
-
     if (string == NULL) {
         printf("Erro em alocar memoria para string!");
         return NULL;
     }
-
     for (int i = 0; i < s->numBytes; i++) {
         string[i] = s->dados[i];
     }
-
     string[s->numBytes] = '\0';
-    
     return string;
 }
 
@@ -219,13 +215,10 @@ bool s_igual(Str_c s, Str_c sb)
 {
     s_ok(s);
     s_ok(sb);
-    
     if (s->numBytes != sb->numBytes) return false;
-
     for (int i = 0; i < s->numBytes; i++){
         if(sb->dados[i] != s->dados[i]) return false;
     }
-
     return true;
 }
 
@@ -240,11 +233,8 @@ int s_busca_c(Str_c s, int pos, Str_c sb)
     } else {
         ind = tam + pos + 1;
     }
-    if (ind < 0) {
-        ind = 0;
-    }
+    if (ind < 0) ind = 0;
     if (ind >= tam) return -1;
-
     for (int i = ind; i < tam; i++) {
         if (s_pertence(s_ch(s , i), sb)) return i;
     }
@@ -262,15 +252,11 @@ int s_busca_nc(Str_c s, int pos, Str_c sb)
     } else {
         ind = tam + pos + 1;
     }
-    if (ind < 0) {
-        ind = 0;
-    }
+    if (ind < 0) ind = 0;
     if (ind >= tam) return -1;
-
     for (int i = ind; i < tam; i++) {
         if (!s_pertence(s_ch(s, i), sb)) return i;
     }
-
     return -1;
 }
 
@@ -278,19 +264,14 @@ int s_busca_rc(Str_c s, int pos, Str_c sb)
 {
     s_ok(s);
     s_ok(sb);
-
     int tam = s_tam(s);
-
     int ind;
     if (pos >= 0) {
         ind = pos;
     } else {
         ind = tam + pos + 1;
     }
-    if (ind > tam) {
-        ind = tam;
-    }
-
+    if (ind > tam) ind = tam;
     for (int i = ind - 1; i >= 0; i--) {
         if (s_pertence(s_ch(s, i), sb)) return i;
     }    
@@ -302,22 +283,16 @@ int s_busca_rnc(Str_c s, int pos, Str_c sb)
     s_ok(s);
     s_ok(sb);
     int tam = s_tam(s);
-
     int ind;
     if (pos >= 0) {
         ind = pos;
     } else {
         ind = tam + pos + 1;
     }
-
-    if (ind > tam) {
-        ind = tam;
-    }
-
+    if (ind > tam) ind = tam;
     for (int i = ind - 1; i >= 0; i--) {
         if (!s_pertence(s_ch(s, i), sb)) return i;
     }
-
     return -1;
 }
 
@@ -417,66 +392,39 @@ void s_substring(Str s, Str_c sb, int pos, int tam)
     s_ok(sb);
     int tamSb = s_tam(sb);
     int indiceInicio2;
-
     if (pos >= 0) {
         indiceInicio2 = pos;
     } else {
         indiceInicio2 = tamSb + pos + 1;
     }
-
     int indiceFim;
-
     if (tam < 0) {
         indiceFim = tamSb;
     } else {
         indiceFim = indiceInicio2 + tam;
     }
-
     int indiceInicio = indiceInicio2;
-
-    if (indiceInicio < 0) {
-        indiceInicio = 0;
-    }
-    if (indiceInicio > tamSb) {
-        indiceInicio = tamSb;
-    }
-
-    if (indiceFim < 0) {
-        indiceFim = 0;
-    }
-    if (indiceFim > tamSb) {
-        indiceFim = tamSb;
-    }
-    
-    if (indiceFim < indiceInicio) {
-        indiceFim = indiceInicio;
-    }
-
+    if (indiceInicio < 0) indiceInicio = 0;
+    if (indiceInicio > tamSb) indiceInicio = tamSb;
+    if (indiceFim < 0) indiceFim = 0;
+    if (indiceFim > tamSb) indiceFim = tamSb;
+    if (indiceFim < indiceInicio) indiceFim = indiceInicio;
     byte *pInicio = u8_avanca_unichar(sb->dados, indiceInicio);
     byte *pFim = u8_avanca_unichar(sb->dados, indiceFim);
-
     int deslocamentoInicio  = pInicio - sb->dados;
     int deslocamentoFim = pFim - sb->dados;
     int tamanho = deslocamentoFim - deslocamentoInicio;
-
     byte *t = NULL;
-
     if (tamanho > 0) {
         t = malloc(tamanho);
         assert(t != NULL);
         memcpy(t, sb->dados + deslocamentoInicio, tamanho);
     }
-
     s_realoca(s, tamanho);
-
-    if (tamanho > 0) {
-        memcpy(s->dados, t,tamanho);
-    }
+    if (tamanho > 0) memcpy(s->dados, t,tamanho);
     s->numBytes = tamanho;
     free(t);
-    
     s_ok(s);
-
 }
 
 void s_copia(Str s, Str_c sb)
@@ -493,17 +441,13 @@ void s_insere_c(Str s, int pos, unichar c)
 {
     s_ok(s);
     byte bytesUtf8[8];
-
     int quantidadeBytes = u8_converte_pra_utf8(c, bytesUtf8);
-
     if (quantidadeBytes == -1) return;
-
     struct str caractere = { 
         .dados = bytesUtf8,
         .numBytes = quantidadeBytes,
         .alocado = 8
     };
-
     s_substitui(s, pos, 0, &caractere);
 }
 
@@ -527,17 +471,14 @@ void s_apara(Str s, Str_c sobras)
     s_ok(s);
     s_ok(sobras);
     int tam = s_tam(s);
-
     int inicio = 0;
     while (inicio < tam && s_pertence(s_ch(s, inicio), sobras)) {
         inicio++;
     }
-
     int fim = tam;
     while (fim > inicio && s_pertence(s_ch(s, fim-1), sobras)) {
         fim--;
     }
-
     s_substring(s, s, inicio, fim - inicio);
 }
 
@@ -553,11 +494,8 @@ void s_grava_arquivo(Str_c s, char *nome)
 {
     s_ok(s);
     FILE *arq = fopen(nome, "wb");
-    if(arq == NULL) {
-        return;
-    }
+    if(arq == NULL) return;
     size_t gravado = fwrite(s->dados, 1, s->numBytes, arq);
-
     if(gravado != (size_t) s->numBytes){
         printf("\nErro na gravação da string no arquivo!\n");
         fclose(arq);
