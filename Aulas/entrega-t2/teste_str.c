@@ -4,6 +4,7 @@
 
 #include "str.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
@@ -22,6 +23,7 @@ int main()
     printf("\nString gravada no arquivo!");
     char *string = s_strc(s1);
     printf("\nString C: %s", string);
+    free(string);
     printf("\nIguais? %d ", s_igual(s1, s));
 
     Str s2 = s_cria("café");
@@ -36,14 +38,18 @@ int main()
     s_destroi(s2);
 
     Str s3 = s_cria ("abácaxi");
-    s_substitui(s3, -9, 1, s_cria("123"));
+    Str t = s_cria("123");
+    s_substitui(s3, -9, 1, t);
     printf("\nDeve escrever [123abácaxi] ");
     s_imprime(s3);
+    s_destroi(t);
+    s_destroi(s3);
     
     Str s4 = s_cria("abc");
     s_insere_c(s4, 1, 'X');
     printf("\nDeve imprimir [aXbc] ");
     s_imprime(s4);
+    s_destroi(s4);
 
     Str s5 = s_cria("abácaxi");
     Str vogais = s_cria("aeiouáéíóú");
