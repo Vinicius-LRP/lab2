@@ -139,35 +139,26 @@ Str s_cria_de_arquivo(char *nome)
 {
     Str s = s_cria("");
     FILE *arq = fopen(nome, "rb");
-    
-    if(arq == NULL){
-        return s;
-    }
-
+    if(arq == NULL) return s;
     fseek(arq, 0, SEEK_END);
     long tamanho = ftell(arq);
     fseek(arq, 0, SEEK_SET);
-
     if(tamanho <= 0){
         fclose(arq);
         return s;
     }
-
     s_realoca(s, tamanho);
     size_t lido = fread(s->dados, 1, (size_t)tamanho, arq);
     fclose(arq);
-
     if(lido != (size_t) tamanho) {
         s_realoca(s, 0);
         return s;
     }
-
     int ncar = u8_conta_unichar_nos_bytes(tamanho, s->dados);
     if(ncar == -1){
         s_realoca(s , 0);
         return s;
     }
-
     s->numBytes = tamanho;
     s_ok(s);
     return s;
@@ -204,29 +195,20 @@ char *s_strc(Str_c s)
 unichar s_ch(Str_c s, int pos)
 {
     s_ok(s);
-    
     int tam = s_tam(s);
-
     int indice;
-
     if (pos >= 0) {
         indice = pos;
     } else {
         indice = tam + pos + 1;
     }
-
     if (indice < 0 || indice >= tam) return UNI_INV;
-
     byte *p = u8_avanca_unichar(s->dados, indice);
     if (p == NULL) return UNI_INV;
-
     int bytesRestantes = s->numBytes - (p - s->dados);
-
     unichar uni;
-    
     int nBytes = u8_unichar_nos_bytes(bytesRestantes, p, &uni);
     if (nBytes == -1) return UNI_INV;
-
     return uni;
 }
 
