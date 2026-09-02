@@ -1,3 +1,4 @@
+// entrega final
 // includes, constantes e declarações {{{1
 #include "str.h"
 
