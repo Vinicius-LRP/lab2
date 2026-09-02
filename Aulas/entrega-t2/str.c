@@ -327,20 +327,14 @@ int s_busca_s(Str_c s, int pos, Str_c buscada)
     s_ok(buscada);
     int tamS = s_tam(s);
     int tamB = s_tam(buscada);
-
     int ind;
-
     if(pos >= 0) {
         ind = pos;
     } else {
         ind = tamS + pos + 1;
     }
-    if (ind < 0) {
-        ind = 0;
-    }
-    if(ind > tamS) {
-        ind = tamS;
-    }
+    if (ind < 0) ind = 0;
+    if(ind > tamS) ind = tamS;
     if (tamB == 0) return ind;
     for (int i = ind; i + tamB <= tamS; i++) {
         bool igual = true;
@@ -362,57 +356,32 @@ void s_substitui(Str s, int pos, int tam, Str_c sb)
 {
     s_ok(s);
     if(sb != NULL) s_ok(sb);
-    
     int tamS = s_tam(s);
-    
     int indiceInicio2;
     if (pos >= 0) {
         indiceInicio2 = pos;
     } else {
         indiceInicio2 = tamS + pos + 1;
     }
-
     int indiceFim;
-
     if(tam < 0) {
         indiceFim = tamS;
     } else {
         indiceFim = indiceInicio2 + tam;
     }
-
     int indiceInicio = indiceInicio2;
-
-    if (indiceInicio < 0) {
-        indiceInicio = 0;
-    }
-
-    if (indiceInicio > tamS){
-        indiceInicio = tamS;
-    }
-
-    if (indiceFim < 0) {
-        indiceFim = 0;
-    }
-
-    if (indiceFim > tamS) {
-        indiceFim = tamS;
-    }
-
-    if (indiceFim < indiceInicio) {
-        indiceFim = indiceInicio;
-    }
-
+    if (indiceInicio < 0) indiceInicio = 0;
+    if (indiceInicio > tamS) indiceInicio = tamS;
+    if (indiceFim < 0) indiceFim = 0;
+    if (indiceFim > tamS) indiceFim = tamS;
+    if (indiceFim < indiceInicio) indiceFim = indiceInicio;
     byte *inicio = u8_avanca_unichar(s->dados, indiceInicio);
     byte *fim = u8_avanca_unichar(s->dados, indiceFim);
-
     int byteInicio = inicio - s->dados;
     int byteFim = fim - s->dados;
-
     int bytesRemovidos = byteFim - byteInicio;
-
     int bytesInseridos = 0;
     byte *copiaInserida = NULL;
-
     if (sb != NULL){
         bytesInseridos = sb->numBytes;
         if(bytesInseridos > 0){
@@ -428,20 +397,17 @@ void s_substitui(Str s, int pos, int tam, Str_c sb)
 
     int novoTotal = s->numBytes - bytesRemovidos + bytesInseridos;
     s_realoca(s, novoTotal);
-
     int bytesDepois = s->numBytes - byteFim;
-
     if (bytesDepois > 0) {
-        memmove(s->dados + byteInicio + bytesInseridos, s->dados + byteFim, bytesDepois);
+        memmove(s->dados + byteInicio + bytesInseridos, 
+                s->dados + byteFim, 
+                bytesDepois);
     }
-
     if(bytesInseridos > 0) {
         memcpy(s->dados + byteInicio, copiaInserida, bytesInseridos);
     }
-
     s->numBytes = novoTotal;
     free(copiaInserida);
-
     s_ok(s);
 }
 
