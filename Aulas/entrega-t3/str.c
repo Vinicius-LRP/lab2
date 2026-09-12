@@ -508,7 +508,7 @@ void s_grava_arquivo(Str_c s, char *nome)
 Str s_cria_número(double num)
 {
     char espaco[64];
-    snprintf(espaco, sizeof(espaco), "%f", num);
+    snprintf(espaco, sizeof(espaco), "%g", num);
     return s_cria(espaco);
 }
 
