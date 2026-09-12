@@ -505,6 +505,8 @@ void s_grava_arquivo(Str_c s, char *nome)
     fclose(arq);
 }
 
+void 
+
 
 // vim: foldmethod=marker shiftwidth=2
 
