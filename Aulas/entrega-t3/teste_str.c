@@ -13,7 +13,7 @@ int main()
     
     double num = s_número(s);
 
-    printf("%f", num);
+    printf("\n%f\n", num);
 
     s_destroi(s);
     
