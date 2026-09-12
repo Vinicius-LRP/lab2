@@ -508,8 +508,17 @@ void s_grava_arquivo(Str_c s, char *nome)
 Str s_cria_número(double num)
 {
     char espaco[64];
-    snprintf(espaco, sizeof(espaco), "%g", num);
+    snprintf(espaco, sizeof(espaco), "%f", num);
     return s_cria(espaco);
+}
+
+double s_número(Str_c s)
+{
+    char *str = s_strc(s);
+    double numero = 0.0;
+    sscanf(str, "%lf", &numero);
+    free(str);
+    return numero;
 }
 
 // vim: foldmethod=marker shiftwidth=2
