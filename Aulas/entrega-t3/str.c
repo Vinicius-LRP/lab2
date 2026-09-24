@@ -521,5 +521,12 @@ double s_número(Str_c s)
     return numero;
 }
 
+Str s_cria_unindo(Lista l, Str sep){
+
+
+
+}
+
+
 // vim: foldmethod=marker shiftwidth=2
 
