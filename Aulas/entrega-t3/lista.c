@@ -1,10 +1,15 @@
 #include "lista.h"
 
-
-
 struct no{
-    Str dado_t;
+    dado_t dado_t;
     struct no *prox;
     struct no *ant;
-}
+};
+
+struct lista{
+    struct no *sentinela;
+    int tam;
+};
+
+
 
