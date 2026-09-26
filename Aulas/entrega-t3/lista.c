@@ -11,5 +11,13 @@ struct lista{
     int tam;
 };
 
+Lista l_cria(){
+    Lista l = malloc(sizeof(*l));
+    assert(l != NULL);
 
+    l->sentinela = malloc(sizeof(*l->sentinela));
+    assert(l != NULL);
+
+
+}
 
