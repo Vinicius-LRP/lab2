@@ -16,7 +16,7 @@ Lista l_cria(){
     assert(l != NULL);
 
     l->sentinela = malloc(sizeof(*l->sentinela));
-    assert(l != NULL);
+    assert(l->sentinela != NULL);
 
 
 }
