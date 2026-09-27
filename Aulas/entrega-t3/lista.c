@@ -54,3 +54,8 @@ void l_insere_fim(Lista l, dado_t d)
     insere_antes(l->sentinela, d);
     l->tam++;
 }
+
+int l_tam(Lista l)
+{
+    return l->tam;
+}
