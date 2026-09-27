@@ -43,3 +43,8 @@ static void insere_antes(struct no *ref, dado_t d)
     ref->ant = novo;
 }
 
+void l_insere_inicio(Lista l, dado_t d)
+{
+    insere_antes(l->sentinela->prox, d);
+    l->tam++;
+}
