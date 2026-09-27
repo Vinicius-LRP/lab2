@@ -159,7 +159,6 @@ dado_t l_remove_pos(Lista l, int pos)
     return l_remove_inicio(no_na_pos(l, pos));
 }
 
-
 void l_destroi(Lista l)
 {
     no *n = l->sentinela->prox;
@@ -170,4 +169,14 @@ void l_destroi(Lista l)
     }
     free(l->sentinela);
     free(l);
+}
+
+void l_imprime(Lista l)
+{
+    no *n = l->sentinela->prox;
+    while (n != l->sentinela) {
+        s_imprime(n->dado);
+        printf(" ");
+        n = n->prox;
+    }
 }
