@@ -45,6 +45,7 @@ static no *no_na_pos(Lista l, int pos)
     return n;
 }
 
+// remove um no da lista e retorna o d
 static dado_t remove_no(no *n)
 {
     no *anterior = n->ant;
@@ -136,4 +137,14 @@ void l_insere_pos(Lista l, dado_t d, int p)
     insere_antes(ref, d);
     l->tam++;
 }
+
+dado_t l_remove_inicio(Lista l)
+{
+    assert(!l_vazia(l));
+    l->tam--;
+    return remove_no(l->sentinela->prox);
+}
+
+
+
 
