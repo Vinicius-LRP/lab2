@@ -59,3 +59,9 @@ int l_tam(Lista l)
 {
     return l->tam;
 }
+
+bool l_vazia(Lista l)
+{
+    if(l->tam == 0) return true;
+}
+
