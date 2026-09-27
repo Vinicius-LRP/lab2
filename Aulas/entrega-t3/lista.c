@@ -145,6 +145,12 @@ dado_t l_remove_inicio(Lista l)
     return remove_no(l->sentinela->prox);
 }
 
+dado_t l_remove_fim(Lista l)
+{
+    assert(!l_vazia(l));
+    l->tam--;
+    return remove_no(l->sentinela->ant);
+}
 
 
 
