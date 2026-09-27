@@ -3,14 +3,16 @@
 #include <stdlib.h>
 #include <assert.h>
 
+typedef struct no no;
+
 struct no{
     dado_t dado;
-    struct no *prox;
-    struct no *ant;
+    no *prox;
+    no *ant;
 };
 
 struct lista{
-    struct no *sentinela;
+    no *sentinela;
     int tam;
 };
 
@@ -18,13 +20,13 @@ struct lista{
 //funcoes auxiliares
 
 //insere um no nv antes de um no de ref (inicio ref sent prox/fim ref sent)
-static void insere_antes(struct no *ref, dado_t d)
+static void insere_antes(no *ref, dado_t d)
 {
-    struct no *novo = malloc(sizeof(*novo));
+    no *novo = malloc(sizeof(*novo));
     assert(novo != NULL);
     novo->dado = d;
      
-    struct no *anterior = ref->ant;
+    no *anterior = ref->ant;
 
     novo->prox = ref;
     novo->ant = anterior;
@@ -32,6 +34,10 @@ static void insere_antes(struct no *ref, dado_t d)
     ref->ant = novo;
 }
 
+static no *no_na_pos(Lista l, int pos)
+{
+    no *
+}
 
 
 
@@ -73,6 +79,7 @@ int l_tam(Lista l)
 bool l_vazia(Lista l)
 {
     if(l->tam == 0) return true;
+    return false;
 }
 
 bool l_cheia(Lista l)
