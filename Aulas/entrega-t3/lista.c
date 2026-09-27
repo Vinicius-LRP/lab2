@@ -34,13 +34,16 @@ static void insere_antes(no *ref, dado_t d)
     ref->ant = novo;
 }
 
+// retorna o no na pos passada 
 static no *no_na_pos(Lista l, int pos)
 {
-    no *
+    no *n = l->sentinela->prox;
+
+    for (int i = 0; i < pos; i++){
+        n = n->prox;
+    }
+    return n;
 }
-
-
-
 
 //--------------------------------------
 
