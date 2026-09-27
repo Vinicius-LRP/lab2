@@ -17,5 +17,5 @@ int main()
     printf("\n%f\n", num);
 
     s_destroi(s);
-    
+
 }

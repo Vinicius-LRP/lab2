@@ -17,7 +17,6 @@ struct lista{
     int tam;
 };
 
-
 //funcoes auxiliares
 
 //insere um no nv antes de um no de ref (inicio ref sent prox/fim ref sent)

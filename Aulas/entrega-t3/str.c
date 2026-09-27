@@ -521,9 +521,19 @@ double s_número(Str_c s)
     return numero;
 }
 
-Str s_cria_unindo(Lista, Str)
+Str s_cria_unindo(Lista l, Str sep)
 {
-    return NULL;
+    Str resultado = s_cria("");
+
+    int tam = l_tam(l);
+    for (int i = 0; i < tam; i++){
+        if(i > 0) {
+            s_anexa(resultado, sep);
+        }
+        Str elem = l_dado_pos(l, i);
+        s_anexa(resultado, elem);
+    }
+    return resultado;
 }
 
 
