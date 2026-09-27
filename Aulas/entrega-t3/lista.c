@@ -160,3 +160,14 @@ dado_t l_remove_pos(Lista l, int pos)
 }
 
 
+void l_destroi(Lista l)
+{
+    no *n = l->sentinela->prox;
+    while(n != l->sentinela) {
+        no *proximo = n->prox;
+        free(n);
+        n = proximo;
+    }
+    free(l->sentinela);
+    free(l);
+}
