@@ -183,7 +183,6 @@ void l_imprime(Lista l)
     }
 }
 
-
 //fila
 
 dado_t l_primeiro(Lista l)
@@ -224,3 +223,22 @@ dado_t l_desempilha(Lista l)
 
 //----------------------
 
+Lista l_cria_separando(Str s, Str sep)
+{
+    Lista l = l_cria();
+    int tam = s_tam(s);
+    int pos = 0;
+    while (pos < tam) {
+        int inicio = s_busca_nc(s, pos, sep);
+        if (inicio == -1) break;
+
+        int fim = s_busca_c(s, inicio, sep);
+        if (fim == -1) fim = tam;
+
+        Str pedaco = s_cria_substring(s, inicio, fim - inicio);
+        l_insere_fim(l, pedaco);
+
+        pos = fim;
+    }
+    return l;
+}
