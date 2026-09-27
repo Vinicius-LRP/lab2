@@ -89,3 +89,11 @@ bool l_cheia(Lista l)
 {
     return false;
 }
+
+dado_t l_dado_inicio(Lista l)
+{
+    assert(!l_vazia(l));
+    return l->sentinela->prox->dado;
+
+}
+
