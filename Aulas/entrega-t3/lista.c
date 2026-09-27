@@ -65,3 +65,7 @@ bool l_vazia(Lista l)
     if(l->tam == 0) return true;
 }
 
+bool l_cheia(Lista l)
+{
+    return false;
+}
