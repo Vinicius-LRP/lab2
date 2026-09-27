@@ -34,7 +34,7 @@ static void insere_antes(no *ref, dado_t d)
     ref->ant = novo;
 }
 
-// retorna o no na pos passada 
+// retorna um ponteiro para no na posi passada 
 static no *no_na_pos(Lista l, int pos)
 {
     no *n = l->sentinela->prox;
