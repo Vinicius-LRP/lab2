@@ -18,6 +18,17 @@ int main()
 
     s_destroi(s);
     
-   
+   Lista l = l_cria();
+Str a = s_cria("oi");
+Str b = s_cria("mundo");
+l_insere_fim(l, a);
+l_insere_fim(l, b);
+
+l_imprime(l);   // "oi mundo "
+printf("\n");
+
+s_destroi(a);
+s_destroi(b);
+l_destroi(l);
 
 }

@@ -1,5 +1,6 @@
 #include "lista.h"
 
+#include <stdio.h> 
 #include <stdlib.h>
 #include <assert.h>
 
@@ -55,6 +56,7 @@ static dado_t remove_no(no *n)
     proximo->ant = anterior;
 
     dado_t d = n->dado;
+    free(n);
     return d;
 }
 
@@ -156,7 +158,7 @@ dado_t l_remove_pos(Lista l, int pos)
 {
     assert(pos >= 0 && pos < l->tam);
     l->tam--;
-    return l_remove_inicio(no_na_pos(l, pos));
+    return remove_no(no_na_pos(l, pos));
 }
 
 void l_destroi(Lista l)
