@@ -4,7 +4,7 @@
 #include <assert.h>
 
 struct no{
-    dado_t dado_t;
+    dado_t dado;
     struct no *prox;
     struct no *ant;
 };
@@ -23,8 +23,23 @@ Lista l_cria(){
 
     l->sentinela->prox = l->sentinela;
     l->sentinela->ant = l->sentinela;
-    l->sentinela->dado_t = NULL;
+    l->sentinela->dado = NULL;
     l->tam = 0;
     return l;
+}
+
+//insere um no nv antes de um no de ref (inicio ref sent prox/fim ref sent)
+static void insere_antes(struct no *ref, dado_t d)
+{
+    struct no *novo = malloc(sizeof(*novo));
+    assert(novo != NULL);
+    novo->dado = d;
+     
+    struct no *anterior = ref->ant;
+
+    novo->prox = ref;
+    novo->ant = anterior;
+    anterior->prox = novo;
+    ref->ant = novo;
 }
 
