@@ -97,3 +97,9 @@ dado_t l_dado_inicio(Lista l)
 
 }
 
+dado_t l_dado_fim(Lista l)
+{
+    assert(!l_vazia(l));
+    return l->sentinela->ant->dado;
+}
+
