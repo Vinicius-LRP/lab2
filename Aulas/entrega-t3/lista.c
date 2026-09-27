@@ -152,5 +152,11 @@ dado_t l_remove_fim(Lista l)
     return remove_no(l->sentinela->ant);
 }
 
+dado_t l_remove_pos(Lista l, int pos)
+{
+    assert(pos >= 0 && pos < l->tam);
+    l->tam--;
+    return l_remove_inicio(no_na_pos(l, pos));
+}
 
 
