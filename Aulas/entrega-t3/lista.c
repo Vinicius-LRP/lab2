@@ -103,3 +103,10 @@ dado_t l_dado_fim(Lista l)
     return l->sentinela->ant->dado;
 }
 
+dado_t l_dado_pos(Lista l, int pos) 
+{
+    assert(!l_vazia(l));
+    no *n = no_na_pos(l, pos);
+    return n->dado;
+}
+
