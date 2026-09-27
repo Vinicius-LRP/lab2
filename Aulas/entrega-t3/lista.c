@@ -45,6 +45,18 @@ static no *no_na_pos(Lista l, int pos)
     return n;
 }
 
+static dado_t remove_no(no *n)
+{
+    no *anterior = n->ant;
+    no *proximo = n->prox;
+
+    anterior->prox = proximo;
+    proximo->ant = anterior;
+
+    dado_t d = n->dado;
+    return d;
+}
+
 //--------------------------------------
 
 Lista l_cria(){
@@ -105,8 +117,23 @@ dado_t l_dado_fim(Lista l)
 
 dado_t l_dado_pos(Lista l, int pos) 
 {
-    assert(!l_vazia(l));
+    assert(pos >= 0 && pos < l->tam);
     no *n = no_na_pos(l, pos);
     return n->dado;
+}
+
+void l_insere_pos(Lista l, dado_t d, int p)
+{
+    assert(p >= 0 && p <= l->tam);
+
+    no *ref;
+    if(p == l->tam) {
+        ref = l->sentinela;
+    } else {
+        ref = no_na_pos(l, p);
+    }
+
+    insere_antes(ref, d);
+    l->tam++;
 }
 

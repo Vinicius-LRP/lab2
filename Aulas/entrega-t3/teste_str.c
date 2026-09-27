@@ -18,9 +18,6 @@ int main()
 
     s_destroi(s);
     
-    Lista l = l_cria();
-    l_insere_fim(l, s_cria("a"));
-    l_insere_fim(l, s_cria("b"));
-    l_insere_fim(l, s_cria("c"));
+   
 
 }
