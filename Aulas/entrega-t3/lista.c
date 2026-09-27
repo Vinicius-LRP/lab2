@@ -14,19 +14,8 @@ struct lista{
     int tam;
 };
 
-Lista l_cria(){
-    Lista l = malloc(sizeof(*l));
-    assert(l != NULL);
 
-    l->sentinela = malloc(sizeof(*l->sentinela));
-    assert(l->sentinela != NULL);
-
-    l->sentinela->prox = l->sentinela;
-    l->sentinela->ant = l->sentinela;
-    l->sentinela->dado = NULL;
-    l->tam = 0;
-    return l;
-}
+//funcoes auxiliares
 
 //insere um no nv antes de um no de ref (inicio ref sent prox/fim ref sent)
 static void insere_antes(struct no *ref, dado_t d)
@@ -42,6 +31,27 @@ static void insere_antes(struct no *ref, dado_t d)
     anterior->prox = novo;
     ref->ant = novo;
 }
+
+
+
+
+
+//--------------------------------------
+
+Lista l_cria(){
+    Lista l = malloc(sizeof(*l));
+    assert(l != NULL);
+
+    l->sentinela = malloc(sizeof(*l->sentinela));
+    assert(l->sentinela != NULL);
+
+    l->sentinela->prox = l->sentinela;
+    l->sentinela->ant = l->sentinela;
+    l->sentinela->dado = NULL;
+    l->tam = 0;
+    return l;
+}
+
 
 void l_insere_inicio(Lista l, dado_t d)
 {
