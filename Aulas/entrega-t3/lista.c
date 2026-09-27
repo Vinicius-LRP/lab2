@@ -182,3 +182,45 @@ void l_imprime(Lista l)
         n = n->prox;
     }
 }
+
+
+//fila
+
+dado_t l_primeiro(Lista l)
+{
+    return l_dado_inicio(l);
+}
+
+
+void l_insere(Lista l, dado_t d)
+{
+    l_insere_fim(l, d);
+}
+
+
+dado_t l_remove(Lista l)
+{
+    return l_remove_inicio(l);
+}
+
+//---------------
+
+//pilha
+
+dado_t l_topo(Lista l)
+{
+    return l_dado_inicio(l);
+}
+
+void l_empilha(Lista l, dado_t d)
+{
+    l_insere_inicio(l, d);
+}
+
+dado_t l_desempilha(Lista l)
+{
+    return l_remove_inicio(l);
+}
+
+//----------------------
+
