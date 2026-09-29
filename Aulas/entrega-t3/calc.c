@@ -44,6 +44,14 @@ static bool letra_ou_cifrao(unichar c)
     return false;
 }
 
+static bool letra_ou_digito_underline(unichar c)
+{
+    if(c == '_' || letra(c) || digito(c)){
+        return true;
+    }
+    return false;
+}
+
 static bool espaco_tab_fim_de_linha(unichar c)
 {
     if (c == ' ' || c == '\n' || c == '\t' || c == '\r'){
@@ -81,10 +89,10 @@ Lista tokeniza(Str txt)
                 if (!digito_ou_ponto(c1)) break;
                 pos++;
             }
-        } else if (letra(c)) {
+        } else if (letra_ou_cifrao(c)) {
             while (pos < tam) {
                 unichar c1 = s_ch(txt, pos);
-                if (!letra(c1)) break;
+                if (!letra_ou_digito_underline(c1)) break;
                 pos++;
             }
         } else {
