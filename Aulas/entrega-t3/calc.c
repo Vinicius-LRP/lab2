@@ -10,6 +10,8 @@ typedef enum {
 
 // f auxiliares
 
+static Dicionário dic_variaveis = NULL;
+
 static bool operador(unichar c)
 {
     if (c == '+' || c == '-' || c == '*' || c == '/' ||
@@ -83,6 +85,42 @@ static tipo_token classifica_token(Str_c token)
     return ERRO;
 }
 
+bool chaves_são_iguais(chave_t a, chave_t b)
+{
+  int *pa = a;
+  int *pb = b;
+  return *pa == *pb;
+}
+
+bool chave_é_menor(chave_t a, chave_t b)
+{
+  int *pa = a;
+  int *pb = b;
+  return *pa < *pb;
+}
+
+static void garante_dicionario()
+{
+    if(dic_variaveis == NULL) {
+        dic_variaveis = dic_cria(chave_é_menor, chaves_são_iguais);
+    }
+}
+
+static double valor_operando(Str_c operando)
+{
+    unichar primeiro_caracter = s_ch(operando, 0);
+    if (digito_ou_ponto(primeiro_caracter)) {
+        return s_número(operando);
+    }
+    
+    valor_t v = dic_busca(dic_variaveis, (chave_t) operando);
+    if (v == VALOR_NÃO_EXISTE) {
+        return 0.0;
+    }
+
+    Str_c valor_str = (Str_c) v;
+    return s_número(valor_str);
+}
 
 // -----------------
 
