@@ -227,6 +227,11 @@ static Str valor_operando_str(Str_c operando, bool *erro)
     return s_cria_cópia((Str_c) v);
 }
 
+static bool opera_atribuicao(Lista pilha_operandos)
+{
+    if(l_tam(pilha_operandos) < 2) return false;
+}
+
 // -----------------
 
 Str calculadora(Str expressão)
