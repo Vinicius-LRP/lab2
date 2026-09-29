@@ -33,4 +33,10 @@ static bool digito_ou_ponto(unichar c)
     }
 }
 
-
+static bool letra(unichar c)
+{
+    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')){
+        return true;
+    }
+    return false;
+}
