@@ -67,7 +67,7 @@ static bool espaco_tab_fim_de_linha(unichar c)
     return false;
 }
 
-static tipo_token classfica_token(Str_c token)
+static tipo_token classifica_token(Str_c token)
 {
     int tam = s_tam(token);
 
