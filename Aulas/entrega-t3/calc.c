@@ -162,6 +162,13 @@ static double potenciacao(double a, double b)
     return pow(a, b);
 }
 
+static bool opera_soma(Lista p) 
+{
+    return calcula_dois_operandos(p, soma);
+}
+
+
+
 
 // -----------------
 
