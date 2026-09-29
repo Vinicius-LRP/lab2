@@ -1,5 +1,6 @@
 #include "calc.h"
 #include "dicionario.h"
+#include <stdbool.h>
 
 // f auxiliares
 
@@ -99,8 +100,8 @@ Lista tokeniza(Str txt)
         } else {
             pos++;
         }
-        int fim = pos - inicio;
-        Str token = s_cria_substring(txt, inicio, fim);
+        int tam_token = pos - inicio;
+        Str token = s_cria_substring(txt, inicio, tam_token);
         l_insere_fim(l, token);
     }
     return l;
