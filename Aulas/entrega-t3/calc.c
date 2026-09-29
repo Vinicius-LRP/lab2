@@ -208,6 +208,25 @@ static bool opera_potencia(Lista p)
     return calcula_dois_operandos(p, potenciacao);
 }
 
+static Str valor_operando_str(Str_c operando, bool *erro)
+{
+    *erro = false;
+    unichar primeiro_caractere = s_ch(operando, 0);
+
+    if(digito_ou_ponto(primeiro_caractere)){
+        return s_cria_cópia(operando);
+    }
+
+    garante_dicionario();
+    valor_t v = dic_busca(dic_variaveis, (chave_t) operando);
+    if (v == VALOR_NÃO_EXISTE) {
+        *erro = true;
+        return NULL;
+    }
+    
+    return s_cria_cópia((Str_c) v);
+}
+
 // -----------------
 
 Str calculadora(Str expressão)
