@@ -17,6 +17,7 @@ static bool operador(unichar c)
         c == '^' || c == '(' || c == ')' || c == '=') {
         return true;  
     }
+    return false;
 }
 
 static bool digito(unichar c)
@@ -24,6 +25,7 @@ static bool digito(unichar c)
     if(c >= '0' && c <= '9') {
         return true;
     }
+    return false;
 }
 
 static bool digito_ou_ponto(unichar c)
@@ -31,6 +33,7 @@ static bool digito_ou_ponto(unichar c)
     if (c == '.' || digito(c)){
         return true;
     }
+    return false;
 }
 
 static bool letra(unichar c)
