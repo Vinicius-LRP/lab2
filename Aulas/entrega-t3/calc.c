@@ -193,6 +193,11 @@ static bool opera_subtracao(Lista p)
     return calcula_dois_operandos(p, subtracao);
 }
 
+static bool opera_multiplicacao(Lista p) 
+{
+    return calcula_dois_operandos(p, multiplicacao);
+}
+
 
 
 
