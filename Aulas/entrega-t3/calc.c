@@ -11,6 +11,15 @@ typedef enum {
     ERRO
 } tipo_token;
 
+typedef enum {
+    VAZIA,
+    SOMA_SUBTRACAO,
+    MULT_DIV,
+    POTENCIACAO,
+    
+
+} operadores;
+
 // f auxiliares
 
 static Dicionário dic_variaveis = NULL;
