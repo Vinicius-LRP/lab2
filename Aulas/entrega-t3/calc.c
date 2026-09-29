@@ -138,8 +138,10 @@ static double valor_operando(Str_c operando, bool *erro)
     return s_número(valor_str);
 }
 
-static double
-
+static double soma(double a, double b)
+{
+    return a + b;
+}
 
 
 // -----------------
