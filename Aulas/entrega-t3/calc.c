@@ -188,6 +188,12 @@ static bool opera_soma(Lista p)
     return calcula_dois_operandos(p, soma);
 }
 
+static bool opera_subtracao(Lista p) 
+{
+    return calcula_dois_operandos(p, subtracao);
+}
+
+
 
 
 
