@@ -138,6 +138,26 @@ static double valor_operando(Str_c operando, bool *erro)
     return s_número(valor_str);
 }
 
+static bool calcula_dois_operandos(Lista pilha_operandos, double (*operacao)(double, double))
+{
+    if(l_tam(pilha_operandos) < 2) return false;
+
+    Str string_b = l_desempilha(pilha_operandos);
+    Str string_a = l_desempilha(pilha_operandos);
+
+    bool erro_a, erro_b;
+    double valor_a = valor_operando(string_a, &erro_a);
+    double valor_b = valor_operando(string_b, &erro_b);
+
+    if (erro_a == true || erro_b == true) return false;
+
+    double resultado = operacao(valor_a, valor_b);
+    Str s_resultado = s_cria_número(resultado);
+    l_empilha(pilha_operandos, s_resultado);
+    
+    return true;
+}
+
 static double soma(double a, double b)
 {
     return a + b;
@@ -157,6 +177,7 @@ static double divisao(double a, double b)
 {
     return a / b;
 }
+
 static double potenciacao(double a, double b)
 {
     return pow(a, b);
