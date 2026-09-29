@@ -26,4 +26,11 @@ static bool digito(unichar c)
     }
 }
 
+static bool digito_ou_ponto(unichar c)
+{
+    if (c == '.' || digito(c)){
+        return true;
+    }
+}
+
 
