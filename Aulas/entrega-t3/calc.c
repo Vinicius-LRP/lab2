@@ -109,6 +109,7 @@ static void garante_dicionario()
 static double valor_operando(Str_c operando)
 {
     unichar primeiro_caracter = s_ch(operando, 0);
+    
     if (digito_ou_ponto(primeiro_caracter)) {
         return s_número(operando);
     }
