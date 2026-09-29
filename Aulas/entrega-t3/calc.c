@@ -153,6 +153,16 @@ static double multiplicacao(double a, double b)
     return a * b;
 }
 
+static double divisao(double a, double b)
+{
+    return a / b;
+}
+static double potenciacao(double a, double b)
+{
+    return pow(a, b);
+}
+
+
 // -----------------
 
 Str calculadora(Str expressão)
