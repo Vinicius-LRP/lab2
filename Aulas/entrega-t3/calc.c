@@ -1,6 +1,7 @@
 #include "calc.h"
 #include "dicionario.h"
 #include <stdbool.h>
+#include <string.h>
 
 typedef enum {
     TOKEN_OPERADOR,
@@ -85,37 +86,44 @@ static tipo_token classifica_token(Str_c token)
     return ERRO;
 }
 
-bool chaves_são_iguais(chave_t a, chave_t b)
+static bool chaves_str_iguais(chave_t a, chave_t b)
 {
-  int *pa = a;
-  int *pb = b;
-  return *pa == *pb;
+    return s_igual((Str_c) a, (Str_c) b);
 }
 
-bool chave_é_menor(chave_t a, chave_t b)
+bool chave_str_menor(chave_t a, chave_t b)
 {
-  int *pa = a;
-  int *pb = b;
-  return *pa < *pb;
+    Str_c string_a = a;
+    Str_c string_b = b;
+    char *char_a = s_strc(string_a);
+    char *char_b = s_strc(string_b);
+    int resultado = strcmp(char_a, char_b);
+    if(resultado < 0) {
+        return true;
+    }
+    return false;
 }
 
 static void garante_dicionario()
 {
     if(dic_variaveis == NULL) {
-        dic_variaveis = dic_cria(chave_é_menor, chaves_são_iguais);
+        dic_variaveis = dic_cria(chave_str_menor, chaves_str_iguais);
     }
 }
 
-static double valor_operando(Str_c operando)
+static double valor_operando(Str_c operando, bool *erro)
 {
+    *erro = false;
     unichar primeiro_caracter = s_ch(operando, 0);
-    
+
     if (digito_ou_ponto(primeiro_caracter)) {
         return s_número(operando);
     }
     
+    garante_dicionario();
     valor_t v = dic_busca(dic_variaveis, (chave_t) operando);
     if (v == VALOR_NÃO_EXISTE) {
+        *erro = true;
         return 0.0;
     }
 
