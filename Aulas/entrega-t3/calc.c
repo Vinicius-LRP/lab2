@@ -43,3 +43,11 @@ static bool letra(unichar c)
     }
     return false;
 }
+
+static bool espaco_tab_fim_de_linha(unichar c)
+{
+    if (c == ' ' || c == '\n' || c == '\t' || c == '\r'){
+        return true;
+    }
+    return false;
+}
