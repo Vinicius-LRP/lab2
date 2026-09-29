@@ -5,6 +5,7 @@
 typedef enum {
     TOKEN_OPERADOR,
     TOKEN_OPERANDO,
+    ERRO
 } tipo_token;
 
 // f auxiliares
@@ -64,6 +65,22 @@ static bool espaco_tab_fim_de_linha(unichar c)
         return true;
     }
     return false;
+}
+
+static tipo_token classfica_token(Str_c token)
+{
+    int tam = s_tam(token);
+
+    unichar primeiro_caracter = s_ch(token, 0);
+
+    if(tam == 1 && operador(primeiro_caracter)) {
+        return TOKEN_OPERADOR;
+    }
+    if (digito_ou_ponto(primeiro_caracter) || letra_ou_cifrao(primeiro_caracter)) {
+        return TOKEN_OPERANDO;
+    }
+
+    return ERRO;
 }
 
 
