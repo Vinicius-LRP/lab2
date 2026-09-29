@@ -227,9 +227,40 @@ static Str valor_operando_str(Str_c operando, bool *erro)
     return s_cria_cópia((Str_c) v);
 }
 
+static bool nome_de_variavel(Str_c s)
+{
+    if(s_tam(s) == 0) return false;
+    return letra_ou_cifrao(s_ch(s, 0));
+}
+
 static bool opera_atribuicao(Lista pilha_operandos)
 {
     if(l_tam(pilha_operandos) < 2) return false;
+
+    Str primeiro = l_desempilha(pilha_operandos);
+    Str segundo = l_desempilha(pilha_operandos);
+
+    if(!nome_de_variavel(segundo)){
+        return false;
+    }
+
+    bool erro;
+    Str valor_str = valor_operando_str(primeiro, &erro);
+
+    if (erro == true) {
+        return false;
+    }
+
+    garante_dicionario();
+    valor_t antigo = dic_insere(dic_variaveis, (chave_t) segundo, (valor_t) valor_str);
+
+    if (antigo != VALOR_NÃO_EXISTE){
+        s_destroi((Str) antigo);
+    }
+
+    l_empilha(pilha_operandos, s_cria_cópia(valor_str));
+
+    return true;
 }
 
 // -----------------
