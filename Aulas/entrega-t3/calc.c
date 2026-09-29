@@ -2,6 +2,11 @@
 #include "dicionario.h"
 #include <stdbool.h>
 
+typedef enum {
+    TOKEN_OPERADOR,
+    TOKEN_OPERANDO,
+} tipo_token;
+
 // f auxiliares
 
 static bool operador(unichar c)
@@ -60,6 +65,7 @@ static bool espaco_tab_fim_de_linha(unichar c)
     }
     return false;
 }
+
 
 // -----------------
 
