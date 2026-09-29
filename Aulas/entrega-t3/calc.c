@@ -90,6 +90,7 @@ Lista tokeniza(Str txt)
                 pos++;
             }
         } else if (letra_ou_cifrao(c)) {
+            pos++;
             while (pos < tam) {
                 unichar c1 = s_ch(txt, pos);
                 if (!letra_ou_digito_underline(c1)) break;

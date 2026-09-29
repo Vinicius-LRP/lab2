@@ -17,7 +17,7 @@ int main()
 
     printf("\n%f\n", num);
 
-    Str txt = s_cria("92+a ba 3b3 ** *  ");
+    Str txt = s_cria("92+a ba 3b3 ** * aw2_");
     Lista tokens = tokeniza(txt);
     l_imprime(tokens);
     printf("\n");
