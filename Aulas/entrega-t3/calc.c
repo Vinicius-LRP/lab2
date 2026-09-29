@@ -198,9 +198,15 @@ static bool opera_multiplicacao(Lista p)
     return calcula_dois_operandos(p, multiplicacao);
 }
 
+static bool opera_divisao(Lista p) 
+{
+    return calcula_dois_operandos(p, divisao);
+}
 
-
-
+static bool opera_potencia(Lista p) 
+{
+    return calcula_dois_operandos(p, potenciacao);
+}
 
 // -----------------
 
