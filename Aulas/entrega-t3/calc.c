@@ -16,9 +16,19 @@ typedef enum {
     SOMA_SUBTRACAO,
     MULT_DIV,
     POTENCIACAO,
-    
-
+    ABRE_CON,
+    FECHA_CON,
+    ATRIBUI,
+    FIM
 } operadores;
+
+typedef enum {
+    TERMINA, 
+    EMPILHA,
+    OPERA,
+    DESCARTA,
+    ERRO
+} acao;
 
 // f auxiliares
 
@@ -270,6 +280,16 @@ static bool opera_atribuicao(Lista pilha_operandos)
     l_empilha(pilha_operandos, s_cria_cópia(valor_str));
 
     return true;
+}
+
+static operadores grupo(unichar c)
+{
+    if(c == '+' || c == '-') return SOMA_SUBTRACAO;
+    if(c == '*' || c == '/') return MULT_DIV;
+    if(c == '^') return POTENCIACAO;
+    if (c == '(') return ABRE_CON;
+    if(c == ')') return FECHA_CON;
+    if(c == '=') return ATRIBUI;
 }
 
 // -----------------
