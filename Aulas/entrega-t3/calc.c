@@ -18,3 +18,12 @@ static bool operador(unichar c)
         return true;  
     }
 }
+
+static bool digito(unichar c)
+{
+    if(c >= '0' && c <= '9') {
+        return true;
+    }
+}
+
+
