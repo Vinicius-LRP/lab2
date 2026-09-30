@@ -421,7 +421,7 @@ Str calculadora(Str expressão)
 
             if (!ok) {
                 if(!fim_da_entrada) {
-                    destroi_lista_de_str(tokens);
+                destroi_lista_de_str(tokens);
                 destroi_lista_de_str(pilha_operandos);
                 destroi_lista_de_str(pilha_operadores);
                 return cria_erro("Operação invalida!");
@@ -429,7 +429,20 @@ Str calculadora(Str expressão)
             }
         }
     }
+    if (!l_vazia(tokens) || !l_vazia(pilha_operadores) || l_tam(pilha_operandos) != 1) {
+        destroi_lista_de_str(tokens);
+        destroi_lista_de_str(pilha_operandos);
+        destroi_lista_de_str(pilha_operadores);
+        return cria_erro("Expressão incompleta!");
+    }
 
+    Str resultado = l_remove_inicio(pilha_operandos);
+    
+    l_destroi(tokens);
+    l_destroi(pilha_operandos);
+    l_destroi(pilha_operadores);
+
+    return resultado;
 }
 
 Lista tokeniza(Str txt)
