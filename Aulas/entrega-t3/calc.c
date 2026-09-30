@@ -1,3 +1,5 @@
+#entrega
+
 #include "calc.h"
 #include "dicionario.h"
 #include <stdbool.h>
