@@ -374,6 +374,37 @@ Str calculadora(Str expressão)
         if (!fim_da_entrada) {
             token_atual = l_primeiro(tokens);
             tipo = classifica_token(token_atual);
+
+            if(tipo == ERRO) {
+                destroi_lista_de_str(tokens);
+                destroi_lista_de_str(pilha_operandos);
+                destroi_lista_de_str(pilha_operadores);
+                return cria_erro("Token Invalido");
+            }
+            if (tipo == TOKEN_OPERANDO) {
+                Str t = l_remove_inicio(tokens);
+                l_empilha(pilha_operadores, t);
+                continue;
+            }
+        }
+        
+        int coluna;
+
+        if (fim_da_entrada) {
+            coluna = FIM;
+        } else {
+            coluna = grupo(s_ch(token_atual, 0));
+        }
+
+        acao a = tabela[linha][coluna];
+
+        if(a == TERMINA) {
+            break;
+        } else if (a == ERRO) {
+            destroi_lista_de_str(tokens);
+            destroi_lista_de_str(pilha_operandos);
+            destroi_lista_de_str(pilha_operadores);
+            return cria_erro("sintaxe");
         }
 
     }
