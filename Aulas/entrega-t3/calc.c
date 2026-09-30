@@ -8,7 +8,7 @@
 typedef enum {
     TOKEN_OPERADOR,
     TOKEN_OPERANDO,
-    ERRO
+    TOKEN_ERRO
 } tipo_token;
 
 typedef enum {
@@ -104,7 +104,7 @@ static tipo_token classifica_token(Str_c token)
         return TOKEN_OPERANDO;
     }
 
-    return ERRO;
+    return TOKEN_ERRO;
 }
 
 static bool chaves_str_iguais(chave_t a, chave_t b)
@@ -308,7 +308,7 @@ static acao decide_acao(Lista pilha_operadores, tipo_token tipo_entrada, unichar
     }
 
     int coluna;
-    if (tipo_entrada == ERRO || (tipo_entrada != TOKEN_OPERADOR)) {
+    if (tipo_entrada == TOKEN_ERRO || (tipo_entrada != TOKEN_OPERADOR)) {
         coluna = FIM;
     } else {
         coluna = grupo(op_entrada);
@@ -370,7 +370,7 @@ Str calculadora(Str expressão)
             token_atual = l_primeiro(tokens);
             tipo = classifica_token(token_atual);
 
-            if(tipo == ERRO) {
+            if(tipo == TOKEN_ERRO) {
                 destroi_lista_de_str(tokens);
                 destroi_lista_de_str(pilha_operandos);
                 destroi_lista_de_str(pilha_operadores);
