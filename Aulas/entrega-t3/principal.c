@@ -11,7 +11,7 @@ int main(){
     Str cont = s_cria_de_arquivo(e);
 
     if(s_tam(cont) == 0) {
-        printf("Arquivo vazio ou erro ao ler: %s", e);
+        printf("Arquivo %s vazio ou não existe", e);
         s_destroi(cont);
         return 1;
     }
