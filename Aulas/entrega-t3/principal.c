@@ -48,5 +48,5 @@ int main(){
 
     l_destroi(resultados);
 
-    return 0
+    return 0;
 }
