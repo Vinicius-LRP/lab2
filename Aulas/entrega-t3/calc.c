@@ -356,9 +356,14 @@ Str calculadora(Str expressão)
 {
     Lista tokens = tokeniza(expressão);
     Lista pilha_operandos = l_cria();
-    Lista pilha_operandos = l_cria();
+    Lista pilha_operandores = l_cria();
 
-    
+    while(true) {
+        int linha;
+        if (l_vazia(pilha_operadores)) {
+            linha = VAZIA;
+        }
+    }
 }
 
 Lista tokeniza(Str txt)
