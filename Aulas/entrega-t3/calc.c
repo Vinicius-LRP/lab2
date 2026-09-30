@@ -112,11 +112,6 @@ static bool chaves_str_iguais(chave_t a, chave_t b)
     return s_igual((Str_c) a, (Str_c) b);
 }
 
-static double soma(double a, double b) 
-{
-    return a + b;
-}
-
 static bool chave_str_menor(chave_t a, chave_t b)
 {
     Str_c string_a = a;
