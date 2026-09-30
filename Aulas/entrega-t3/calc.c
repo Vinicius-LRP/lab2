@@ -416,9 +416,20 @@ Str calculadora(Str expressão)
         } else if (a == OPERA) {
             Str op = l_desempilha(pilha_operadores);
             unichar c = s_ch(op, 0);
-        }
+            bool ok = exercuta_operador(c, pilha_operandos);
+            s_destroi(op);
 
+            if (!ok) {
+                if(!fim_da_entrada) {
+                    destroi_lista_de_str(tokens);
+                destroi_lista_de_str(pilha_operandos);
+                destroi_lista_de_str(pilha_operadores);
+                return cria_erro("Operação invalida!");
+                }
+            }
+        }
     }
+
 }
 
 Lista tokeniza(Str txt)
