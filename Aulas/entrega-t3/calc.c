@@ -419,7 +419,15 @@ Str calculadora(Str expressão)
     l_destroi(pilha_operandos);
     l_destroi(pilha_operadores);
 
-    return resultado;
+    bool erro_final;
+    double valor_final = valor_operando(resultado, &erro_final);
+    s_destroi(resultado);
+
+    if(erro_final) {
+        return cria_erro("Variavel Inexistente");
+    }
+
+    return s_cria_número(valor_final);
 }
 
 Lista tokeniza(Str txt)
