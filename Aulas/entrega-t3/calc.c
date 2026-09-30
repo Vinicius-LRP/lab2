@@ -302,6 +302,25 @@ static const acao tabela[7][7] = {
     {OPERA,   EMPILHA, EMPILHA, EMPILHA, EMPILHA, OPERA,    EMPILHA,}
 };
 
+static acao decide_acao(Lista pilha_operadores, tipo_token tipo_entrada, unichar op_entrada)
+{
+    int linha;
+    if (l_vazia(pilha_operadores)) {
+        linha = VAZIA;
+    } else {
+        Str topo = l_topo(pilha_operadores);
+        linha = grupo(s_ch(topo, 0));
+    }
+
+    int coluna;
+    if (tipo_entrada == ERRO || (tipo_entrada != TOKEN_OPERADOR)) {
+        coluna = FIM;
+    } else {
+        coluna = grupo(op_entrada);
+    }
+    return tabela[linha][coluna];
+}
+
 // -----------------
 
 Str calculadora(Str expressão)
