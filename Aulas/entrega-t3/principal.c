@@ -5,19 +5,19 @@
 #include <stdio.h>
 
 int main(){
-    char *entrada = "entrada.txt";
-    char *saida = "saida.txt";
+    char *e = "entrada.txt";
+    char *s = "saida.txt";
 
-    Str conteudo = s_cria_de_arquivo(entrada);
+    Str cont = s_cria_de_arquivo(e);
 
-    if(s_tam(conteudo) == 0) {
-        printf("Arquivo vazio ou erro ao ler: %s", entrada);
-        s_destroi(conteudo);
+    if(s_tam(cont) == 0) {
+        printf("Arquivo vazio ou erro ao ler: %s", e);
+        s_destroi(cont);
         return 1;
     }
 
     Str quebra_linha = s_cria("\n");
-    Lista linhas = l_cria_separando(conteudo, quebra_linha);
+    Lista linhas = l_cria_separando(cont, quebra_linha);
     
     Lista resultados = l_cria();
 
@@ -38,7 +38,7 @@ int main(){
     Str texto_saida = s_cria_unindo(resultados, sep_saida);
     s_destroi(sep_saida);
 
-    s_grava_arquivo(texto_saida, saida);
+    s_grava_arquivo(texto_saida, s);
     s_destroi(texto_saida);
 
     while (!l_vazia(resultados)) {
