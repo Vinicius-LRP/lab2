@@ -405,6 +405,17 @@ Str calculadora(Str expressão)
             destroi_lista_de_str(pilha_operandos);
             destroi_lista_de_str(pilha_operadores);
             return cria_erro("sintaxe");
+        } else if (a == EMPILHA) {
+            Str t = l_remove_inicio(tokens);
+            l_empilha(pilha_operadores, t);
+        } else if (a == DESCARTA) {
+            Str abre = l_desempilha(pilha_operadores);
+            s_destroi(abre);
+            Str fecha = l_remove_inicio(tokens);
+            s_destroi(fecha);
+        } else if (a == OPERA) {
+            Str op = l_desempilha(pilha_operadores);
+            unichar c = s_ch(op, 0);
         }
 
     }
