@@ -354,7 +354,11 @@ static Str cria_erro(char const *msg)
 
 Str calculadora(Str expressão)
 {
-    return NULL;
+    Lista tokens = tokeniza(expressão);
+    Lista pilha_operandos = l_cria();
+    Lista pilha_operandos = l_cria();
+
+    
 }
 
 Lista tokeniza(Str txt)
