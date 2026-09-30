@@ -330,6 +330,26 @@ static void destroi_lista_de_str(Lista l)
     l_destroi(l);
 }
 
+static bool exercuta_operador(unichar op, Lista pilha_operandos)
+{
+    if(op == '+') return opera_soma(pilha_operandos);
+    if(op == '-') return opera_subtracao(pilha_operandos);
+    if(op == '*') return opera_multiplicacao(pilha_operandos);
+    if(op == '/') return opera_divisao(pilha_operandos);
+    if(op == '^') return opera_potencia(pilha_operandos);
+    if(op == '=') return opera_atribuicao(pilha_operandos);
+    return false;
+}
+
+static Str cria_erro(char const *msg)
+{
+    Str s = s_cria("#ERRO ");
+    Str m = s_cria(msg);
+    s_anexa(s, m);
+    s_destroi(m);
+    return s;
+}
+
 // -----------------
 
 Str calculadora(Str expressão)
