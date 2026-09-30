@@ -292,6 +292,16 @@ static operadores grupo(unichar c)
     if(c == '=') return ATRIBUI;
 }
 
+static const acao tabela[7][7] = {
+    {TERMINA, EMPILHA, EMPILHA, EMPILHA, EMPILHA, ERRO,     EMPILHA},
+    {OPERA,   OPERA,   EMPILHA, EMPILHA, EMPILHA, OPERA,    EMPILHA},
+    {OPERA,   OPERA,   OPERA,   EMPILHA, EMPILHA, OPERA,    EMPILHA},
+    {OPERA,   OPERA,   OPERA,   EMPILHA, EMPILHA, OPERA,    EMPILHA},
+    {ERRO,    EMPILHA, EMPILHA, EMPILHA, EMPILHA, DESCARTA, EMPILHA, },
+    {0},
+    {OPERA,   EMPILHA, EMPILHA, EMPILHA, EMPILHA, OPERA,    EMPILHA,}
+};
+
 // -----------------
 
 Str calculadora(Str expressão)
