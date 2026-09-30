@@ -321,6 +321,15 @@ static acao decide_acao(Lista pilha_operadores, tipo_token tipo_entrada, unichar
     return tabela[linha][coluna];
 }
 
+static void destroi_lista_de_str(Lista l)
+{
+    while(!l_vazia(l)) {
+        Str s = l_remove_inicio(l);
+        s_destroi(s);
+    }
+    l_destroi(l);
+}
+
 // -----------------
 
 Str calculadora(Str expressão)
