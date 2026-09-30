@@ -99,8 +99,9 @@ bool l_vazia(Lista l)
     return false;
 }
 
-bool l_cheia(Lista l)
+bool l_cheia(Lista)
 {
+
     return false;
 }
 
