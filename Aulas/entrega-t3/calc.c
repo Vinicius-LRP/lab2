@@ -356,13 +356,26 @@ Str calculadora(Str expressão)
 {
     Lista tokens = tokeniza(expressão);
     Lista pilha_operandos = l_cria();
-    Lista pilha_operandores = l_cria();
+    Lista pilha_operadores = l_cria();
 
     while(true) {
         int linha;
         if (l_vazia(pilha_operadores)) {
             linha = VAZIA;
+        } else {
+            Str topo = l_topo(pilha_operadores);
+            linha = grupo(s_ch(topo, 0));
         }
+    
+        bool fim_da_entrada = l_vazia(tokens);
+        Str token_atual = NULL;
+        tipo_token tipo = TOKEN_OPERADOR;
+
+        if (!fim_da_entrada) {
+            token_atual = l_primeiro(tokens);
+            tipo = classifica_token(token_atual);
+        }
+
     }
 }
 
