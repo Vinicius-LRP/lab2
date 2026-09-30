@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <assert.h>
 
 typedef enum {
     TOKEN_OPERADOR,
@@ -12,14 +13,14 @@ typedef enum {
 } tipo_token;
 
 typedef enum {
-    VAZIA,
+    VAZIA = 0,
     SOMA_SUBTRACAO,
     MULT_DIV,
     POTENCIACAO,
     ABRE_CON,
     FECHA_CON,
     ATRIBUI,
-    FIM
+    FIM = 0
 } operadores;
 
 typedef enum {
@@ -285,6 +286,8 @@ static operadores grupo(unichar c)
     if (c == '(') return ABRE_CON;
     if(c == ')') return FECHA_CON;
     if(c == '=') return ATRIBUI;
+    assert(false);
+    return VAZIA;
 }
 
 static const acao tabela[7][7] = {
@@ -296,25 +299,6 @@ static const acao tabela[7][7] = {
     {0},
     {OPERA,   EMPILHA, EMPILHA, EMPILHA, EMPILHA, OPERA,    EMPILHA,}
 };
-
-static acao decide_acao(Lista pilha_operadores, tipo_token tipo_entrada, unichar op_entrada)
-{
-    int linha;
-    if (l_vazia(pilha_operadores)) {
-        linha = VAZIA;
-    } else {
-        Str topo = l_topo(pilha_operadores);
-        linha = grupo(s_ch(topo, 0));
-    }
-
-    int coluna;
-    if (tipo_entrada == TOKEN_ERRO || (tipo_entrada != TOKEN_OPERADOR)) {
-        coluna = FIM;
-    } else {
-        coluna = grupo(op_entrada);
-    }
-    return tabela[linha][coluna];
-}
 
 static void destroi_lista_de_str(Lista l)
 {
@@ -378,7 +362,7 @@ Str calculadora(Str expressão)
             }
             if (tipo == TOKEN_OPERANDO) {
                 Str t = l_remove_inicio(tokens);
-                l_empilha(pilha_operadores, t);
+                l_empilha(pilha_operandos, t);
                 continue;
             }
         }
@@ -415,12 +399,10 @@ Str calculadora(Str expressão)
             s_destroi(op);
 
             if (!ok) {
-                if(!fim_da_entrada) {
                 destroi_lista_de_str(tokens);
                 destroi_lista_de_str(pilha_operandos);
                 destroi_lista_de_str(pilha_operadores);
                 return cria_erro("Operação invalida!");
-                }
             }
         }
     }
