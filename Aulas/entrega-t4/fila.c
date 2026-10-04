@@ -14,7 +14,7 @@ struct no{
 
 struct fila{
     no *sentinela;
-    no *proximo_no_a_visitar;
+    no *cursor;
     int tam_dado;
     int tam;
     int direcao;
@@ -36,6 +36,28 @@ no *cria_no_com_dado(Fila f, void *pdado){
     return n;
 }
 
+void f_inicia_percurso_frente(Fila f, int p) 
+{
+    f->cursor = f->sentinela->prox;
+    int i = 0;
+    f->direcao = 1;
+    while (f->cursor != f->sentinela && i < p) {
+        f->cursor = f->cursor->prox;
+        i++;
+    }
+}
+
+void f_inicia_percurso_tras(Fila f, int p) 
+{
+    f->cursor = f->sentinela->ant;
+    int i = -1;
+    f->direcao = -1;
+    while (f->cursor != f->sentinela && i > p) {
+        f->cursor = f->cursor->ant;
+        i--;
+    }
+}
+
 //-----------------------------
 
 
@@ -53,7 +75,7 @@ Fila f_cria(int tam_do_dado)
     f->sentinela->dado = NULL;
     f->tam_dado = tam_do_dado;
     f->tam = 0;
-    f->proximo_no_a_visitar = f->sentinela;
+    f->cursor = f->sentinela;
     f->direcao = 0;
 
     return f;
@@ -142,7 +164,7 @@ void f_inicia_percurso(Fila self, int pos_inicial)
 //   e retorna true
 bool f_próximo(Fila self, void *pdado)
 {
-    no *p = self->proximo_no_a_visitar;
+    no *p = self->cursor;
     if (p == self->sentinela) return false;
 
     if (pdado != NULL) {
@@ -150,9 +172,9 @@ bool f_próximo(Fila self, void *pdado)
     }
 
     if(self->direcao == 1) {
-        self->proximo_no_a_visitar = p->prox;
+        self->cursor = p->prox;
     } else {
-        self->proximo_no_a_visitar = p->ant;
+        self->cursor = p->ant;
     }
     return true;
 }
