@@ -49,7 +49,8 @@ void f_destrói(Fila self)
 // diz se a fila está vazia
 bool f_tá_vazia(Fila self)
 {
-
+    if(self->sentinela->prox != self->sentinela) return false;
+    return true;
 }
 
 // remove o dado no início da fila e, se pdado não for NULL, copia o dado
