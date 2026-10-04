@@ -14,8 +14,10 @@ struct no{
 
 struct fila{
     no *sentinela;
+    no *proximo_no_a_visitar;
     int tam_dado;
     int tam;
+    int direcao;
 };
 
 
@@ -51,6 +53,8 @@ Fila f_cria(int tam_do_dado)
     f->sentinela->dado = NULL;
     f->tam_dado = tam_do_dado;
     f->tam = 0;
+    f->proximo_no_a_visitar = f->sentinela;
+    f->direcao = 0;
 
     return f;
 }
@@ -126,7 +130,11 @@ void f_insere(Fila self, void *pdado)
 // cada dado do percurso será acessado por chamadas a f_próximo()
 void f_inicia_percurso(Fila self, int pos_inicial)
 {
-    
+    if(pos_inicial >= 0) {
+        f_inicia_percurso_frente(self, pos_inicial);
+    } else {
+        f_inicia_percurso_tras(self, pos_inicial);
+    }
 }
 
 // caso o percurso tenha terminado, retorna false
@@ -134,5 +142,17 @@ void f_inicia_percurso(Fila self, int pos_inicial)
 //   e retorna true
 bool f_próximo(Fila self, void *pdado)
 {
+    no *p = self->proximo_no_a_visitar;
+    if (p == self->sentinela) return false;
 
+    if (pdado != NULL) {
+        memcpy(pdado, p->dado, self->tam_dado);
+    }
+
+    if(self->direcao == 1) {
+        self->proximo_no_a_visitar = p->prox;
+    } else {
+        self->proximo_no_a_visitar = p->ant;
+    }
+    return true;
 }
