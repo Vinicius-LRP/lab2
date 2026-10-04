@@ -36,7 +36,14 @@ Fila f_cria(int tam_do_dado)
 // libera a memória ocupada pela fila
 void f_destrói(Fila self)
 {
-
+    no *n = self->sentinela->prox;
+    while (n != self->sentinela) {
+        no *proximo = n->prox;
+        free(n);
+        n = proximo;
+    }
+    free(self->sentinela);
+    free(self);
 }
 
 // diz se a fila está vazia
