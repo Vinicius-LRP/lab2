@@ -26,8 +26,8 @@ no *cria_no_com_dado(Fila f, void *pdado){
     assert(n != NULL);
 
     n->dado = malloc(f->tam_dado);
-    assert(n != NULL);
-    
+    assert(n->dado != NULL);
+
     if(pdado != NULL) {
         memcpy(n->dado, pdado,  f->tam_dado);
     }
@@ -72,8 +72,8 @@ void f_destrói(Fila self)
 // diz se a fila está vazia
 bool f_tá_vazia(Fila self)
 {
-    if(self->sentinela->prox != self->sentinela) return false;
-    return true;
+    if(self->tam == 0) return true;
+    return false;
 }
 
 // remove o dado no início da fila e, se pdado não for NULL, copia o dado
@@ -126,7 +126,7 @@ void f_insere(Fila self, void *pdado)
 // cada dado do percurso será acessado por chamadas a f_próximo()
 void f_inicia_percurso(Fila self, int pos_inicial)
 {
-
+    
 }
 
 // caso o percurso tenha terminado, retorna false
