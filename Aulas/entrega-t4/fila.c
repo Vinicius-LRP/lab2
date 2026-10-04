@@ -18,6 +18,25 @@ struct fila{
     int tam;
 };
 
+
+// funções auxiliares
+
+no *cria_no_com_dado(Fila f, void *pdado){
+    no *n = malloc(sizeof(*n));
+    assert(n != NULL);
+
+    n->dado = malloc(f->tam_dado);
+    assert(n != NULL);
+    
+    if(pdado != NULL) {
+        memcpy(n->dado, pdado,  f->tam_dado);
+    }
+    return n;
+}
+
+//-----------------------------
+
+
 // cria uma fila vazia que suporta dados do tamanho fornecido (em bytes)
 Fila f_cria(int tam_do_dado)
 {
@@ -81,7 +100,15 @@ void f_remove(Fila self, void *pdado)
 // insere o dado apontado por pdado no final da fila
 void f_insere(Fila self, void *pdado)
 {
+    no *ultimo_fila = self->sentinela->ant;
+    no *no_para_inserir = cria_no_com_dado(self, pdado);
+    
+    ultimo_fila->prox = no_para_inserir;
+    no_para_inserir->ant = ultimo_fila;
 
+    no_para_inserir->prox = self->sentinela;
+    self->sentinela->ant = no_para_inserir;
+    self->tam++;
 }
 
 // funções que implementam operações complementares, que permitem acesso
