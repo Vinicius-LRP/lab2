@@ -1,4 +1,5 @@
 #include "fila.h"
+#include <stdio.h>
 
 typedef struct no no;
 
@@ -14,11 +15,22 @@ struct fila{
     int tam;
 };
 
-
 // cria uma fila vazia que suporta dados do tamanho fornecido (em bytes)
 Fila f_cria(int tam_do_dado)
 {
+    Fila f = malloc(sizeof(*f));
+    assert(f != NULL);
 
+    f->sentinela = malloc(sizeof(*f->sentinela));
+    assert(f->sentinela != NULL);
+
+    f->sentinela->prox = f->sentinela;
+    f->sentinela->ant = f->sentinela;
+    f->sentinela->dado = NULL;
+    f->tam_dado = tam_do_dado;
+    f->tam = 0;
+
+    return f;
 }
 
 // libera a memória ocupada pela fila
