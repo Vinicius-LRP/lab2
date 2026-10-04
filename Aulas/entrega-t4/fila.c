@@ -1,5 +1,8 @@
 #include "fila.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
 
 typedef struct no no;
 
@@ -39,6 +42,7 @@ void f_destrói(Fila self)
     no *n = self->sentinela->prox;
     while (n != self->sentinela) {
         no *proximo = n->prox;
+        free(n->dado);
         free(n);
         n = proximo;
     }
@@ -57,7 +61,21 @@ bool f_tá_vazia(Fila self)
 //   removido para *pdado
 void f_remove(Fila self, void *pdado)
 {
+    if (f_tá_vazia(self)) return;
 
+    no *no_para_remover = self->sentinela->prox;
+    no *novo_prox = no_para_remover->prox;
+    self->sentinela->prox = novo_prox;
+    novo_prox->ant = self->sentinela;
+    
+    if(pdado != NULL) {
+        memcpy(pdado, no_para_remover->dado, self->tam_dado);
+    }
+
+    self->tam--;
+
+    free(no_para_remover->dado);
+    free(no_para_remover);
 }
 
 // insere o dado apontado por pdado no final da fila
