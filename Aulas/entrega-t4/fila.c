@@ -14,6 +14,7 @@ struct fila{
     int tam;
 };
 
+
 // cria uma fila vazia que suporta dados do tamanho fornecido (em bytes)
 Fila f_cria(int tam_do_dado)
 {
