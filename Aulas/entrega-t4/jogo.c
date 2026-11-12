@@ -18,12 +18,13 @@
 
 // configurações {{{1
 
-#define N_OBSTÁCULOS      4 // quantos obstáculos simultâneos estão no tabuleiro
-#define TAM_INI_COBRA     5 // quantas partes tem o corpo da cobra no início
-#define JOGO_NUM_ENTRADAS 3 // quantos valores são usados para controlar o jogo
+#define N_OBSTÁCULOS      4   // quantos obstáculos simultâneos estão no tabuleiro
+#define TAM_INI_COBRA     5   // quantas partes tem o corpo da cobra no início
 #define PONTOS_POR_FRUTA  123 // quantos pontos se ganha comendo a fruta
-#define AUMENTO_POR_FRUTA 5   // quanto aumenta a cada alimentação
-#define AUTONOMIA         200 // quantos passos a cobrinha pode dar sem comer
+#define AUMENTO_POR_FRUTA 5   // quanto aumenta a cobra a cada alimentação
+#define AUTONOMIA         100 // quantos passos a cobrinha pode dar sem comer
+#define JOGO_NUM_ENTRADAS 3   // quantos valores são usados para controlar o jogo
+#define JOGO_NUM_SAÍDAS   7   // quantos valores são usados para o estado do jogo
 
 // geometria {{{1
 
@@ -36,8 +37,10 @@ typedef struct {
 // retorna a posição do centro do retângulo
 posição retângulo_centro(retângulo r)
 {
-  return (posição){.linha  = (r.inf.linha + r.sup.linha) / 2,
-                   .coluna = (r.inf.coluna + r.sup.coluna) / 2};
+  posição pos;
+  pos.linha  = (r.inf.linha + r.sup.linha) / 2;
+  pos.coluna = (r.inf.coluna + r.sup.coluna) / 2;
+  return pos;
 }
 
 // retorna true se a posição p está dentro o retângulo r
@@ -75,6 +78,30 @@ posição avanca_pos(posição pos, direção dir)
   return pos;
 }
 
+// qual a próxima direção se está indo para tal direção e faz tal curva?
+direção direção_após_curva(direção dir, lado_da_curva lado)
+{
+  direção prox_direita[] = {
+      [cima]     = direita,
+      [direita]  = baixo,
+      [baixo]    = esquerda,
+      [esquerda] = cima,
+  };
+  direção prox_esquerda[] = {
+      [cima]     = esquerda,
+      [direita]  = cima,
+      [baixo]    = direita,
+      [esquerda] = baixo,
+  };
+  direção nova_dir = dir;
+  if (lado == pra_esquerda) {
+    nova_dir = prox_esquerda[dir];
+  } else if (lado == pra_direita) {
+    nova_dir = prox_direita[dir];
+  } // se for reto, não muda
+  return nova_dir;
+}
+
 // tipos {{{1
 
 // uma cobra
@@ -95,6 +122,7 @@ struct jogo {
   int       passos;     // quantos passos a cobrinha já deu
   int       passos_fruta; // passos quando comeu a última fruta
   int       max_passos;   // número máximo de passos nesta partida
+  bool      com_tela;    // está usando a tela?
   enum { normal, terminando, terminado } estado;
 };
 
@@ -103,17 +131,24 @@ struct jogo {
 void sorteia_obstáculos(Jogo j);
 void sorteia_fruta(Jogo j);
 
-Jogo jogo_cria(int max_passos)
+Jogo jogo_cria()
 {
   Jogo j = malloc(sizeof(*j));
   assert(j != NULL);
-  j->tela              = (retângulo){{2, 1}, {24, 50}};
-  j->aninha.corpo      = f_cria(sizeof(posição));
+  j->tela         = (retângulo){{2, 1}, {24, 50}};
+  j->aninha.corpo = f_cria(sizeof(posição));
+  j->obstáculos   = f_cria(sizeof(posição));
+  jogo_inicia(j, 0);
+  return j;
+}
+
+void jogo_inicia(Jogo j, int max_passos)
+{
+  while (!f_tá_vazia(j->aninha.corpo)) f_remove(j->aninha.corpo, NULL);
   j->aninha.direção    = cima;
   j->aninha.pos_cabeca = retângulo_centro(j->tela);
   f_insere(j->aninha.corpo, &j->aninha.pos_cabeca);
   j->aumentando = TAM_INI_COBRA;
-  j->obstáculos = f_cria(sizeof(posição));
   sorteia_obstáculos(j);
   sorteia_fruta(j);
   j->pontos       = 0;
@@ -121,7 +156,7 @@ Jogo jogo_cria(int max_passos)
   j->passos       = 0;
   j->passos_fruta = 0;
   j->max_passos   = max_passos;
-  return j;
+  j->com_tela     = false;
 }
 
 void jogo_destrói(Jogo j)
@@ -131,21 +166,15 @@ void jogo_destrói(Jogo j)
   free(j);
 }
 
-int jogo_num_entradas(Jogo j)
-{
-  return JOGO_NUM_ENTRADAS;
-}
-
 bool jogo_terminou(Jogo j)
 {
-  return j->estado == terminado;
+  return j->estado == terminado || (!j->com_tela && j->estado == terminando);
 }
 
 int jogo_pontos(Jogo j)
 {
   return j->pontos;
 }
-
 
 // auxiliares {{{1
 
@@ -163,7 +192,7 @@ bool fila_contém(Fila f, posição pos)
 }
 
 // retorna um número aleatório entre min e max, inclusivos
-int aleatório_entre(int min, int max)
+static int aleatório_entre(int min, int max)
 {
   return min + rand() % (max - min + 1);
 }
@@ -225,11 +254,11 @@ cor cor_contorno       = {255, 50, 200};
 cor cor_fruta          = {55, 50, 180};
 
 // formas dos objetos na tela
-char *desenho_rabo      = "."; // \u25e6
-char *desenho_corpo     = "O"; // \u25cb
-char *desenho_cabeça    = ":"; // \u2687
-char *desenho_fruta     = "*"; //
-char *desenho_obstáculo = "X"; //
+char *desenho_rabo      = "\u25e6"; // "."; // \u25e6
+char *desenho_corpo     = "\u25cb"; // "O"; // \u25cb
+char *desenho_cabeça    = "\u2687"; // ":"; // \u2687
+char *desenho_fruta     = "*";      //
+char *desenho_obstáculo = "X";      //
 
 // desenha a borda do tabuleiro
 void desenha_contorno(Jogo j)
@@ -297,10 +326,10 @@ void desenha_fruta(Jogo j)
   fputs(desenho_fruta, stdout);
 }
 
-
 // desenha a tela do jogo
 void jogo_desenha_tela(Jogo j)
 {
+  j->com_tela = true;
   t_seleciona_cor(cor_fundo, cor_contorno);
   t_limpa();
 
@@ -395,24 +424,12 @@ void jogo_avança(Jogo j)
 // muda a direção da cobra de acordo com o lado da curva
 void faz_curva(Jogo j, lado_da_curva lado)
 {
-  // qual a próxima direção se está indo para tal direção e faz tal curva?
-  direção prox_direita[] = {
-      [cima]     = direita,
-      [direita]  = baixo,
-      [baixo]    = esquerda,
-      [esquerda] = cima,
-  };
-  direção prox_esquerda[] = {
-      [cima]     = esquerda,
-      [direita]  = cima,
-      [baixo]    = direita,
-      [esquerda] = baixo,
-  };
-  if (lado == pra_esquerda) {
-    j->aninha.direção = prox_esquerda[j->aninha.direção];
-  } else if (lado == pra_direita) {
-    j->aninha.direção = prox_direita[j->aninha.direção];
-  } // se for reto, não muda
+  j->aninha.direção = direção_após_curva(j->aninha.direção, lado);
+}
+
+int jogo_num_entradas(Jogo j)
+{
+  return JOGO_NUM_ENTRADAS;
 }
 
 void jogo_processa_entradas(Jogo j, float *entradas)
@@ -423,6 +440,135 @@ void jogo_processa_entradas(Jogo j, float *entradas)
     faz_curva(j, pra_direita);
   if (entradas[2] > entradas[0] && entradas[2] > entradas[1])
     faz_curva(j, pra_esquerda);
+}
+
+// saídas {{{1
+
+int jogo_num_saídas(Jogo j)
+{
+  return JOGO_NUM_SAÍDAS;
+}
+
+// distância em coordenadas xy
+// x é o número de passos para a direita da tela
+// y é o número de passos para o alto da tela
+typedef struct {
+  int x, y;
+} dist_xy;
+
+// distância em coordenadas fd
+// f é o número de passos à frente da cobrinha
+// d é o número de passos à direita da cobrinha
+typedef struct {
+  int f, d;
+} dist_fd;
+
+dist_fd converte_xy_para_fd(dist_xy xy, direção dir)
+{
+  dist_fd fd;
+  switch (dir) {
+    case cima:
+      fd.f = xy.y;
+      fd.d = xy.x;
+      break;
+    case baixo:
+      fd.f = -xy.y;
+      fd.d = -xy.x;
+      break;
+    case direita:
+      fd.f = xy.x;
+      fd.d = -xy.y;
+      break;
+    case esquerda:
+      fd.f = -xy.x;
+      fd.d = xy.y;
+      break;
+  }
+  return fd;
+}
+
+// quantos passos para frente e para a direita são necessários para ir
+//   desde a posição móvel asé a fixa, sendo que a frente é na direção
+//   dir?
+dist_fd calc_distância_fd(posição móvel, posição fixa, direção dir)
+{
+  dist_xy xy;
+  dist_fd fd;
+  xy.x = (int)fixa.coluna - (int)móvel.coluna;  // + se fixa à direita
+  xy.y = -((int)fixa.linha - (int)móvel.linha); // + se fixa acima
+  fd   = converte_xy_para_fd(xy, dir);
+  return fd;
+}
+
+// qual das duas distâncias representa o menor percurso?
+dist_fd menor_dist_fd(dist_fd d1, dist_fd d2)
+{
+  int s1 = abs(d1.f) + abs(d1.d);
+  int s2 = abs(d2.f) + abs(d2.d);
+  return s2 < s1 ? d2 : d1;
+}
+
+// estou em móvel, indo na direção dir, e tem algo a dist_fd de distância.
+// o que é mais perto, esse algo ou o que está na posição fixa?
+// não posso virar 180 graus.
+dist_fd mais_perto(dist_fd dist1, posição móvel, posição fixa, direção dir)
+{
+  dist_fd dist2 = calc_distância_fd(móvel, fixa, dir);
+  if (dist2.f < 0) return dist1;
+  if (dist2.f == 0 && dist2.d == 0) return dist1; // ignora a cabeça da cobra
+  return menor_dist_fd(dist1, dist2);
+}
+
+void jogo_preenche_saídas(Jogo j, float *saídas)
+{
+  // as saídas fornecidas para a rede neural, para ela entender
+  //   o estado do jogo:
+  //   saídas[0] - distância para frente até a fruta (+-)
+  //   saídas[1] - distância para a direita até a fruta (+-)
+  //   saídas[2] - distância para frente até obstáculo mais próximo (+)
+  //   saídas[3] - distância para direita até obstáculo mais próximo (+-)
+  //   saídas[4] - 0 ou 1 se encostado em obstáculo à frente
+  //   saídas[5] - 0 ou 1 se encostado em obstáculo à direita
+  //   saídas[6] - 0 ou 1 se encostado em obstáculo à esquerda
+  posição cabeça   = j->aninha.pos_cabeca;
+  direção dir      = j->aninha.direção;
+  dist_fd fruta_fd = calc_distância_fd(cabeça, j->fruta, dir);
+  saídas[0]        = fruta_fd.f * 0.01;
+  saídas[1]        = fruta_fd.d * 0.01;
+
+  dist_fd obst_fd = {255, 255};
+  // qual a parede mais próxima?
+  posição pos;
+  pos     = (posição){cabeça.linha, j->tela.inf.coluna};
+  obst_fd = mais_perto(obst_fd, cabeça, pos, dir);
+  pos     = (posição){cabeça.linha, j->tela.sup.coluna};
+  obst_fd = mais_perto(obst_fd, cabeça, pos, dir);
+  pos     = (posição){j->tela.inf.linha, cabeça.coluna};
+  obst_fd = mais_perto(obst_fd, cabeça, pos, dir);
+  pos     = (posição){j->tela.sup.linha, cabeça.coluna};
+  obst_fd = mais_perto(obst_fd, cabeça, pos, dir);
+  // algum obstáculo está mais perto?
+  f_inicia_percurso(j->obstáculos, 0);
+  while (f_próximo(j->obstáculos, &pos)) {
+    obst_fd = mais_perto(obst_fd, cabeça, pos, dir);
+  }
+  // algum pedaço da cobra está mais perto?
+  f_inicia_percurso(j->aninha.corpo, 0);
+  while (f_próximo(j->aninha.corpo, &pos)) {
+    obst_fd = mais_perto(obst_fd, cabeça, pos, dir);
+  }
+  saídas[2] = obst_fd.f * 0.01;
+  saídas[3] = obst_fd.d * 0.01;
+
+  direção dir_frente   = j->aninha.direção;
+  direção dir_direita  = direção_após_curva(dir_frente, pra_direita);
+  direção dir_esquerda = direção_após_curva(dir_frente, pra_esquerda);
+  posição pos_frente   = avanca_pos(j->aninha.pos_cabeca, dir_frente);
+  posição pos_direita  = avanca_pos(j->aninha.pos_cabeca, dir_direita);
+  posição pos_esquerda = avanca_pos(j->aninha.pos_cabeca, dir_esquerda);
+  saídas[4]            = posição_livre(j, pos_frente) ? 0 : 1;
+  saídas[5]            = posição_livre(j, pos_direita) ? 0 : 1;
+  saídas[6]            = posição_livre(j, pos_esquerda) ? 0 : 1;
 }
 
 // vim: foldmethod=marker shiftwidth=2
