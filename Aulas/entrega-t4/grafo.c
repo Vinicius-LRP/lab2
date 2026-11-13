@@ -19,6 +19,28 @@
 //   por exemplo). O usuário pode também alterar o valor usando uma função
 //   de alteração (como g_altera_valor_do_nó).
 
+typedef struct no no;
+typedef struct aresta aresta;
+
+struct aresta{
+    int no_destino;
+    void *dado;
+    aresta *prox_aresta;
+};
+
+struct no{
+    void *dado;
+    aresta *prim_aresta;
+};
+
+struct grafo{
+    no *nos;
+    int qnt_nos;
+    int tam_dado_nos;
+    int tam_dado_arestas;
+};
+
+
 // cria um grafo vazio que suporta dados do tamanho fornecido (em bytes)
 //   nos nós e nas arestas
 Grafo g_cria(int tam_nó, int tam_aresta);
