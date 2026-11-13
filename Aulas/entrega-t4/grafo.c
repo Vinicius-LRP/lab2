@@ -1,4 +1,6 @@
 #include "grafo.h"
+#include <stdlib.h>
+#include <assert.h>
 
 // funções que implementam as operações básicas de um grafo
 //
@@ -43,7 +45,17 @@ struct grafo{
 
 // cria um grafo vazio que suporta dados do tamanho fornecido (em bytes)
 //   nos nós e nas arestas
-Grafo g_cria(int tam_nó, int tam_aresta);
+Grafo g_cria(int tam_nó, int tam_aresta)
+{
+    Grafo g;
+    g = malloc(sizeof(*g));
+    assert(g != NULL);
+    g->nos = NULL;
+    g->qnt_nos = 0;
+    g->tam_dado_nos = tam_nó;
+    g->tam_dado_arestas = tam_aresta;
+    return g;
+}
 
 // libera a memória ocupada por um grafo
 void g_destrói(Grafo self);
