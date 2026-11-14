@@ -135,6 +135,11 @@ void g_altera_valor_da_aresta(Grafo self, int nó_origem, int nó_destino, void 
         anterior = atual;
         atual = atual->prox_aresta;
     }
+    
+    if(atual != NULL && p_dado != NULL) {
+        memcpy(atual->dado, p_dado, self->tam_dado_arestas);
+    }
+    return;
 }
 
 // retorna um ponteiro para o valor associado à aresta entre nó_origem e 
