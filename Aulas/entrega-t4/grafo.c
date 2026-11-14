@@ -1,6 +1,7 @@
 #include "grafo.h"
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 // funções que implementam as operações básicas de um grafo
 //
@@ -65,7 +66,20 @@ void g_destrói(Grafo self);
 // insere um nó no grafo, com o dado apontado por p_dado
 // retorna o número do novo nó (que é o número de nós que
 //   existia antes da inserção)
-int g_insere_nó(Grafo self, void *p_dado);
+int g_insere_nó(Grafo self, void *p_dado)
+{
+    int indice_novo_no = self->qnt_nos;
+    no *n = realloc(self->nos, (indice_novo_no + 1) * sizeof(*n));
+    assert(n != NULL);
+    self->nos = n;
+    no *novo_no = &self->nos[indice_novo_no];
+    novo_no->dado = malloc(self->tam_dado_nos);
+    assert(novo_no->dado != NULL);
+    memcpy(novo_no->dado, p_dado, self->tam_dado_nos);
+    novo_no->prim_aresta= NULL;
+    self->qnt_nos++;
+    return indice_novo_no;
+}
 
 // remove um nó do grafo e as arestas incidentes nesse nó
 // a identificação dos nós remanescentes é alterada, como se esse nó nunca
