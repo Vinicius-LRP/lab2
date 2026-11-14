@@ -139,6 +139,35 @@ void g_altera_valor_da_aresta(Grafo self, int nó_origem, int nó_destino, void 
     if(atual != NULL && p_dado != NULL) {
         memcpy(atual->dado, p_dado, self->tam_dado_arestas);
     }
+
+    if(atual == NULL && p_dado != NULL) {
+        aresta *a;
+        a = malloc(sizeof(*a));
+        assert(a != NULL);
+        a->no_destino = nó_destino;
+        a->dado = malloc(self->tam_dado_arestas);
+        assert(a->dado != NULL);
+
+        memcpy(a->dado, p_dado, self->tam_dado_arestas);
+        a->prox_aresta = NULL;
+
+        if(anterior == NULL) {
+            n_origem->prim_aresta = a;
+        } else {
+            anterior->prox_aresta = a;
+        }
+    }
+
+    if(atual != NULL && p_dado == NULL) {
+        if(anterior == NULL) {
+            n_origem->prim_aresta = atual->prox_aresta;
+        } else {
+            anterior->prox_aresta = atual->prox_aresta;
+        }
+        free(atual->dado);
+        free(atual);
+    }
+
     return;
 }
 
