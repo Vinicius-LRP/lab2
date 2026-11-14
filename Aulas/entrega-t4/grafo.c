@@ -95,6 +95,8 @@ void g_altera_valor_do_nó(Grafo self, int nó, void *p_dado);
 void *g_valor_do_nó(Grafo self, int nó)
 {
     assert(nó >= 0 && nó < self->qnt_nos);
+    no *n = &self->nos[nó];
+    return n->dado;
 }
 
 // retorna o número de nós do grafo
