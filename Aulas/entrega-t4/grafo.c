@@ -69,15 +69,21 @@ void g_destrói(Grafo self);
 int g_insere_nó(Grafo self, void *p_dado)
 {
     int indice_novo_no = self->qnt_nos;
+
     no *n = realloc(self->nos, (indice_novo_no + 1) * sizeof(*n));
     assert(n != NULL);
+
     self->nos = n;
     no *novo_no = &self->nos[indice_novo_no];
+
     novo_no->dado = malloc(self->tam_dado_nos);
     assert(novo_no->dado != NULL);
+
     memcpy(novo_no->dado, p_dado, self->tam_dado_nos);
+
     novo_no->prim_aresta= NULL;
     self->qnt_nos++;
+
     return indice_novo_no;
 }
 
@@ -118,6 +124,17 @@ int g_num_nós(Grafo self)
 // caso p_dado seja NULL, a aresta deve ser removida
 void g_altera_valor_da_aresta(Grafo self, int nó_origem, int nó_destino, void *p_dado)
 {
+    assert(nó_origem >= 0 && nó_origem < self->qnt_nos);
+    assert(nó_destino >= 0 && nó_destino < self->qnt_nos);
+
+    no *n_origem = &self->nos[nó_origem];
+    aresta *atual = n_origem->prim_aresta;
+    aresta *anterior = NULL;
+
+    while(atual != NULL && atual->no_destino != nó_destino) {
+        anterior = atual;
+        atual = atual->prox_aresta;
+    }
 }
 
 // retorna um ponteiro para o valor associado à aresta entre nó_origem e 
@@ -127,9 +144,11 @@ void *g_valor_da_aresta(Grafo self, int nó_origem, int nó_destino)
 {
     assert(nó_origem >= 0 && nó_origem < self->qnt_nos);
     assert(nó_destino >= 0 && nó_destino < self->qnt_nos);
+
     no *n_origem = &self->nos[nó_origem];
     no *n_destino = &self->nos[nó_destino];
     aresta *aresta_teste = n_origem->prim_aresta;
+
     while(aresta_teste != NULL) {
         no *n_destino_teste = &self->nos[aresta_teste->no_destino];
         if(n_destino_teste == n_destino){
@@ -138,6 +157,7 @@ void *g_valor_da_aresta(Grafo self, int nó_origem, int nó_destino)
             aresta_teste = aresta_teste->prox_aresta;
         }
     }
+
     return NULL;
 }
 
