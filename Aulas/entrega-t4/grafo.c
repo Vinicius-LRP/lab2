@@ -95,7 +95,10 @@ void g_altera_valor_do_nó(Grafo self, int nó, void *p_dado);
 void *g_valor_do_nó(Grafo self, int nó);
 
 // retorna o número de nós do grafo
-int g_num_nós(Grafo self);
+int g_num_nós(Grafo self)
+{
+    return self->qnt_nos;
+}
 
 // Arestas
 
