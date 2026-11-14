@@ -88,7 +88,12 @@ void g_remove_nó(Grafo self, int nó);
 
 // altera o valor associado a um nó (copia o valor apontado por p_dado para
 //   uma memória gerenciada pelo grafo)
-void g_altera_valor_do_nó(Grafo self, int nó, void *p_dado);
+void g_altera_valor_do_nó(Grafo self, int nó, void *p_dado)
+{
+    assert(nó >= 0 && nó < self->qnt_nos);
+    no *n = &self->nos[nó];
+    memcpy(n->dado,p_dado, self->tam_dado_nos);
+}
 
 // retorna um ponteiro para o valor associado a um nó que está na memória
 //   gerenciada pelo grafo.
