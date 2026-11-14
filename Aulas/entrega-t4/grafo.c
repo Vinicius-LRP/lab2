@@ -92,7 +92,10 @@ void g_altera_valor_do_nó(Grafo self, int nó, void *p_dado);
 
 // retorna um ponteiro para o valor associado a um nó que está na memória
 //   gerenciada pelo grafo.
-void *g_valor_do_nó(Grafo self, int nó);
+void *g_valor_do_nó(Grafo self, int nó)
+{
+    assert(nó >= 0 && nó < self->qnt_nos);
+}
 
 // retorna o número de nós do grafo
 int g_num_nós(Grafo self)
