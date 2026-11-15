@@ -61,7 +61,8 @@ Grafo g_cria(int tam_nó, int tam_aresta)
 // libera a memória ocupada por um grafo
 void g_destrói(Grafo self)
 {
-    for(int i = 0; i < self->qnt_nos - 1; i++) {
+    if (self == NULL) return;
+    for(int i = 0; i <= self->qnt_nos - 1; i++) {
         aresta *atual = self->nos[i].prim_aresta;
         while(atual != NULL) {
             aresta *prox = atual->prox_aresta;
@@ -69,8 +70,10 @@ void g_destrói(Grafo self)
             free(atual);
             atual = prox;
         }
-        
+        free(self->nos[i].dado);
     }
+    free(self->nos);
+    free(self);
 }
 
 // Nós
