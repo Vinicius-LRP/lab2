@@ -105,7 +105,14 @@ int g_insere_nó(Grafo self, void *p_dado)
 // remove um nó do grafo e as arestas incidentes nesse nó
 // a identificação dos nós remanescentes é alterada, como se esse nó nunca
 //   tivesse existido
-void g_remove_nó(Grafo self, int nó);
+void g_remove_nó(Grafo self, int nó)
+{
+    assert(nó >= 0 && nó < self->qnt_nos);
+    for(int i = 0; i < self->qnt_nos; i++) {
+        g_altera_valor_da_aresta(self, i, nó, NULL);
+    }
+}
+
 
 // altera o valor associado a um nó (copia o valor apontado por p_dado para
 //   uma memória gerenciada pelo grafo)
