@@ -24,6 +24,7 @@
 
 typedef struct no no;
 typedef struct aresta aresta;
+typedef struct consulta consulta;
 
 struct aresta{
     int no_destino;
@@ -36,11 +37,18 @@ struct no{
     aresta *prim_aresta;
 };
 
+struct consulta{
+    int i_no_consulta;
+    int i_proximo_vizinho;
+    bool consulta_aresta_chegada;
+};
+
 struct grafo{
     no *nos;
     int qnt_nos;
     int tam_dado_nos;
     int tam_dado_arestas;
+    consulta consulta;
 };
 
 
@@ -55,6 +63,9 @@ Grafo g_cria(int tam_nó, int tam_aresta)
     g->qnt_nos = 0;
     g->tam_dado_nos = tam_nó;
     g->tam_dado_arestas = tam_aresta;
+    g->consulta.i_no_consulta = -1;
+    g->consulta.i_proximo_vizinho = 0;
+    g->consulta.consulta_aresta_chegada = false;
     return g;
 }
 
@@ -255,7 +266,10 @@ void g_arestas_que_chegam(Grafo self, int nó_destino);
 // o valor do nó vizinho ao nó da consulta deve ser colocado em '*p_nó_vizinho'
 //   (se não for NULL)
 // caso não exista mais aresta que satisfaça a consulta, retorna NULL.
-void *g_próxima_aresta(Grafo self, int *p_nó_vizinho);
+void *g_próxima_aresta(Grafo self, int *p_nó_vizinho)
+{
+
+}
 
 // Algoritmos
 
