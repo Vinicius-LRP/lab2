@@ -119,6 +119,19 @@ void g_remove_nó(Grafo self, int nó)
         atual = prox;
     }
     free(self->nos[nó].dado);
+    for(int i = nó; i < self->qnt_nos -1; i++){
+        self->nos[i] = self->nos[i+1];
+    }
+    self->qnt_nos--;
+    for(int i = 0; i < self->qnt_nos; i++) {
+        aresta *a = self->nos[i].prim_aresta;
+        while(a != NULL) {
+            if(a->no_destino > nó) {
+                a->no_destino--;
+            }
+            a = a->prox_aresta;
+        }
+    }
 }
 
 
