@@ -121,7 +121,7 @@ int g_num_nós(Grafo self)
 
 // função auxiliar das arestas
 
-aresta cria_aresta(Grafo self, int nó_destino, void *p_dado, void *proxima_aresta) 
+aresta *cria_aresta(Grafo self, int nó_destino, void *p_dado, aresta *proxima_aresta) 
 {
     aresta *a;
     a = malloc(sizeof(*a));
@@ -130,8 +130,8 @@ aresta cria_aresta(Grafo self, int nó_destino, void *p_dado, void *proxima_ares
     assert(a->dado != NULL);
     memcpy(a->dado, p_dado, self->tam_dado_arestas);
     a->no_destino = nó_destino;
-    a->prox_aresta = &proxima_aresta;
-    return *a;
+    a->prox_aresta = proxima_aresta;
+    return a;
 }
 
 // altera o valor da aresta que interliga o nó origem ao nó destino
@@ -142,33 +142,24 @@ void g_altera_valor_da_aresta(Grafo self, int nó_origem, int nó_destino, void 
 {
     assert(nó_origem >= 0 && nó_origem < self->qnt_nos);
     assert(nó_destino >= 0 && nó_destino < self->qnt_nos);
-
     no *n_origem = &self->nos[nó_origem];
     aresta *atual = n_origem->prim_aresta;
     aresta *anterior = NULL;
-
     while(atual != NULL && atual->no_destino != nó_destino) {
         anterior = atual;
         atual = atual->prox_aresta;
     }
-    
     if(atual != NULL && p_dado != NULL) {
         memcpy(atual->dado, p_dado, self->tam_dado_arestas);
     }
-
     if(atual == NULL && p_dado != NULL) {
-        aresta *a;
-        a = malloc(sizeof(*a));
-        assert(a != NULL);
-        *a = cria_aresta(self, nó_destino, p_dado, NULL);
-
+        aresta *a = cria_aresta(self, nó_destino, p_dado, NULL);
         if(anterior == NULL) {
             n_origem->prim_aresta = a;
         } else {
             anterior->prox_aresta = a;
         }
     }
-
     if(atual != NULL && p_dado == NULL) {
         if(anterior == NULL) {
             n_origem->prim_aresta = atual->prox_aresta;
@@ -178,7 +169,6 @@ void g_altera_valor_da_aresta(Grafo self, int nó_origem, int nó_destino, void 
         free(atual->dado);
         free(atual);
     }
-
     return;
 }
 
