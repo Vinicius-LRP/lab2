@@ -280,7 +280,22 @@ void g_arestas_que_chegam(Grafo self, int nó_destino)
 // caso não exista mais aresta que satisfaça a consulta, retorna NULL.
 void *g_próxima_aresta(Grafo self, int *p_nó_vizinho)
 {
-
+    if(self->consulta.i_no_consulta == -1) return NULL;
+    while(self->consulta.i_proximo_vizinho < self->qnt_nos) {
+        int candidato = self->consulta.i_proximo_vizinho;
+        self->consulta.i_proximo_vizinho++;
+        void *dado;
+        if(self->consulta.consulta_aresta_chegada == false){
+            dado = g_valor_da_aresta(self, self->consulta.i_no_consulta, candidato);
+        } else {
+            dado = g_valor_da_aresta(self, candidato, self->consulta.i_no_consulta);
+        }
+        if(dado != NULL) {
+            if(p_nó_vizinho != NULL) *p_nó_vizinho = candidato;
+            return dado;
+        }
+    }
+    return NULL;
 }
 
 // Algoritmos
