@@ -118,6 +118,17 @@ int g_num_nós(Grafo self)
 
 // Arestas
 
+
+// função auxiliar das arestas
+
+aresta cria_aresta(Grafo self, int nó_destino, void *p_dado, aresta proxima_aresta) 
+{
+    aresta *a;
+    a = malloc(sizeof(*a));
+    assert(a != NULL);
+    a->dado = malloc(self->tam_dado_arestas);
+}
+
 // altera o valor da aresta que interliga o nó origem ao nó destino
 //   (copia de *p_dado para uma memória gerenciada pelo grafo)
 // caso a aresta não exista, deve ser criada
