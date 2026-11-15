@@ -121,12 +121,17 @@ int g_num_nós(Grafo self)
 
 // função auxiliar das arestas
 
-aresta cria_aresta(Grafo self, int nó_destino, void *p_dado, aresta proxima_aresta) 
+aresta cria_aresta(Grafo self, int nó_destino, void *p_dado, void *proxima_aresta) 
 {
     aresta *a;
     a = malloc(sizeof(*a));
     assert(a != NULL);
     a->dado = malloc(self->tam_dado_arestas);
+    assert(a->dado != NULL);
+    memcpy(a->dado, p_dado, self->tam_dado_arestas);
+    a->no_destino = nó_destino;
+    a->prox_aresta = &proxima_aresta;
+    return *a;
 }
 
 // altera o valor da aresta que interliga o nó origem ao nó destino
@@ -155,12 +160,7 @@ void g_altera_valor_da_aresta(Grafo self, int nó_origem, int nó_destino, void 
         aresta *a;
         a = malloc(sizeof(*a));
         assert(a != NULL);
-        a->no_destino = nó_destino;
-        a->dado = malloc(self->tam_dado_arestas);
-        assert(a->dado != NULL);
-
-        memcpy(a->dado, p_dado, self->tam_dado_arestas);
-        a->prox_aresta = NULL;
+        *a = cria_aresta(self, nó_destino, p_dado, NULL);
 
         if(anterior == NULL) {
             n_origem->prim_aresta = a;
