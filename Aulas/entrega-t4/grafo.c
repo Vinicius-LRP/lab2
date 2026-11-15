@@ -253,7 +253,13 @@ void *g_valor_da_aresta(Grafo self, int nó_origem, int nó_destino)
 // inicia uma consulta a arestas que partem do nó origem
 // as próximas chamadas a 'g_próxima_aresta' devem retornar os valores
 //   correspondentes a cada aresta que parte desse nó
-void g_arestas_que_partem(Grafo self, int nó_origem);
+void g_arestas_que_partem(Grafo self, int nó_origem)
+{
+    assert(nó_origem >= 0 && nó_origem < self->qnt_nos);
+    self->consulta.i_no_consulta = nó_origem;
+    self->consulta.i_proximo_vizinho = 0;
+    self->consulta.consulta_aresta_chegada = false;
+}
 
 // inicia uma consulta a arestas que chegam ao nó destino
 // as próximas chamadas a 'g_próxima_aresta' devem retornar os valores
