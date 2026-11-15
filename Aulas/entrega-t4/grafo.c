@@ -111,6 +111,14 @@ void g_remove_nó(Grafo self, int nó)
     for(int i = 0; i < self->qnt_nos; i++) {
         g_altera_valor_da_aresta(self, i, nó, NULL);
     }
+    aresta *atual = self->nos[nó].prim_aresta;
+    while(atual != NULL) {
+        aresta *prox = atual->prox_aresta;
+        free(atual->dado);
+        free(atual);
+        atual = prox;
+    }
+    free(self->nos[nó].dado);
 }
 
 
