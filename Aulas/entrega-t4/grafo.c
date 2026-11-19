@@ -301,7 +301,19 @@ void *g_próxima_aresta(Grafo self, int *p_nó_vizinho)
 // Algoritmos
 
 // retorna true se grafo é cíclico, false caso contrário
-bool g_tem_ciclo(Grafo self);
+bool g_tem_ciclo(Grafo self){
+    assert(self != NULL);
+    Fila ordem = g_ordem_topológica(self);
+
+    bool tem_ciclo = false;
+
+    if(self->qnt_nos > 0 && f_tá_vazia(ordem)) {
+        tem_ciclo = true;
+    }
+
+    f_destrói(ordem);
+    return tem_ciclo;
+}
 
 // retorna uma fila de inteiros contendo os números dos nós do grafo em
 //   uma ordem em que, se o nó 'a' antecede 'b', não existe uma aresta
@@ -310,9 +322,10 @@ bool g_tem_ciclo(Grafo self);
 // quem chama esta função é responsável por destruir a fila.
 Fila g_ordem_topológica(Grafo self)
 {
-    asser(self != NULL);
+    assert(self != NULL);
 
     Fila resultado = f_cria(sizeof(int));
+    assert(resultado != NULL); 
 
     int quantidade = self->qnt_nos;
     if(quantidade == 0) return resultado;
@@ -350,12 +363,24 @@ Fila g_ordem_topológica(Grafo self)
         processados++;
 
         aresta *a = self->nos[atual].prim_aresta;
+
+        while (a != NULL) {
+            int destino = a->no_destino;
+            graus[destino]--;
+            if(graus[destino] == 0){
+                f_insere(prontos, &destino);
+            }
+            a = a->prox_aresta;
+        }
     }
 
+    free(graus);
+    f_destrói(prontos);
 
-
-
-
-
-
+    if(processados != quantidade) {
+        while(!f_tá_vazia(resultado)){
+            f_remove(resultado, NULL);
+        }
+    }
+    return resultado;
 }
