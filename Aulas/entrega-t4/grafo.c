@@ -308,4 +308,54 @@ bool g_tem_ciclo(Grafo self);
 //   de 'b' para 'a' no grafo
 // deve retornar uma fila vazia caso tal ordem não exista
 // quem chama esta função é responsável por destruir a fila.
-Fila g_ordem_topológica(Grafo self);
+Fila g_ordem_topológica(Grafo self)
+{
+    asser(self != NULL);
+
+    Fila resultado = f_cria(sizeof(int));
+
+    int quantidade = self->qnt_nos;
+    if(quantidade == 0) return resultado;
+
+    int *graus = malloc(quantidade * sizeof(*graus));
+    assert(graus != NULL);
+
+    for(int i = 0; i < quantidade; i++) {
+        graus[i] = 0;
+    }
+
+    Fila prontos = f_cria(sizeof(int));
+    assert(prontos != NULL);
+
+    for (int i = 0; i < quantidade; i++) {
+        aresta *a = self->nos[i].prim_aresta;
+        while(a != NULL) {
+            graus[a->no_destino]++;
+            a = a->prox_aresta;
+        }
+    }
+    
+    for(int i = 0; i < quantidade; i++) {
+        if(graus[i] == 0) {
+            f_insere(prontos, &i);
+        }
+    }
+
+    int processados = 0;
+
+    while (!f_tá_vazia(prontos)) {
+        int atual;
+        f_remove(prontos, &atual);
+        f_insere(resultado, &atual);
+        processados++;
+
+        aresta *a = self->nos[atual].prim_aresta;
+    }
+
+
+
+
+
+
+
+}
