@@ -331,56 +331,56 @@ int s_busca_s(Str_c s, int pos, Str_c buscada)
 void s_substitui(Str s, int pos, int tam, Str_c sb)
 {
     s_ok(s);
-    if(sb != NULL) s_ok(sb);
+    if (sb != NULL) s_ok(sb);
     int tamS = s_tam(s);
-    int indiceInicio2;
-    if (pos >= 0) {
-        indiceInicio2 = pos;
-    } else {
-        indiceInicio2 = tamS + pos + 1;
+    int indiceInicio = pos;
+    if (pos < 0) {
+        indiceInicio = tamS + pos + 1;
     }
-    int indiceFim;
-    if(tam < 0) {
-        indiceFim = tamS;
-    } else {
-        indiceFim = indiceInicio2 + tam;
+    int indiceFim = tamS;
+    if (tam >= 0 && indiceInicio <= tamS - tam) {
+        indiceFim = indiceInicio + tam;
     }
-    int indiceInicio = indiceInicio2;
     if (indiceInicio < 0) indiceInicio = 0;
     if (indiceInicio > tamS) indiceInicio = tamS;
-    if (indiceFim < 0) indiceFim = 0;
-    if (indiceFim > tamS) indiceFim = tamS;
     if (indiceFim < indiceInicio) indiceFim = indiceInicio;
-    byte *inicio = u8_avanca_unichar(s->dados, indiceInicio);
-    byte *fim = u8_avanca_unichar(s->dados, indiceFim);
-    int byteInicio = inicio - s->dados;
-    int byteFim = fim - s->dados;
-    int bytesRemovidos = byteFim - byteInicio;
+    int byteInicio = 0;
+    int byteFim = 0;
+    if (s->numBytes > 0) {
+        byte *inicio = u8_avanca_unichar(s->dados, indiceInicio);
+        byte *fim = u8_avanca_unichar(inicio, indiceFim - indiceInicio);
+        byteInicio = inicio - s->dados;
+        byteFim = fim - s->dados;
+    }
     int bytesInseridos = 0;
     byte *copiaInserida = NULL;
-    if (sb != NULL){
+    if (sb != NULL) {
         bytesInseridos = sb->numBytes;
-        if(bytesInseridos > 0){
+        if (bytesInseridos > 0) {
             copiaInserida = malloc(bytesInseridos);
-            if(copiaInserida == NULL){
+            if (copiaInserida == NULL) {
                 printf("Erro ao criar copia!");
                 exit(1);
             }
-
             memcpy(copiaInserida, sb->dados, bytesInseridos);
         }
     }
-
-    int novoTotal = s->numBytes - bytesRemovidos + bytesInseridos;
-    s_realoca(s, novoTotal);
+    int bytesRemovidos = byteFim - byteInicio;
     int bytesDepois = s->numBytes - byteFim;
+    int novoTotal = s->numBytes - bytesRemovidos + bytesInseridos;
+    if (novoTotal > s->numBytes) {
+        s_realoca(s, novoTotal);
+    }
     if (bytesDepois > 0) {
-        memmove(s->dados + byteInicio + bytesInseridos, 
-                s->dados + byteFim, 
+        memmove(s->dados + byteInicio + bytesInseridos,
+                s->dados + byteFim,
                 bytesDepois);
     }
-    if(bytesInseridos > 0) {
+    if (bytesInseridos > 0) {
         memcpy(s->dados + byteInicio, copiaInserida, bytesInseridos);
+    }
+    if (novoTotal < s->numBytes) {
+        s_realoca(s, novoTotal);
     }
     s->numBytes = novoTotal;
     free(copiaInserida);
@@ -427,6 +427,7 @@ void s_substring(Str s, Str_c sb, int pos, int tam)
     free(t);
     s_ok(s);
 }
+
 
 void s_copia(Str s, Str_c sb)
 {
