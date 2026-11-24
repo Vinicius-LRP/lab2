@@ -117,15 +117,14 @@ static bool chaves_str_iguais(chave_t a, chave_t b)
 
 static bool chave_str_menor(chave_t a, chave_t b)
 {
-    Str_c string_a = a;
-    Str_c string_b = b;
-    char *char_a = s_strc(string_a);
-    char *char_b = s_strc(string_b);
+    char *char_a = s_strc((Str_c) a);
+    char *char_b = s_strc((Str_c) b);
+
     int resultado = strcmp(char_a, char_b);
-    if(resultado < 0) {
-        return true;
-    }
-    return false;
+    free(char_a);
+    free(char_b);
+
+    return resultado < 0;
 }
 
 static void garante_dicionario()
@@ -155,23 +154,19 @@ static double valor_operando(Str_c operando, bool *erro)
     return s_número(valor_str);
 }
 
-static bool calcula_dois_operandos(Lista pilha_operandos, double (*operacao)(double, double))
+static bool calcula_dois_operandos(Lista pilha_operandos,double (*operacao)(double, double))
 {
-    if(l_tam(pilha_operandos) < 2) return false;
-
+    if (l_tam(pilha_operandos) < 2) return false;
     Str string_b = l_desempilha(pilha_operandos);
     Str string_a = l_desempilha(pilha_operandos);
-
     bool erro_a, erro_b;
     double valor_a = valor_operando(string_a, &erro_a);
     double valor_b = valor_operando(string_b, &erro_b);
-
-    if (erro_a == true || erro_b == true) return false;
-
+    s_destroi(string_a);
+    s_destroi(string_b);
+    if (erro_a || erro_b) return false;
     double resultado = operacao(valor_a, valor_b);
-    Str s_resultado = s_cria_número(resultado);
-    l_empilha(pilha_operandos, s_resultado);
-    
+    l_empilha(pilha_operandos, s_cria_número(resultado));
     return true;
 }
 
@@ -252,31 +247,28 @@ static bool nome_de_variavel(Str_c s)
 
 static bool opera_atribuicao(Lista pilha_operandos)
 {
-    if(l_tam(pilha_operandos) < 2) return false;
-
+    if (l_tam(pilha_operandos) < 2) return false;
     Str primeiro = l_desempilha(pilha_operandos);
     Str segundo = l_desempilha(pilha_operandos);
-
-    if(!nome_de_variavel(segundo)){
+    if (!nome_de_variavel(segundo)) {
+        s_destroi(primeiro);
+        s_destroi(segundo);
         return false;
     }
-
     bool erro;
     Str valor_str = valor_operando_str(primeiro, &erro);
-
-    if (erro == true) {
+    s_destroi(primeiro);
+    if (erro) {
+        s_destroi(segundo);
         return false;
     }
-
     garante_dicionario();
     valor_t antigo = dic_insere(dic_variaveis, (chave_t) segundo, (valor_t) valor_str);
-
-    if (antigo != VALOR_NÃO_EXISTE){
+    if (antigo != VALOR_NÃO_EXISTE) {
+        s_destroi(segundo);
         s_destroi((Str) antigo);
     }
-
     l_empilha(pilha_operandos, s_cria_cópia(valor_str));
-
     return true;
 }
 
@@ -469,4 +461,19 @@ Lista tokeniza(Str txt)
         l_insere_fim(l, token);
     }
     return l;
+}
+
+static void destroi_variavel(chave_t chave, valor_t valor)
+{
+    s_destroi((Str) chave);
+    s_destroi((Str) valor);
+}
+
+void calculadora_encerra(void)
+{
+    if (dic_variaveis == NULL) return;
+
+    dic_para_todos(dic_variaveis, destroi_variavel);
+    dic_destrói(dic_variaveis);
+    dic_variaveis = NULL;
 }

@@ -4,13 +4,14 @@
 
 #include <stdio.h>
 
-int main(){
+int main(void)
+{
     char *e = "entrada.txt";
     char *s = "saida.txt";
 
     Str cont = s_cria_de_arquivo(e);
 
-    if(s_tam(cont) == 0) {
+    if (s_tam(cont) == 0) {
         printf("Arquivo %s vazio ou não existe", e);
         s_destroi(cont);
         return 1;
@@ -18,7 +19,9 @@ int main(){
 
     Str quebra_linha = s_cria("\n");
     Lista linhas = l_cria_separando(cont, quebra_linha);
-    
+    s_destroi(cont);
+    s_destroi(quebra_linha);
+
     Lista resultados = l_cria();
 
     int n_linhas = l_tam(linhas);
@@ -29,8 +32,8 @@ int main(){
     }
 
     while (!l_vazia(linhas)) {
-        Str l = l_remove_inicio(linhas);
-        s_destroi(l);
+        Str linha = l_remove_inicio(linhas);
+        s_destroi(linha);
     }
     l_destroi(linhas);
 
@@ -42,11 +45,11 @@ int main(){
     s_destroi(texto_saida);
 
     while (!l_vazia(resultados)) {
-        Str r = l_remove_inicio(resultados);
-        s_destroi(r);
+        Str resultado = l_remove_inicio(resultados);
+        s_destroi(resultado);
     }
-
     l_destroi(resultados);
 
+    calculadora_encerra();
     return 0;
 }
